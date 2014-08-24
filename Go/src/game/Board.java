@@ -77,10 +77,8 @@ public class Board {
 		List<Group> captures = new ArrayList<Group>();
 
 		Group newGroup = createGroupWith(x, y);
-		captures.addAll(checkOpponentCapture(x, y));
-		if (removeIfCaptured(newGroup, currentPlayer == PLAYER_1 ? player1Groups : player2Groups)) {
-			captures.add(newGroup);
-		}
+		checkOpponentCapture(x, y, captures);
+		removeIfCaptured(newGroup, currentPlayer == PLAYER_1 ? player1Groups : player2Groups, captures);
 
 		currentPlayer = currentPlayer == PLAYER_1 ? PLAYER_2 : PLAYER_1;
 
@@ -113,23 +111,18 @@ public class Board {
 		return newGroup;
 	}
 
-	private List<Group> checkOpponentCapture(int x, int y) {
-		List<Group> captures = new ArrayList<Group>();
+	private void checkOpponentCapture(int x, int y, List<Group> captures) {
 		List<Group> currentOpponentGroups = (currentPlayer == PLAYER_1 ? player2Groups : player1Groups);
 		for (Group group : new ArrayList<Group>(currentOpponentGroups)) {
-			if (removeIfCaptured(group, currentOpponentGroups)) {
-				captures.add(group);
-			}
+			removeIfCaptured(group, currentOpponentGroups, captures);
 		}
-		return captures;
 	}
 
-	private boolean removeIfCaptured(Group group, List<Group> playerGroups) {
+	private void removeIfCaptured(Group group, List<Group> playerGroups, List<Group> captures) {
 		if (group.isCaptured()) {
 			playerGroups.remove(group);
 			group.removeFrom(this);
-			return true;
+			captures.add(group);
 		}
-		return false;
 	}
 }
