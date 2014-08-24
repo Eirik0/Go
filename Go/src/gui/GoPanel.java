@@ -11,8 +11,6 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 public class GoPanel extends JPanel {
-	private static final int FRAMES_PER_MILLI = (int) ((1.0 / 60) * 1000);
-
 	public BufferedImage explosion;
 
 	Board board;

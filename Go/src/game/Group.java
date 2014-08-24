@@ -14,8 +14,8 @@ public class Group {
 	}
 
 	public boolean isAdjacent(int x, int y) {
-		for (Intersection square : intersections) {
-			if (square.isAdjacent(x, y)) {
+		for (Intersection intersection : intersections) {
+			if (intersection.isAdjacent(x, y)) {
 				return true;
 			}
 		}

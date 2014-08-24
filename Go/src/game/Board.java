@@ -17,7 +17,7 @@ public class Board {
 
 	Intersection[][] intersections = new Intersection[BOARD_WIDTH][BOARD_HEIGHT];
 
-	private int currentPlayer = 1;
+	private int currentPlayer = PLAYER_1;
 
 	private List<Group> player1Groups = new ArrayList<Group>();
 	private List<Group> player2Groups = new ArrayList<Group>();
@@ -25,7 +25,7 @@ public class Board {
 	public Board() {
 		for (int x = 0; x < Board.BOARD_WIDTH; ++x) {
 			for (int y = 0; y < Board.BOARD_HEIGHT; ++y) {
-				intersections[x][y] = new Intersection(x, y, UNPLAYED, intersections);
+				intersections[x][y] = new Intersection(x, y, UNPLAYED);
 			}
 		}
 		for (int x = 0; x < Board.BOARD_WIDTH; ++x) {

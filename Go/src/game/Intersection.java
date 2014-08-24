@@ -16,7 +16,7 @@ public class Intersection {
 	private Intersection() {
 	}
 
-	public Intersection(int x, int y, int player, Intersection[][] intersections) {
+	public Intersection(int x, int y, int player) {
 		this.x = x;
 		this.y = y;
 		this.player = player;
