@@ -11,6 +11,8 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 public class GoPanel extends JPanel {
+	private static final int DEFAULT_HANDICAP = 6;
+
 	public BufferedImage explosion;
 
 	BufferedImage explodingFrame;
@@ -28,7 +30,7 @@ public class GoPanel extends JPanel {
 			explosion = new BufferedImage(10, 10, BufferedImage.TYPE_INT_RGB);
 		}
 
-		board = new Board();
+		board = new Board(DEFAULT_HANDICAP);
 		boardSizer = new BoardSizer();
 		mouseAdapter = new GoMouseAdapter(this, board, boardSizer);
 
@@ -72,6 +74,7 @@ public class GoPanel extends JPanel {
 				}
 			}
 			isExploding = false;
+			repaint();
 		}).start();
 	}
 }

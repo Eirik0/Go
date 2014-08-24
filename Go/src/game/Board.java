@@ -12,8 +12,8 @@ public class Board {
 	public static final int PLAYER_1 = 1;
 	public static final int PLAYER_2 = 2;
 
-	public static final Color P1_COLOR = Color.WHITE;
-	public static final Color P2_COLOR = Color.BLACK;
+	public static final Color P1_COLOR = Color.BLACK;
+	public static final Color P2_COLOR = Color.WHITE;
 
 	Intersection[][] intersections = new Intersection[BOARD_WIDTH][BOARD_HEIGHT];
 
@@ -22,7 +22,7 @@ public class Board {
 	private List<Group> player1Groups = new ArrayList<Group>();
 	private List<Group> player2Groups = new ArrayList<Group>();
 
-	public Board() {
+	public Board(int handicap) {
 		for (int x = 0; x < Board.BOARD_WIDTH; ++x) {
 			for (int y = 0; y < Board.BOARD_HEIGHT; ++y) {
 				intersections[x][y] = new Intersection(x, y, UNPLAYED);
@@ -32,6 +32,31 @@ public class Board {
 			for (int y = 0; y < Board.BOARD_HEIGHT; ++y) {
 				intersections[x][y].setLiberties(intersections);
 			}
+		}
+		addHandicap(handicap);
+	}
+
+	private void addHandicap(int handicap) {
+		switch (handicap) {
+		case 6:
+			intersections[15][9].setPlayer(PLAYER_1);
+			player1Groups.add(new Group(PLAYER_1, intersections[15][9]));
+		case 5:
+			intersections[3][9].setPlayer(PLAYER_1);
+			player1Groups.add(new Group(PLAYER_1, intersections[3][9]));
+		case 4:
+			intersections[15][3].setPlayer(PLAYER_1);
+			player1Groups.add(new Group(PLAYER_1, intersections[15][3]));
+		case 3:
+			intersections[3][15].setPlayer(PLAYER_1);
+			player1Groups.add(new Group(PLAYER_1, intersections[3][15]));
+		case 2:
+			intersections[15][15].setPlayer(PLAYER_1);
+			player1Groups.add(new Group(PLAYER_1, intersections[15][15]));
+		case 1:
+			intersections[3][3].setPlayer(PLAYER_1);
+			player1Groups.add(new Group(PLAYER_1, intersections[3][3]));
+			currentPlayer = PLAYER_2;
 		}
 	}
 
