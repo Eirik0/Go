@@ -44,4 +44,12 @@ public class Intersection {
 	public int liberty() {
 		return player == Board.UNPLAYED ? 1 : 0;
 	}
+
+	public int getX() {
+		return x;
+	}
+
+	public int getY() {
+		return y;
+	}
 }

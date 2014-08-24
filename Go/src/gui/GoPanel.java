@@ -1,8 +1,8 @@
 package gui;
 
-import game.Board;
+import game.*;
 
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -12,6 +12,10 @@ import javax.swing.JPanel;
 
 public class GoPanel extends JPanel {
 	public BufferedImage explosion;
+
+	BufferedImage explodingFrame;
+
+	boolean isExploding = false;
 
 	Board board;
 	BoardSizer boardSizer;
@@ -42,7 +46,32 @@ public class GoPanel extends JPanel {
 
 	@Override
 	public void paintComponent(Graphics g) {
-		boardSizer.draw(g, board);
+		if (isExploding) {
+			g.drawImage(explodingFrame, 0, 0, null);
+		} else {
+			boardSizer.draw(g, board);
+		}
 		mouseAdapter.drawOn(g);
+	}
+
+	public void explode(Group capture) {
+		new Thread(() -> {
+			isExploding = true;
+			explodingFrame = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
+			Graphics2D g = explodingFrame.createGraphics();
+			boardSizer.draw(g, board);
+			for (int size = 2; size < boardSizer.getSquareWidth(); ++size) {
+				Image scaledInstance = explosion.getScaledInstance(size, size, Image.SCALE_SMOOTH);
+				for (Intersection intersection : capture.getItersections()) {
+					g.drawImage(scaledInstance, boardSizer.getSnapX(intersection.getX()), boardSizer.getSnapY(intersection.getY()), null);
+				}
+				repaint();
+				try {
+					Thread.sleep(2);
+				} catch (InterruptedException e) {
+				}
+			}
+			isExploding = false;
+		}).start();
 	}
 }

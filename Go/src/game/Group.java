@@ -40,4 +40,8 @@ public class Group {
 	public void combineWith(Group group) {
 		intersections.addAll(group.intersections);
 	}
+
+	public List<Intersection> getItersections() {
+		return intersections;
+	}
 }

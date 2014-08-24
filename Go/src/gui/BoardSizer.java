@@ -71,11 +71,11 @@ public class BoardSizer {
 	}
 
 	public int getSnapX(int x) {
-		return (int) Math.round(getSquareX(x) * squareWidth);
+		return (int) Math.round(x * squareWidth);
 	}
 
 	public int getSnapY(int y) {
-		return (int) Math.round(getSquareY(y) * squareHeight);
+		return (int) Math.round(y * squareHeight);
 	}
 
 	private void redrawBoard() {

@@ -43,18 +43,23 @@ public class Board {
 		return intersections[x][y].player;
 	}
 
-	public void maybeMakeMove(int x, int y) {
+	public List<Group> maybeMakeMove(int x, int y) {
 		if (!canPlayAt(x, y)) {
-			return;
+			return new ArrayList<Group>();
 		}
 
 		intersections[x][y].setPlayer(currentPlayer);
+		List<Group> captures = new ArrayList<Group>();
 
 		Group newGroup = createGroupWith(x, y);
-		checkOpponentCapture(x, y);
-		removeIfCaptured(newGroup, currentPlayer == PLAYER_1 ? player1Groups : player2Groups);
+		captures.addAll(checkOpponentCapture(x, y));
+		if (removeIfCaptured(newGroup, currentPlayer == PLAYER_1 ? player1Groups : player2Groups)) {
+			captures.add(newGroup);
+		}
 
 		currentPlayer = currentPlayer == PLAYER_1 ? PLAYER_2 : PLAYER_1;
+
+		return captures;
 	}
 
 	public int getCurrentPlayer() {
@@ -83,17 +88,23 @@ public class Board {
 		return newGroup;
 	}
 
-	private void checkOpponentCapture(int x, int y) {
+	private List<Group> checkOpponentCapture(int x, int y) {
+		List<Group> captures = new ArrayList<Group>();
 		List<Group> currentOpponentGroups = (currentPlayer == PLAYER_1 ? player2Groups : player1Groups);
 		for (Group group : new ArrayList<Group>(currentOpponentGroups)) {
-			removeIfCaptured(group, currentOpponentGroups);
+			if (removeIfCaptured(group, currentOpponentGroups)) {
+				captures.add(group);
+			}
 		}
+		return captures;
 	}
 
-	private void removeIfCaptured(Group group, List<Group> playerGroups) {
+	private boolean removeIfCaptured(Group group, List<Group> playerGroups) {
 		if (group.isCaptured()) {
 			playerGroups.remove(group);
 			group.removeFrom(this);
+			return true;
 		}
+		return false;
 	}
 }

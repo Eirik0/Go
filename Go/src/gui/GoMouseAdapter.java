@@ -1,9 +1,10 @@
 package gui;
 
-import game.Board;
+import game.*;
 
 import java.awt.Graphics;
 import java.awt.event.*;
+import java.util.List;
 
 public class GoMouseAdapter extends MouseAdapter {
 	GoPanel goPanel;
@@ -27,7 +28,9 @@ public class GoMouseAdapter extends MouseAdapter {
 			g.fillOval(mouseX, mouseY, boardSizer.getPieceRadiusX(), boardSizer.getPieceRadiusY());
 
 			if (board.canPlayAt(boardSizer.getSquareX(mouseX), boardSizer.getSquareY(mouseY))) {
-				g.drawRect(boardSizer.getSnapX(mouseX), boardSizer.getSnapY(mouseY), boardSizer.getSquareWidth(), boardSizer.getSquareHeight());
+				int snapX = boardSizer.getSnapX(boardSizer.getSquareX(mouseX));
+				int snapY = boardSizer.getSnapY(boardSizer.getSquareY(mouseY));
+				g.drawRect(snapX, snapY, boardSizer.getSquareWidth(), boardSizer.getSquareHeight());
 			}
 		}
 	}
@@ -60,7 +63,10 @@ public class GoMouseAdapter extends MouseAdapter {
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		board.maybeMakeMove(boardSizer.getSquareX(mouseX), boardSizer.getSquareY(mouseY));
+		List<Group> captures = board.maybeMakeMove(boardSizer.getSquareX(mouseX), boardSizer.getSquareY(mouseY));
+		for (Group capture : captures) {
+			goPanel.explode(capture);
+		}
 		goPanel.repaint();
 	}
 }
