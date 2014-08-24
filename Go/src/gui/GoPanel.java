@@ -15,7 +15,7 @@ public class GoPanel extends JPanel {
 
 	public BufferedImage explosion;
 
-	BufferedImage explodingFrame;
+	BufferedImage explodingImage;
 
 	boolean isExploding = false;
 
@@ -24,16 +24,27 @@ public class GoPanel extends JPanel {
 	GoMouseAdapter mouseAdapter;
 
 	GoPanel() {
-		try {
-			explosion = ImageIO.read(getClass().getResource("/resources/explosion.PNG"));
-		} catch (IOException e) {
-			explosion = new BufferedImage(10, 10, BufferedImage.TYPE_INT_RGB);
-		}
+		initExplosion();
 
 		board = new Board(DEFAULT_HANDICAP);
 		boardSizer = new BoardSizer();
 		mouseAdapter = new GoMouseAdapter(this, board, boardSizer);
 
+		addListeners();
+	}
+
+	private void initExplosion() {
+		try {
+			explosion = ImageIO.read(getClass().getResource("/resources/explosion.PNG"));
+		} catch (IOException e) {
+			explosion = new BufferedImage(10, 10, BufferedImage.TYPE_INT_RGB);
+			Graphics2D g = explosion.createGraphics();
+			g.setColor(Color.RED);
+			g.fillRect(0, 0, 10, 10);
+		}
+	}
+
+	private void addListeners() {
 		addMouseListener(mouseAdapter);
 		addMouseMotionListener(mouseAdapter);
 
@@ -46,35 +57,36 @@ public class GoPanel extends JPanel {
 		});
 	}
 
+	public void explodeGroup(Group capturedGroup) {
+		new Thread(() -> {
+			explodingImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
+			Graphics2D g = explodingImage.createGraphics();
+			boardSizer.draw(g, board);
+
+			isExploding = true;
+			for (int size = 2; size < boardSizer.getSquareWidth(); ++size) {
+				for (Intersection intersection : capturedGroup.getItersections()) {
+					g.drawImage(explosion, boardSizer.getSnapX(intersection.getX()), boardSizer.getSnapY(intersection.getY()), size, size, null);
+				}
+				try {
+					Thread.sleep(8);
+				} catch (Exception e) {
+				}
+				repaint();
+			}
+			isExploding = false;
+
+			repaint();
+		}).start();
+	}
+
 	@Override
 	public void paintComponent(Graphics g) {
 		if (isExploding) {
-			g.drawImage(explodingFrame, 0, 0, null);
+			g.drawImage(explodingImage, 0, 0, null);
 		} else {
 			boardSizer.draw(g, board);
 		}
 		mouseAdapter.drawOn(g);
-	}
-
-	public void explode(Group capture) {
-		new Thread(() -> {
-			isExploding = true;
-			explodingFrame = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
-			Graphics2D g = explodingFrame.createGraphics();
-			boardSizer.draw(g, board);
-			for (int size = 2; size < boardSizer.getSquareWidth(); ++size) {
-				Image scaledInstance = explosion.getScaledInstance(size, size, Image.SCALE_SMOOTH);
-				for (Intersection intersection : capture.getItersections()) {
-					g.drawImage(scaledInstance, boardSizer.getSnapX(intersection.getX()), boardSizer.getSnapY(intersection.getY()), null);
-				}
-				repaint();
-				try {
-					Thread.sleep(2);
-				} catch (InterruptedException e) {
-				}
-			}
-			isExploding = false;
-			repaint();
-		}).start();
 	}
 }

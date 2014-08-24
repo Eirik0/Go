@@ -65,7 +65,7 @@ public class GoMouseAdapter extends MouseAdapter {
 	public void mouseReleased(MouseEvent e) {
 		List<Group> captures = board.maybeMakeMove(boardSizer.getSquareX(mouseX), boardSizer.getSquareY(mouseY));
 		for (Group capture : captures) {
-			goPanel.explode(capture);
+			goPanel.explodeGroup(capture);
 		}
 		goPanel.repaint();
 	}
