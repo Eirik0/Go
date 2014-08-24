@@ -13,6 +13,11 @@ public class BoardSizer {
 	private int imageWidth = Go.DEFAULT_WIDTH;
 	private int imageHeight = Go.DEFAULT_HEIGHT;
 
+	private int boardWidth = Go.DEFAULT_WIDTH;
+
+	private double offsetX = 0;
+	private double offsetY = 0;
+
 	private double squareWidth = (double) Go.DEFAULT_WIDTH / Board.BOARD_WIDTH;
 	private double squareHeight = (double) Go.DEFAULT_HEIGHT / Board.BOARD_HEIGHT;
 
@@ -24,8 +29,15 @@ public class BoardSizer {
 		imageWidth = width;
 		imageHeight = height;
 
-		squareWidth = (double) width / Board.BOARD_WIDTH;
-		squareHeight = (double) height / Board.BOARD_HEIGHT;
+		boardWidth = Math.min(imageWidth, imageHeight);
+		if ((double) imageWidth / imageHeight > 1) {
+			offsetX = (double) (imageWidth - boardWidth) / 2;
+		} else {
+			offsetY = (double) (imageHeight - boardWidth) / 2;
+		}
+
+		squareWidth = boardWidth / Board.BOARD_WIDTH;
+		squareHeight = boardWidth / Board.BOARD_HEIGHT;
 
 		redrawBoard();
 	}
@@ -33,57 +45,50 @@ public class BoardSizer {
 	public void draw(Graphics g, Board board) {
 		g.drawImage(boardImage, 0, 0, null);
 
-		int pieceRadiusX = getPieceRadiusX();
-		int pieceRadiusY = getPieceRadiusY();
+		int radius = getPieceRadius();
 		for (int x = 0; x < Board.BOARD_WIDTH; ++x) {
 			for (int y = 0; y < Board.BOARD_HEIGHT; ++y) {
 				int move = board.getPlayerAt(x, y);
 				if (move == Board.PLAYER_1 || move == Board.PLAYER_2) {
 					g.setColor(Board.getPlayerColor(move));
-					g.fillOval(getCenterX(x) - pieceRadiusX / 2, getCenterY(y) - pieceRadiusY / 2, pieceRadiusX, pieceRadiusY);
+					g.fillOval(getCenterX(x) - radius / 2, getCenterY(y) - radius / 2, radius, radius);
 				}
 			}
 		}
 	}
 
-	public int getPieceRadiusX() {
+	public int getPieceRadius() {
 		return (int) Math.round(squareWidth * PIECE_SCALE);
-	}
-
-	public int getPieceRadiusY() {
-		return (int) Math.round(squareHeight * PIECE_SCALE);
 	}
 
 	public int getSquareWidth() {
 		return (int) Math.round(squareWidth);
 	}
 
-	public int getSquareHeight() {
-		return (int) Math.round(squareHeight);
-	}
-
 	public int getSquareX(int x) {
-		return (int) Math.round((x - squareWidth / 2) / squareWidth);
+		return (int) Math.round((x - offsetX - squareWidth / 2) / squareWidth);
 	}
 
 	public int getSquareY(int y) {
-		return (int) Math.round((y - squareHeight / 2) / squareHeight);
+		return (int) Math.round((y - offsetY - squareHeight / 2) / squareHeight);
 	}
 
 	public int getSnapX(int x) {
-		return (int) Math.round(x * squareWidth);
+		return (int) Math.round(x * squareWidth + offsetX);
 	}
 
 	public int getSnapY(int y) {
-		return (int) Math.round(y * squareHeight);
+		return (int) Math.round(y * squareHeight + offsetY);
 	}
 
 	private void redrawBoard() {
 		boardImage = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_RGB);
 		Graphics2D g = boardImage.createGraphics();
 
-		g.setColor(new Color(155, 111, 111));
+		g.setColor(new Color(133, 99, 99));
 		g.fillRect(0, 0, imageWidth, imageHeight);
+		g.setColor(new Color(155, 111, 111));
+		g.fillRect((int) Math.round(offsetX), (int) Math.round(offsetY), boardWidth, boardWidth);
 
 		g.setColor(Color.BLACK);
 		// Bounds & Grid
@@ -108,10 +113,10 @@ public class BoardSizer {
 	}
 
 	private int getCenterX(int x) {
-		return (int) Math.round(x * squareWidth + squareWidth / 2);
+		return (int) Math.round(x * squareWidth + squareWidth / 2 + offsetX);
 	}
 
 	private int getCenterY(int y) {
-		return (int) Math.round(y * squareHeight + squareHeight / 2);
+		return (int) Math.round(y * squareHeight + squareHeight / 2 + offsetY);
 	}
 }
