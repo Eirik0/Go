@@ -53,9 +53,12 @@ public class Go {
 		buttonPanel.add(Box.createHorizontalStrut(20));
 		buttonPanel.add(resetButton);
 
+		JPanel passPanel = new JPanel(new FlowLayout(FlowLayout.TRAILING));
+		passPanel.add(passButton);
+
 		JPanel topPanel = new JPanel(new BorderLayout());
 		topPanel.add(buttonPanel, BorderLayout.CENTER);
-		topPanel.add(passButton, BorderLayout.EAST);
+		topPanel.add(passPanel, BorderLayout.EAST);
 
 		mainFrame.add(topPanel, BorderLayout.NORTH);
 		mainFrame.add(goPanel, BorderLayout.CENTER);

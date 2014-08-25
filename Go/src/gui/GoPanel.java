@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -65,22 +66,24 @@ public class GoPanel extends JPanel {
 		board.passTurn();
 	}
 
-	public void explodeGroup(Group capturedGroup) {
+	public void explodeGroup(List<Group> capturedGroups) {
 		new Thread(() -> {
 			explodingImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
 			Graphics2D g = explodingImage.createGraphics();
 			boardSizer.draw(g, board);
 
 			isExploding = true;
-			for (int size = 2; size < boardSizer.getSquareWidth(); ++size) {
-				for (Intersection intersection : capturedGroup.getItersections()) {
-					g.drawImage(explosion, boardSizer.getSnapX(intersection.getX()), boardSizer.getSnapY(intersection.getY()), size, size, null);
+			for (Group capturedGroup : capturedGroups) {
+				for (int size = 2; size < boardSizer.getSquareWidth(); ++size) {
+					for (Intersection intersection : capturedGroup.getItersections()) {
+						g.drawImage(explosion, boardSizer.getSnapX(intersection.getX()), boardSizer.getSnapY(intersection.getY()), size, size, null);
+					}
+					try {
+						Thread.sleep(8);
+					} catch (InterruptedException e) {
+					}
+					repaint();
 				}
-				try {
-					Thread.sleep(8);
-				} catch (Exception e) {
-				}
-				repaint();
 			}
 			isExploding = false;
 

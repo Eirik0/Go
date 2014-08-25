@@ -117,7 +117,7 @@ public class BoardSizer {
 		// Large
 		int largeDiameter = 8;
 		for (StarPoint starPoint : StarPointRegistry.getStarPoints(board.getBoardSize())) {
-			g.fillOval(getCenterX(starPoint.x) - smallDiameter / 2, getCenterY(starPoint.y) - largeDiameter / 2, largeDiameter, largeDiameter);
+			g.fillOval(getCenterX(starPoint.x) - largeDiameter / 2, getCenterY(starPoint.y) - largeDiameter / 2, largeDiameter, largeDiameter);
 		}
 	}
 

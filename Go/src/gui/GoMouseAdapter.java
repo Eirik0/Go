@@ -70,9 +70,7 @@ public class GoMouseAdapter extends MouseAdapter {
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		List<Group> captures = board.maybeMakeMove(boardSizer.getSquareX(mouseX), boardSizer.getSquareY(mouseY));
-		for (Group capture : captures) {
-			goPanel.explodeGroup(capture);
-		}
+		goPanel.explodeGroup(captures);
 		goPanel.repaint();
 	}
 }
