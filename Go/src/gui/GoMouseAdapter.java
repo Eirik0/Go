@@ -22,6 +22,10 @@ public class GoMouseAdapter extends MouseAdapter {
 		this.boardSizer = boardSizer;
 	}
 
+	public void setBoard(Board board) {
+		this.board = board;
+	}
+
 	public void drawOn(Graphics g) {
 		if (drawMouse) {
 			g.setColor(Board.getPlayerColor(board.getCurrentPlayer()));
@@ -37,27 +41,29 @@ public class GoMouseAdapter extends MouseAdapter {
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		mouseX = e.getX();
-		mouseY = e.getY();
-		goPanel.repaint();
+		setMousePosition(e);
 	}
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		mouseX = e.getX();
-		mouseY = e.getY();
-		goPanel.repaint();
+		setMousePosition(e);
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		drawMouse = true;
-		goPanel.repaint();
+		setMousePosition(e);
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
 		drawMouse = false;
+		setMousePosition(e);
+	}
+
+	private void setMousePosition(MouseEvent e) {
+		mouseX = e.getX();
+		mouseY = e.getY();
 		goPanel.repaint();
 	}
 

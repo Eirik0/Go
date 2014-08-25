@@ -11,23 +11,19 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 public class GoPanel extends JPanel {
-	private static final int DEFAULT_HANDICAP = 6;
+	private BufferedImage explosion;
+	private BufferedImage explodingImage;
+	private boolean isExploding = false;
 
-	public BufferedImage explosion;
+	private Board board;
+	private BoardSizer boardSizer;
+	private GoMouseAdapter mouseAdapter;
 
-	BufferedImage explodingImage;
-
-	boolean isExploding = false;
-
-	Board board;
-	BoardSizer boardSizer;
-	GoMouseAdapter mouseAdapter;
-
-	GoPanel() {
+	GoPanel(int boardSize, int handicap) {
 		initExplosion();
 
-		board = new Board(DEFAULT_HANDICAP);
-		boardSizer = new BoardSizer();
+		board = new Board(boardSize, handicap);
+		boardSizer = new BoardSizer(board);
 		mouseAdapter = new GoMouseAdapter(this, board, boardSizer);
 
 		addListeners();
@@ -55,6 +51,14 @@ public class GoPanel extends JPanel {
 				repaint();
 			}
 		});
+	}
+
+	public void resetGame(int boardSize, int handicap) {
+		board = new Board(boardSize, handicap);
+		boardSizer.setBoard(board);
+		boardSizer.setImageSize(getWidth(), getHeight());
+		mouseAdapter.setBoard(board);
+		repaint();
 	}
 
 	public void explodeGroup(Group capturedGroup) {

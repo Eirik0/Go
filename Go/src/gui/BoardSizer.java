@@ -18,8 +18,22 @@ public class BoardSizer {
 	private double offsetX = 0;
 	private double offsetY = 0;
 
-	private double squareWidth = (double) Go.DEFAULT_WIDTH / Board.BOARD_WIDTH;
-	private double squareHeight = (double) Go.DEFAULT_HEIGHT / Board.BOARD_HEIGHT;
+	private double squareWidth;
+
+	private Board board;
+
+	public BoardSizer(Board board) {
+		init(board);
+	}
+
+	private void init(Board board) {
+		this.board = board;
+		squareWidth = (double) Go.DEFAULT_WIDTH / board.getBoardSize();
+	}
+
+	public void setBoard(Board board) {
+		init(board);
+	}
 
 	public void setImageSize(int width, int height) {
 		if (width <= 0 || height <= 0) {
@@ -30,14 +44,10 @@ public class BoardSizer {
 		imageHeight = height;
 
 		boardWidth = Math.min(imageWidth, imageHeight);
-		if ((double) imageWidth / imageHeight > 1) {
-			offsetX = (double) (imageWidth - boardWidth) / 2;
-		} else {
-			offsetY = (double) (imageHeight - boardWidth) / 2;
-		}
+		offsetX = (double) (imageWidth - boardWidth) / 2;
+		offsetY = (double) (imageHeight - boardWidth) / 2;
 
-		squareWidth = boardWidth / Board.BOARD_WIDTH;
-		squareHeight = boardWidth / Board.BOARD_HEIGHT;
+		squareWidth = boardWidth / board.getBoardSize();
 
 		redrawBoard();
 	}
@@ -46,8 +56,8 @@ public class BoardSizer {
 		g.drawImage(boardImage, 0, 0, null);
 
 		int radius = getPieceRadius();
-		for (int x = 0; x < Board.BOARD_WIDTH; ++x) {
-			for (int y = 0; y < Board.BOARD_HEIGHT; ++y) {
+		for (int x = 0; x < board.getBoardSize(); ++x) {
+			for (int y = 0; y < board.getBoardSize(); ++y) {
 				int move = board.getPlayerAt(x, y);
 				if (move == Board.PLAYER_1 || move == Board.PLAYER_2) {
 					g.setColor(Board.getPlayerColor(move));
@@ -70,7 +80,7 @@ public class BoardSizer {
 	}
 
 	public int getSquareY(int y) {
-		return (int) Math.round((y - offsetY - squareHeight / 2) / squareHeight);
+		return (int) Math.round((y - offsetY - squareWidth / 2) / squareWidth);
 	}
 
 	public int getSnapX(int x) {
@@ -78,7 +88,7 @@ public class BoardSizer {
 	}
 
 	public int getSnapY(int y) {
-		return (int) Math.round(y * squareHeight + offsetY);
+		return (int) Math.round(y * squareWidth + offsetY);
 	}
 
 	private void redrawBoard() {
@@ -92,21 +102,21 @@ public class BoardSizer {
 
 		g.setColor(Color.BLACK);
 		// Bounds & Grid
-		for (int i = 0; i < Board.BOARD_WIDTH; ++i) {
-			g.drawLine(getCenterX(i), getCenterY(0), getCenterX(i), getCenterY(Board.BOARD_HEIGHT - 1));
-			g.drawLine(getCenterX(0), getCenterY(i), getCenterX(Board.BOARD_WIDTH - 1), getCenterY(i));
+		for (int i = 0; i < board.getBoardSize(); ++i) {
+			g.drawLine(getCenterX(i), getCenterY(0), getCenterX(i), getCenterY(board.getBoardSize() - 1));
+			g.drawLine(getCenterX(0), getCenterY(i), getCenterX(board.getBoardSize() - 1), getCenterY(i));
 		}
 		// Small Circles
 		int smallDiameter = 4;
-		for (int x = 0; x < Board.BOARD_WIDTH; ++x) {
-			for (int y = 0; y < Board.BOARD_HEIGHT; ++y) {
+		for (int x = 0; x < board.getBoardSize(); ++x) {
+			for (int y = 0; y < board.getBoardSize(); ++y) {
 				g.fillOval(getCenterX(x) - smallDiameter / 2, getCenterY(y) - smallDiameter / 2, smallDiameter, smallDiameter);
 			}
 		}
 		// Large
 		int largeDiameter = 8;
-		for (int x = 3; x < Board.BOARD_WIDTH; x += 6) {
-			for (int y = 3; y < Board.BOARD_HEIGHT; y += 6) {
+		for (int x = 3; x < board.getBoardSize(); x += 6) {
+			for (int y = 3; y < board.getBoardSize(); y += 6) {
 				g.fillOval(getCenterX(x) - largeDiameter / 2, getCenterY(y) - largeDiameter / 2, largeDiameter, largeDiameter);
 			}
 		}
@@ -117,6 +127,6 @@ public class BoardSizer {
 	}
 
 	private int getCenterY(int y) {
-		return (int) Math.round(y * squareHeight + squareHeight / 2 + offsetY);
+		return (int) Math.round(y * squareWidth + squareWidth / 2 + offsetY);
 	}
 }

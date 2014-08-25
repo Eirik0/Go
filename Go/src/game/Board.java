@@ -4,9 +4,6 @@ import java.awt.Color;
 import java.util.*;
 
 public class Board {
-	public static final int BOARD_WIDTH = 19;
-	public static final int BOARD_HEIGHT = 19;
-
 	public static final int OUT_OF_BOUNDS = -1;
 	public static final int UNPLAYED = 0;
 	public static final int PLAYER_1 = 1;
@@ -15,28 +12,33 @@ public class Board {
 	public static final Color P1_COLOR = Color.BLACK;
 	public static final Color P2_COLOR = Color.WHITE;
 
-	Intersection[][] intersections = new Intersection[BOARD_WIDTH][BOARD_HEIGHT];
+	private int boardSize;
+
+	Intersection[][] intersections;
 
 	private int currentPlayer = PLAYER_1;
 
 	private List<Group> player1Groups = new ArrayList<Group>();
 	private List<Group> player2Groups = new ArrayList<Group>();
 
-	public Board(int handicap) {
-		for (int x = 0; x < Board.BOARD_WIDTH; ++x) {
-			for (int y = 0; y < Board.BOARD_HEIGHT; ++y) {
+	public Board(int boardSize, int handicap) {
+		this.boardSize = boardSize;
+		intersections = new Intersection[boardSize][boardSize];
+		for (int x = 0; x < boardSize; ++x) {
+			for (int y = 0; y < boardSize; ++y) {
 				intersections[x][y] = new Intersection(x, y, UNPLAYED);
 			}
 		}
-		for (int x = 0; x < Board.BOARD_WIDTH; ++x) {
-			for (int y = 0; y < Board.BOARD_HEIGHT; ++y) {
-				intersections[x][y].setLiberties(intersections);
+		for (int x = 0; x < boardSize; ++x) {
+			for (int y = 0; y < boardSize; ++y) {
+				intersections[x][y].setLiberties(this);
 			}
 		}
 		addHandicap(handicap);
 	}
 
 	private void addHandicap(int handicap) {
+		System.out.println(handicap);
 		switch (handicap) {
 		case 6:
 			intersections[15][9].setPlayer(PLAYER_1);
@@ -60,8 +62,12 @@ public class Board {
 		}
 	}
 
+	public int getBoardSize() {
+		return boardSize;
+	}
+
 	public boolean canPlayAt(int x, int y) {
-		return x >= 0 && y >= 0 && x < BOARD_WIDTH && y < BOARD_HEIGHT && intersections[x][y].player == UNPLAYED;
+		return x >= 0 && y >= 0 && x < boardSize && y < boardSize && intersections[x][y].player == UNPLAYED;
 	}
 
 	public int getPlayerAt(int x, int y) {

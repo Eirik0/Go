@@ -22,11 +22,11 @@ public class Intersection {
 		this.player = player;
 	}
 
-	public void setLiberties(Intersection[][] intersections) {
-		upper = y == 0 ? OUT_OF_BOUNDS : intersections[x][y - 1];
-		lower = y == Board.BOARD_HEIGHT - 1 ? OUT_OF_BOUNDS : intersections[x][y + 1];
-		left = x == 0 ? OUT_OF_BOUNDS : intersections[x - 1][y];
-		right = x == Board.BOARD_WIDTH - 1 ? OUT_OF_BOUNDS : intersections[x + 1][y];
+	public void setLiberties(Board board) {
+		upper = y == 0 ? OUT_OF_BOUNDS : board.intersections[x][y - 1];
+		lower = y == board.getBoardSize() - 1 ? OUT_OF_BOUNDS : board.intersections[x][y + 1];
+		left = x == 0 ? OUT_OF_BOUNDS : board.intersections[x - 1][y];
+		right = x == board.getBoardSize() - 1 ? OUT_OF_BOUNDS : board.intersections[x + 1][y];
 	}
 
 	public void setPlayer(int player) {
