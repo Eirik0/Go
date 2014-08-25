@@ -61,6 +61,10 @@ public class GoPanel extends JPanel {
 		repaint();
 	}
 
+	public void passTurn() {
+		board.passTurn();
+	}
+
 	public void explodeGroup(Group capturedGroup) {
 		new Thread(() -> {
 			explodingImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);

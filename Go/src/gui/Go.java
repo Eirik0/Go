@@ -39,6 +39,11 @@ public class Go {
 			goPanel.resetGame(boardSize, handicap);
 		});
 
+		JButton passButton = new JButton("Pass Turn");
+		passButton.addActionListener(e -> {
+			goPanel.passTurn();
+		});
+
 		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEADING));
 		buttonPanel.add(boardSizeLabel);
 		buttonPanel.add(boardSizeComboBox);
@@ -48,7 +53,11 @@ public class Go {
 		buttonPanel.add(Box.createHorizontalStrut(20));
 		buttonPanel.add(resetButton);
 
-		mainFrame.add(buttonPanel, BorderLayout.NORTH);
+		JPanel topPanel = new JPanel(new BorderLayout());
+		topPanel.add(buttonPanel, BorderLayout.CENTER);
+		topPanel.add(passButton, BorderLayout.EAST);
+
+		mainFrame.add(topPanel, BorderLayout.NORTH);
 		mainFrame.add(goPanel, BorderLayout.CENTER);
 
 		mainFrame.setVisible(true);

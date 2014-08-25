@@ -86,9 +86,13 @@ public class Board {
 		checkOpponentCapture(x, y, captures);
 		removeIfCaptured(newGroup, currentPlayer == PLAYER_1 ? player1Groups : player2Groups, captures);
 
-		currentPlayer = currentPlayer == PLAYER_1 ? PLAYER_2 : PLAYER_1;
+		passTurn();
 
 		return captures;
+	}
+
+	public void passTurn() {
+		currentPlayer = currentPlayer == PLAYER_1 ? PLAYER_2 : PLAYER_1;
 	}
 
 	public int getCurrentPlayer() {
