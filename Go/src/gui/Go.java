@@ -9,10 +9,10 @@ public class Go {
 	public static final int DEFAULT_HEIGHT = 1000;
 
 	private static final String TITLE = "Go";
-	private static final Integer[] BOARD_SIZES = new Integer[] { 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 };
+	private static final Integer[] BOARD_SIZES = new Integer[] { 9, 13, 19 };
 	private static final Integer DEFAULT_BOARD_SIZE = 19;
 
-	private static final Integer[] HANDICAPS = new Integer[] { 0, 1, 2, 3, 4, 5, 6 };
+	private static final Integer[] HANDICAPS = new Integer[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 	private static final Integer DEFAULT_HANDICAP = 0;
 
 	public static void main(String[] args) {

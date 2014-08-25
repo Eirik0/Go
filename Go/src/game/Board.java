@@ -1,5 +1,7 @@
 package game;
 
+import game.StarPointRegistry.StarPoint;
+
 import java.awt.Color;
 import java.util.*;
 
@@ -38,26 +40,13 @@ public class Board {
 	}
 
 	private void addHandicap(int handicap) {
-		System.out.println(handicap);
-		switch (handicap) {
-		case 6:
-			intersections[15][9].setPlayer(PLAYER_1);
-			player1Groups.add(new Group(PLAYER_1, intersections[15][9]));
-		case 5:
-			intersections[3][9].setPlayer(PLAYER_1);
-			player1Groups.add(new Group(PLAYER_1, intersections[3][9]));
-		case 4:
-			intersections[15][3].setPlayer(PLAYER_1);
-			player1Groups.add(new Group(PLAYER_1, intersections[15][3]));
-		case 3:
-			intersections[3][15].setPlayer(PLAYER_1);
-			player1Groups.add(new Group(PLAYER_1, intersections[3][15]));
-		case 2:
-			intersections[15][15].setPlayer(PLAYER_1);
-			player1Groups.add(new Group(PLAYER_1, intersections[15][15]));
-		case 1:
-			intersections[3][3].setPlayer(PLAYER_1);
-			player1Groups.add(new Group(PLAYER_1, intersections[3][3]));
+		List<StarPoint> handicapPoints = StarPointRegistry.getHandicapPoints(boardSize, handicap);
+		for (StarPoint starPoint : handicapPoints) {
+			Intersection intersection = intersections[starPoint.x][starPoint.y];
+			intersection.setPlayer(PLAYER_1);
+			player1Groups.add(new Group(PLAYER_1, intersection));
+		}
+		if (handicapPoints.size() > 1) {
 			currentPlayer = PLAYER_2;
 		}
 	}

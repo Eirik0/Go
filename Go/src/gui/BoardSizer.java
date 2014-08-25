@@ -1,6 +1,7 @@
 package gui;
 
-import game.Board;
+import game.*;
+import game.StarPointRegistry.StarPoint;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -115,10 +116,8 @@ public class BoardSizer {
 		}
 		// Large
 		int largeDiameter = 8;
-		for (int x = 3; x < board.getBoardSize(); x += 6) {
-			for (int y = 3; y < board.getBoardSize(); y += 6) {
-				g.fillOval(getCenterX(x) - largeDiameter / 2, getCenterY(y) - largeDiameter / 2, largeDiameter, largeDiameter);
-			}
+		for (StarPoint starPoint : StarPointRegistry.getStarPoints(board.getBoardSize())) {
+			g.fillOval(getCenterX(starPoint.x) - smallDiameter / 2, getCenterY(starPoint.y) - largeDiameter / 2, largeDiameter, largeDiameter);
 		}
 	}
 
