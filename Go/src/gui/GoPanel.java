@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.imageio.ImageIO;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 public class GoPanel extends JPanel {
 	private BufferedImage explosion;
@@ -20,13 +20,14 @@ public class GoPanel extends JPanel {
 	private BoardSizer boardSizer;
 	private GoMouseAdapter mouseAdapter;
 
-	GoPanel(int boardSize, int handicap) {
-		initExplosion();
-
+	GoPanel(int boardSize, int handicap, MoveTree moveTree) {
 		board = new Board(boardSize, handicap);
 		boardSizer = new BoardSizer(board);
-		mouseAdapter = new GoMouseAdapter(this, board, boardSizer);
+		mouseAdapter = new GoMouseAdapter(this, board, boardSizer, moveTree);
 
+		setBorder(BorderFactory.createLoweredSoftBevelBorder());
+
+		initExplosion();
 		addListeners();
 	}
 
@@ -66,7 +67,11 @@ public class GoPanel extends JPanel {
 		board.passTurn();
 	}
 
-	public void explodeGroup(List<Group> capturedGroups) {
+	public void explodeGroups(List<Group> capturedGroups) {
+		if (capturedGroups.size() == 0) {
+			return;
+		}
+
 		new Thread(() -> {
 			explodingImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
 			Graphics2D g = explodingImage.createGraphics();

@@ -2,7 +2,6 @@ package game;
 
 import game.StarPointRegistry.StarPoint;
 
-import java.awt.Color;
 import java.util.*;
 
 public class Board {
@@ -10,9 +9,6 @@ public class Board {
 	public static final int UNPLAYED = 0;
 	public static final int PLAYER_1 = 1;
 	public static final int PLAYER_2 = 2;
-
-	public static final Color P1_COLOR = Color.BLACK;
-	public static final Color P2_COLOR = Color.WHITE;
 
 	private int boardSize;
 
@@ -63,11 +59,7 @@ public class Board {
 		return intersections[x][y].player;
 	}
 
-	public List<Group> maybeMakeMove(int x, int y) {
-		if (!canPlayAt(x, y)) {
-			return new ArrayList<Group>();
-		}
-
+	public List<Group> makeMove(int x, int y) {
 		intersections[x][y].setPlayer(currentPlayer);
 		List<Group> captures = new ArrayList<Group>();
 
@@ -86,10 +78,6 @@ public class Board {
 
 	public int getCurrentPlayer() {
 		return currentPlayer;
-	}
-
-	public static Color getPlayerColor(int player) {
-		return player == PLAYER_1 ? P1_COLOR : P2_COLOR;
 	}
 
 	private Group createGroupWith(int x, int y) {

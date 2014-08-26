@@ -3,6 +3,7 @@ package gui;
 import java.awt.*;
 
 import javax.swing.*;
+import javax.swing.border.EtchedBorder;
 
 public class Go {
 	public static final int DEFAULT_WIDTH = 1000;
@@ -16,7 +17,17 @@ public class Go {
 	private static final Integer DEFAULT_HANDICAP = 0;
 
 	public static void main(String[] args) {
-		GoPanel goPanel = new GoPanel(DEFAULT_BOARD_SIZE, DEFAULT_HANDICAP);
+		MoveTree moveTree = new MoveTree(DEFAULT_BOARD_SIZE, DEFAULT_HANDICAP);
+		JScrollPane moveScrollPane = new JScrollPane(moveTree);
+		moveScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		moveScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+		moveScrollPane.setPreferredSize(new Dimension(100, 100));
+
+		GoPanel goPanel = new GoPanel(DEFAULT_BOARD_SIZE, DEFAULT_HANDICAP, moveTree);
+
+		JSplitPane gameSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, moveScrollPane, goPanel);
+		gameSplitPane.setContinuousLayout(true);
+		gameSplitPane.setDividerSize(3);
 
 		JFrame mainFrame = new JFrame();
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -24,6 +35,13 @@ public class Go {
 		mainFrame.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		mainFrame.setLayout(new BorderLayout());
 
+		mainFrame.add(createTopPanel(goPanel, moveTree), BorderLayout.NORTH);
+		mainFrame.add(gameSplitPane, BorderLayout.CENTER);
+
+		mainFrame.setVisible(true);
+	}
+
+	private static JPanel createTopPanel(GoPanel goPanel, MoveTree moveTree) {
 		JLabel boardSizeLabel = new JLabel("Board Size: ");
 		JComboBox<Integer> boardSizeComboBox = new JComboBox<>(BOARD_SIZES);
 		boardSizeComboBox.setSelectedItem(DEFAULT_BOARD_SIZE);
@@ -37,6 +55,7 @@ public class Go {
 			int boardSize = boardSizeComboBox.getItemAt(boardSizeComboBox.getSelectedIndex());
 			int handicap = handicapComboBox.getItemAt(handicapComboBox.getSelectedIndex());
 			goPanel.resetGame(boardSize, handicap);
+			moveTree.resetGame(boardSize, handicap);
 		});
 
 		JButton passButton = new JButton("Pass Turn");
@@ -45,24 +64,24 @@ public class Go {
 		});
 
 		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEADING));
+		buttonPanel.add(Box.createHorizontalStrut(20));
 		buttonPanel.add(boardSizeLabel);
 		buttonPanel.add(boardSizeComboBox);
 		buttonPanel.add(Box.createHorizontalStrut(20));
 		buttonPanel.add(handicapLabel);
 		buttonPanel.add(handicapComboBox);
-		buttonPanel.add(Box.createHorizontalStrut(20));
+		buttonPanel.add(Box.createHorizontalStrut(30));
 		buttonPanel.add(resetButton);
 
 		JPanel passPanel = new JPanel(new FlowLayout(FlowLayout.TRAILING));
 		passPanel.add(passButton);
+		passPanel.add(Box.createHorizontalStrut(20));
 
 		JPanel topPanel = new JPanel(new BorderLayout());
+		topPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		topPanel.add(buttonPanel, BorderLayout.CENTER);
 		topPanel.add(passPanel, BorderLayout.EAST);
-
-		mainFrame.add(topPanel, BorderLayout.NORTH);
-		mainFrame.add(goPanel, BorderLayout.CENTER);
-
-		mainFrame.setVisible(true);
+		
+		return topPanel;
 	}
 }

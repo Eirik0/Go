@@ -7,6 +7,11 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class BoardSizer {
+	public static final Color BOARD_COLOR = new Color(155, 111, 111);
+
+	public static final Color P1_COLOR = Color.BLACK;
+	public static final Color P2_COLOR = Color.WHITE;
+
 	private static final double PIECE_SCALE = 0.75;
 
 	private BufferedImage boardImage = new BufferedImage(Go.DEFAULT_WIDTH, Go.DEFAULT_HEIGHT, BufferedImage.TYPE_INT_RGB);
@@ -61,11 +66,15 @@ public class BoardSizer {
 			for (int y = 0; y < board.getBoardSize(); ++y) {
 				int move = board.getPlayerAt(x, y);
 				if (move == Board.PLAYER_1 || move == Board.PLAYER_2) {
-					g.setColor(Board.getPlayerColor(move));
+					g.setColor(getPlayerColor(move));
 					g.fillOval(getCenterX(x) - radius / 2, getCenterY(y) - radius / 2, radius, radius);
 				}
 			}
 		}
+	}
+
+	public static Color getPlayerColor(int player) {
+		return player == Board.PLAYER_1 ? P1_COLOR : P2_COLOR;
 	}
 
 	public int getPieceRadius() {
@@ -76,11 +85,11 @@ public class BoardSizer {
 		return (int) Math.round(squareWidth);
 	}
 
-	public int getSquareX(int x) {
+	public int getIntersectionX(int x) {
 		return (int) Math.round((x - offsetX - squareWidth / 2) / squareWidth);
 	}
 
-	public int getSquareY(int y) {
+	public int getIntersectionY(int y) {
 		return (int) Math.round((y - offsetY - squareWidth / 2) / squareWidth);
 	}
 
@@ -96,9 +105,9 @@ public class BoardSizer {
 		boardImage = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_RGB);
 		Graphics2D g = boardImage.createGraphics();
 
-		g.setColor(new Color(133, 99, 99));
+		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, imageWidth, imageHeight);
-		g.setColor(new Color(155, 111, 111));
+		g.setColor(BOARD_COLOR);
 		g.fillRect((int) Math.round(offsetX), (int) Math.round(offsetY), boardWidth, boardWidth);
 
 		g.setColor(Color.BLACK);

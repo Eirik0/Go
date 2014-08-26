@@ -7,19 +7,21 @@ import java.awt.event.*;
 import java.util.List;
 
 public class GoMouseAdapter extends MouseAdapter {
-	GoPanel goPanel;
+	private GoPanel goPanel;
 
-	Board board;
-	BoardSizer boardSizer;
+	private Board board;
+	private BoardSizer boardSizer;
+	private MoveTree moveTree;
 
-	int mouseX = 0;
-	int mouseY = 0;
-	boolean drawMouse = false;
+	private int mouseX = 0;
+	private int mouseY = 0;
+	private boolean drawMouse = false;
 
-	GoMouseAdapter(GoPanel goPanel, Board board, BoardSizer boardSizer) {
+	GoMouseAdapter(GoPanel goPanel, Board board, BoardSizer boardSizer, MoveTree moveTree) {
 		this.goPanel = goPanel;
 		this.board = board;
 		this.boardSizer = boardSizer;
+		this.moveTree = moveTree;
 	}
 
 	public void setBoard(Board board) {
@@ -28,12 +30,12 @@ public class GoMouseAdapter extends MouseAdapter {
 
 	public void drawOn(Graphics g) {
 		if (drawMouse) {
-			g.setColor(Board.getPlayerColor(board.getCurrentPlayer()));
+			g.setColor(BoardSizer.getPlayerColor(board.getCurrentPlayer()));
 			g.fillOval(mouseX, mouseY, boardSizer.getPieceRadius(), boardSizer.getPieceRadius());
 
-			if (board.canPlayAt(boardSizer.getSquareX(mouseX), boardSizer.getSquareY(mouseY))) {
-				int snapX = boardSizer.getSnapX(boardSizer.getSquareX(mouseX));
-				int snapY = boardSizer.getSnapY(boardSizer.getSquareY(mouseY));
+			if (board.canPlayAt(boardSizer.getIntersectionX(mouseX), boardSizer.getIntersectionY(mouseY))) {
+				int snapX = boardSizer.getSnapX(boardSizer.getIntersectionX(mouseX));
+				int snapY = boardSizer.getSnapY(boardSizer.getIntersectionY(mouseY));
 				g.drawRect(snapX, snapY, boardSizer.getSquareWidth(), boardSizer.getSquareWidth());
 			}
 		}
@@ -69,8 +71,13 @@ public class GoMouseAdapter extends MouseAdapter {
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		List<Group> captures = board.maybeMakeMove(boardSizer.getSquareX(mouseX), boardSizer.getSquareY(mouseY));
-		goPanel.explodeGroup(captures);
-		goPanel.repaint();
+		int x = boardSizer.getIntersectionX(mouseX);
+		int y = boardSizer.getIntersectionY(mouseY);
+		if (board.canPlayAt(x, y)) {
+			moveTree.addMove(board.getCurrentPlayer(), x, y);
+			List<Group> captures = board.makeMove(x, y);
+			goPanel.explodeGroups(captures);
+			goPanel.repaint();
+		}
 	}
 }
