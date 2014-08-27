@@ -22,9 +22,17 @@ public class GoPanel extends JPanel {
 	GoPanel(GameController gameController, MouseAdapter mouseAdapter, BoardSizer boardSizer) {
 		this.gameController = gameController;
 		this.boardSizer = boardSizer;
+
 		setBorder(BorderFactory.createLoweredSoftBevelBorder());
 
-		initExplosion();
+		try {
+			explosion = ImageIO.read(getClass().getResource("/resources/explosion.PNG"));
+		} catch (IOException e1) {
+			explosion = new BufferedImage(10, 10, BufferedImage.TYPE_INT_RGB);
+			Graphics2D g = explosion.createGraphics();
+			g.setColor(Color.RED);
+			g.fillRect(0, 0, 10, 10);
+		}
 
 		addMouseListener(mouseAdapter);
 		addMouseMotionListener(mouseAdapter);
@@ -36,17 +44,6 @@ public class GoPanel extends JPanel {
 				repaint();
 			}
 		});
-	}
-
-	private void initExplosion() {
-		try {
-			explosion = ImageIO.read(getClass().getResource("/resources/explosion.PNG"));
-		} catch (IOException e) {
-			explosion = new BufferedImage(10, 10, BufferedImage.TYPE_INT_RGB);
-			Graphics2D g = explosion.createGraphics();
-			g.setColor(Color.RED);
-			g.fillRect(0, 0, 10, 10);
-		}
 	}
 
 	public void reset() {

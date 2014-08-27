@@ -13,11 +13,7 @@ public class MoveTree extends JTree {
 	private DefaultMutableTreeNode movesRoot;
 	private DefaultTreeModel model;
 
-	private GameController gameController;
-
 	public MoveTree(GameController gameController) {
-		this.gameController = gameController;
-
 		setBorder(BorderFactory.createRaisedSoftBevelBorder());
 
 		setRootVisible(false);
@@ -29,15 +25,34 @@ public class MoveTree extends JTree {
 		movesRoot = new DefaultMutableTreeNode();
 		model = new DefaultTreeModel(movesRoot);
 		setModel(model);
+
+		addTreeSelectionListener(e -> {
+			DefaultMutableTreeNode node = (DefaultMutableTreeNode) getLastSelectedPathComponent();
+			if (node != null) {
+				Object userObject = node.getUserObject();
+				if (userObject instanceof Move) {
+					Move move = (Move) userObject;
+					gameController.makeMoves(move.getMoves());
+				}
+			}
+		});
 	}
 
-	public void reset() {
+	public void reset(Move initialPosition) {
 		movesRoot.removeAllChildren();
+		addMove(initialPosition);
 	}
 
 	public void addMove(Move move) {
 		movesRoot.add(move.getTreeNode());
-		model.reload();
+		model.reload(movesRoot);
+	}
+
+	public void addMove(Move rootMove, Move move) {
+		DefaultMutableTreeNode rootNode = rootMove.getTreeNode();
+		rootNode.add(move.getTreeNode());
+		model.reload(rootNode);
+		expandPath(new TreePath(rootMove.getTreeNode().getPath()));
 	}
 
 	private static class GoTreeCellRenderer extends DefaultTreeCellRenderer {
