@@ -16,19 +16,26 @@ public class GoPanel extends JPanel {
 	private BufferedImage explodingImage;
 	private boolean isExploding = false;
 
-	private Board board;
+	private GameController gameController;
 	private BoardSizer boardSizer;
-	private GoMouseAdapter mouseAdapter;
 
-	GoPanel(int boardSize, int handicap, MoveTree moveTree) {
-		board = new Board(boardSize, handicap);
-		boardSizer = new BoardSizer(board);
-		mouseAdapter = new GoMouseAdapter(this, board, boardSizer, moveTree);
-
+	GoPanel(GameController gameController, MouseAdapter mouseAdapter, BoardSizer boardSizer) {
+		this.gameController = gameController;
+		this.boardSizer = boardSizer;
 		setBorder(BorderFactory.createLoweredSoftBevelBorder());
 
 		initExplosion();
-		addListeners();
+
+		addMouseListener(mouseAdapter);
+		addMouseMotionListener(mouseAdapter);
+
+		addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentResized(ComponentEvent e) {
+				boardSizer.setImageSize(getWidth(), getHeight());
+				repaint();
+			}
+		});
 	}
 
 	private void initExplosion() {
@@ -42,40 +49,21 @@ public class GoPanel extends JPanel {
 		}
 	}
 
-	private void addListeners() {
-		addMouseListener(mouseAdapter);
-		addMouseMotionListener(mouseAdapter);
-
-		addComponentListener(new ComponentAdapter() {
-			@Override
-			public void componentResized(ComponentEvent e) {
-				boardSizer.setImageSize(getWidth(), getHeight());
-				repaint();
-			}
-		});
-	}
-
-	public void resetGame(int boardSize, int handicap) {
-		board = new Board(boardSize, handicap);
-		boardSizer.setBoard(board);
+	public void reset() {
 		boardSizer.setImageSize(getWidth(), getHeight());
-		mouseAdapter.setBoard(board);
 		repaint();
 	}
 
-	public void passTurn() {
-		board.passTurn();
-	}
-
-	public void explodeGroups(List<Group> capturedGroups) {
+	public void explodeCapturedGroups(List<Group> capturedGroups) {
 		if (capturedGroups.size() == 0) {
+			repaint();
 			return;
 		}
 
 		new Thread(() -> {
 			explodingImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
 			Graphics2D g = explodingImage.createGraphics();
-			boardSizer.draw(g, board);
+			gameController.drawBoard(g);
 
 			isExploding = true;
 			for (Group capturedGroup : capturedGroups) {
@@ -101,8 +89,8 @@ public class GoPanel extends JPanel {
 		if (isExploding) {
 			g.drawImage(explodingImage, 0, 0, null);
 		} else {
-			boardSizer.draw(g, board);
+			gameController.drawBoard(g);
 		}
-		mouseAdapter.drawOn(g);
+		gameController.drawMouse(g);
 	}
 }

@@ -11,23 +11,13 @@ public class Go {
 
 	private static final String TITLE = "Go";
 	private static final Integer[] BOARD_SIZES = new Integer[] { 9, 13, 19 };
-	private static final Integer DEFAULT_BOARD_SIZE = 19;
-
 	private static final Integer[] HANDICAPS = new Integer[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-	private static final Integer DEFAULT_HANDICAP = 0;
+
+	public static final Integer DEFAULT_BOARD_SIZE = 19;
+	public static final Integer DEFAULT_HANDICAP = 0;
 
 	public static void main(String[] args) {
-		MoveTree moveTree = new MoveTree(DEFAULT_BOARD_SIZE, DEFAULT_HANDICAP);
-		JScrollPane moveScrollPane = new JScrollPane(moveTree);
-		moveScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		moveScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-		moveScrollPane.setPreferredSize(new Dimension(100, 100));
-
-		GoPanel goPanel = new GoPanel(DEFAULT_BOARD_SIZE, DEFAULT_HANDICAP, moveTree);
-
-		JSplitPane gameSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, moveScrollPane, goPanel);
-		gameSplitPane.setContinuousLayout(true);
-		gameSplitPane.setDividerSize(3);
+		GameController gameController = new GameController();
 
 		JFrame mainFrame = new JFrame();
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -35,13 +25,26 @@ public class Go {
 		mainFrame.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		mainFrame.setLayout(new BorderLayout());
 
-		mainFrame.add(createTopPanel(goPanel, moveTree), BorderLayout.NORTH);
-		mainFrame.add(gameSplitPane, BorderLayout.CENTER);
+		mainFrame.add(createTopPanel(gameController), BorderLayout.NORTH);
+		mainFrame.add(createGameSplitPane(gameController), BorderLayout.CENTER);
 
 		mainFrame.setVisible(true);
 	}
 
-	private static JPanel createTopPanel(GoPanel goPanel, MoveTree moveTree) {
+	private static JSplitPane createGameSplitPane(GameController gameController) {
+		JScrollPane moveScrollPane = new JScrollPane(gameController.getMoveTree());
+		moveScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		moveScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+		moveScrollPane.setPreferredSize(new Dimension(100, 100));
+
+		JSplitPane gameSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, moveScrollPane, gameController.getGoPanel());
+		gameSplitPane.setContinuousLayout(true);
+		gameSplitPane.setDividerSize(3);
+
+		return gameSplitPane;
+	}
+
+	private static JPanel createTopPanel(GameController gameController) {
 		JLabel boardSizeLabel = new JLabel("Board Size: ");
 		JComboBox<Integer> boardSizeComboBox = new JComboBox<>(BOARD_SIZES);
 		boardSizeComboBox.setSelectedItem(DEFAULT_BOARD_SIZE);
@@ -54,13 +57,12 @@ public class Go {
 		resetButton.addActionListener(e -> {
 			int boardSize = boardSizeComboBox.getItemAt(boardSizeComboBox.getSelectedIndex());
 			int handicap = handicapComboBox.getItemAt(handicapComboBox.getSelectedIndex());
-			goPanel.resetGame(boardSize, handicap);
-			moveTree.resetGame(boardSize, handicap);
+			gameController.resetGame(boardSize, handicap);
 		});
 
 		JButton passButton = new JButton("Pass Turn");
 		passButton.addActionListener(e -> {
-			goPanel.passTurn();
+			gameController.passTurn();
 		});
 
 		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEADING));
@@ -81,7 +83,7 @@ public class Go {
 		topPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		topPanel.add(buttonPanel, BorderLayout.CENTER);
 		topPanel.add(passPanel, BorderLayout.EAST);
-		
+
 		return topPanel;
 	}
 }

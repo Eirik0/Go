@@ -1,64 +1,51 @@
 package gui;
 
 import game.Board;
-import gui.Moves.InitialPosition;
 import gui.Moves.Move;
-import gui.Moves.PlayerMove;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.*;
-import java.util.List;
 
 import javax.swing.*;
 import javax.swing.tree.*;
 
 public class MoveTree extends JTree {
-	DefaultMutableTreeNode movesRoot;
-	DefaultTreeModel model;
-	List<Move> moves = new ArrayList<Move>();
+	private DefaultMutableTreeNode movesRoot;
+	private DefaultTreeModel model;
 
-	public MoveTree(int intitialBoardSize, int intialHandicap) {
+	private GameController gameController;
+
+	public MoveTree(GameController gameController) {
+		this.gameController = gameController;
+
 		setBorder(BorderFactory.createRaisedSoftBevelBorder());
+
 		setRootVisible(false);
 		setShowsRootHandles(true);
+
 		getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 		setCellRenderer(new GoTreeCellRenderer());
 
 		movesRoot = new DefaultMutableTreeNode();
 		model = new DefaultTreeModel(movesRoot);
 		setModel(model);
-
-		resetGame(intitialBoardSize, intialHandicap);
 	}
 
-	public void addMove(int player, int x, int y) {
-		addMove(new PlayerMove(player, x, y));
-	}
-
-	public void resetGame(int boardSize, int handicap) {
+	public void reset() {
 		movesRoot.removeAllChildren();
-		moves.clear();
-		addMove(new InitialPosition(boardSize, handicap));
 	}
 
-	private void addMove(Move move) {
-		moves.add(move);
+	public void addMove(Move move) {
 		movesRoot.add(move.getTreeNode());
 		model.reload();
 	}
 
 	private static class GoTreeCellRenderer extends DefaultTreeCellRenderer {
 		private static final int ICON_SIZE = 16;
-		Icon blackMove;
-		Icon whiteMove;
+		private static Icon P1_ICON = createPlayerIcon(BoardSizer.P1_COLOR);
+		private static Icon P2_ICON = createPlayerIcon(BoardSizer.P2_COLOR);
 
-		public GoTreeCellRenderer() {
-			blackMove = createImageIcon(BoardSizer.P1_COLOR);
-			whiteMove = createImageIcon(BoardSizer.P2_COLOR);
-		}
-
-		private ImageIcon createImageIcon(Color color) {
+		private static ImageIcon createPlayerIcon(Color color) {
 			BufferedImage image = new BufferedImage(ICON_SIZE, ICON_SIZE, BufferedImage.TYPE_INT_RGB);
 			Graphics2D g = image.createGraphics();
 			g.setColor(Color.WHITE);
@@ -78,12 +65,12 @@ public class MoveTree extends JTree {
 			if (userObject instanceof Move) {
 				Move move = (Move) userObject;
 				if (move.getPlayer() == Board.PLAYER_1) {
-					setIcon(blackMove);
+					setIcon(P1_ICON);
 				} else if (move.getPlayer() == Board.PLAYER_2) {
-					setIcon(whiteMove);
+					setIcon(P2_ICON);
 				}
 			}
-			setSize(new Dimension(ICON_SIZE, ICON_SIZE));
+
 			return this;
 		}
 	}

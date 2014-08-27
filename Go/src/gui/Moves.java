@@ -66,4 +66,20 @@ public class Moves {
 			return x + ", " + y;
 		}
 	}
+
+	public static class PlayerPass extends Move {
+		PlayerPass(int player) {
+			super(player);
+		}
+
+		@Override
+		public Board getBoard() {
+			return null;
+		}
+
+		@Override
+		public String toString() {
+			return "Pass";
+		}
+	}
 }
