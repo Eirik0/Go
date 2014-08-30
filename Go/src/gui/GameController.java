@@ -74,9 +74,8 @@ public class GameController {
 
 	private void addMoveToTree(Move move) {
 		if (activeMove.addSubsequentMove(move)) {
-			move.setPreviousMove(activeMove);
 			Move rootMove = move.getRoot();
-			if (rootMove != null) {
+			if (rootMove != null) { // implies a variation exists
 				moveTree.addMove(rootMove, move);
 			} else {
 				moveTree.addMove(move);

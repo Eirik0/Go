@@ -24,16 +24,17 @@ public class Moves {
 			return player;
 		}
 
-		public void setPreviousMove(Move move) {
-			previousMove = move;
-		}
-
 		public boolean addSubsequentMove(Move move) {
 			if (!subsequentMoves.contains(move)) {
 				subsequentMoves.add(move);
+				move.previousMove = this;
 				return true;
 			}
 			return false;
+		}
+
+		public List<Move> getSubsequentMoves() {
+			return subsequentMoves;
 		}
 
 		public Move getSubsequentMove(Move move) {
@@ -41,14 +42,23 @@ public class Moves {
 		}
 
 		public Move getRoot() {
-			Move move = previousMove;
-			while (move != null) {
-				if (move.subsequentMoves.size() >= 2) {
-					return move;
-				}
-				move = move.previousMove;
+			if (previousMove == null) {
+				return null; // Initial position
 			}
-			return null;
+			if (previousMove.previousMove != null && previousMove.previousMove.susbequentMoveCount() > 2) {
+				return previousMove;
+			}
+			if (previousMove.susbequentMoveCount() == 1) {
+				return previousMove.getRoot();
+			}
+			if (previousMove.susbequentMoveCount() == 2) {
+				return previousMove.subsequentMoves.indexOf(this) == 0 ? previousMove.getRoot() : previousMove;
+			}
+			return previousMove;
+		}
+
+		public int susbequentMoveCount() {
+			return subsequentMoves.size();
 		}
 
 		public List<Move> getMoves() {

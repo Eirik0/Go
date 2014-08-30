@@ -33,7 +33,7 @@ public class Go {
 
 	private static JSplitPane createGameSplitPane(GameController gameController) {
 		JScrollPane moveScrollPane = new JScrollPane(gameController.getMoveTree());
-		moveScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		moveScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		moveScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		moveScrollPane.setPreferredSize(new Dimension(100, 100));
 
@@ -48,12 +48,15 @@ public class Go {
 		JLabel boardSizeLabel = new JLabel("Board Size: ");
 		JComboBox<Integer> boardSizeComboBox = new JComboBox<>(BOARD_SIZES);
 		boardSizeComboBox.setSelectedItem(DEFAULT_BOARD_SIZE);
+		boardSizeComboBox.setFocusable(false);
 
 		JLabel handicapLabel = new JLabel("Handicap: ");
 		JComboBox<Integer> handicapComboBox = new JComboBox<>(HANDICAPS);
 		handicapComboBox.setSelectedItem(DEFAULT_HANDICAP);
+		handicapComboBox.setFocusable(false);
 
 		JButton resetButton = new JButton("Reset Game");
+		resetButton.setFocusable(false);
 		resetButton.addActionListener(e -> {
 			int boardSize = boardSizeComboBox.getItemAt(boardSizeComboBox.getSelectedIndex());
 			int handicap = handicapComboBox.getItemAt(handicapComboBox.getSelectedIndex());
@@ -61,6 +64,7 @@ public class Go {
 		});
 
 		JButton passButton = new JButton("Pass Turn");
+		passButton.setFocusable(false);
 		passButton.addActionListener(e -> {
 			gameController.passTurn();
 		});

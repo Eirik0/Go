@@ -5,6 +5,7 @@ import gui.Moves.Move;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.List;
 
 import javax.swing.*;
 import javax.swing.tree.*;
@@ -50,9 +51,26 @@ public class MoveTree extends JTree {
 
 	public void addMove(Move rootMove, Move move) {
 		DefaultMutableTreeNode rootNode = rootMove.getTreeNode();
-		rootNode.add(move.getTreeNode());
-		model.reload(rootNode);
-		expandPath(new TreePath(rootMove.getTreeNode().getPath()));
+		if (rootMove.susbequentMoveCount() == 3) {
+			rootNode.removeAllChildren();
+			List<Move> subsequentMoves = rootMove.getSubsequentMoves();
+			updateSubsequentMoves(subsequentMoves);
+			model.reload();
+		} else {
+			rootNode.add(move.getTreeNode());
+			model.reload(rootNode);
+		}
+		expandPath(new TreePath(rootNode.getPath()));
+	}
+
+	private void updateSubsequentMoves(List<Move> subsequentMoves) {
+		for (Move subsequentMove : subsequentMoves) {
+			DefaultMutableTreeNode rootNode = subsequentMove.getRoot().getTreeNode();
+			DefaultMutableTreeNode treeNode = subsequentMove.getTreeNode();
+			treeNode.removeFromParent();
+			rootNode.add(treeNode);
+			updateSubsequentMoves(subsequentMove.getSubsequentMoves());
+		}
 	}
 
 	private static class GoTreeCellRenderer extends DefaultTreeCellRenderer {
