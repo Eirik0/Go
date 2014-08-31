@@ -6,8 +6,8 @@ import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 
 public class Go {
-	public static final int DEFAULT_WIDTH = 1000;
-	public static final int DEFAULT_HEIGHT = 1000;
+	public static final int DEFAULT_WIDTH = 800;
+	public static final int DEFAULT_HEIGHT = 800;
 
 	private static final String TITLE = "Go";
 	private static final Integer[] BOARD_SIZES = new Integer[] { 9, 13, 19 };

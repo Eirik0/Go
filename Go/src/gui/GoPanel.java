@@ -47,7 +47,7 @@ public class GoPanel extends JPanel {
 		});
 	}
 
-	public void reset() {
+	public void resetBoardSizer() {
 		boardSizer.setImageSize(getWidth(), getHeight());
 		repaint();
 	}

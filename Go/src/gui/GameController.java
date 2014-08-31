@@ -63,12 +63,15 @@ public class GameController {
 	public void maybeMakeMove(int x, int y) {
 		if (board.canPlayAt(x, y)) {
 			addMoveToTree(new PlayerMove(board, board.getCurrentPlayer(), x, y));
-
-			List<Group> captures = board.makeMove(x, y);
-			goPanel.explodeCapturedGroups(captures);
-
-			analyzerPanel.analyze(board);
+			makeMove(x, y);
 		}
+	}
+
+	private void makeMove(int x, int y) {
+		List<Group> captures = board.makeMove(x, y);
+		goPanel.explodeCapturedGroups(captures);
+
+		analyzerPanel.analyze(board);
 	}
 
 	public void passTurn() {
@@ -78,9 +81,8 @@ public class GameController {
 
 	public void resetGame(int boardSize, int handicap) {
 		board = new Board(boardSize, handicap);
-
 		boardSizer.setBoardSize(boardSize);
-		goPanel.reset();
+		goPanel.resetBoardSizer();
 
 		InitialPosition initialPosition = new InitialPosition(board, boardSize, handicap);
 		activeMove = initialPosition;
@@ -103,19 +105,24 @@ public class GameController {
 	}
 
 	public void makeMoves(List<Move> moves) {
+		int moveCount = 0;
 		for (Move move : moves) {
 			if (move instanceof InitialPosition) {
 				InitialPosition initialPosition = (InitialPosition) move;
 				board = new Board(board.getBoardSize(), initialPosition.handicap);
 			} else if (move instanceof PlayerMove) {
 				PlayerMove playerMove = (PlayerMove) move;
-				board.makeMove(playerMove.x, playerMove.y);
+				if (moveCount == moves.size() - 1) {
+					makeMove(playerMove.x, playerMove.y);
+					activeMove = playerMove;
+				} else {
+					board.makeMove(playerMove.x, playerMove.y);
+				}
 			} else if (move instanceof PlayerPass) {
 				board.passTurn();
 			}
-			activeMove = move;
+			++moveCount;
 		}
-		goPanel.repaint();
 	}
 
 	public void drawBoard(Graphics g) {

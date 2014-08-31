@@ -12,7 +12,7 @@ public class BoardSizer {
 	public static final Color P1_COLOR = Color.BLACK;
 	public static final Color P2_COLOR = Color.WHITE;
 
-	private static final double PIECE_SCALE = 0.75;
+	private static final double PIECE_SCALE = 0.85;
 
 	private BufferedImage boardImage = new BufferedImage(Go.DEFAULT_WIDTH, Go.DEFAULT_HEIGHT, BufferedImage.TYPE_INT_RGB);
 
@@ -29,16 +29,12 @@ public class BoardSizer {
 	private double squareWidth;
 
 	public BoardSizer(int boardSize) {
-		init(boardSize);
-	}
-
-	private void init(int boardSize) {
 		this.boardSize = boardSize;
 		squareWidth = (double) Go.DEFAULT_WIDTH / boardSize;
 	}
 
 	public void setBoardSize(int boardSize) {
-		init(boardSize);
+		this.boardSize = boardSize;
 	}
 
 	public void setImageSize(int width, int height) {

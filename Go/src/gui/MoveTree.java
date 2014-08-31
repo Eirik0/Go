@@ -51,21 +51,17 @@ public class MoveTree extends JTree {
 
 	public void addMove(Move rootMove, Move move) {
 		DefaultMutableTreeNode rootNode = rootMove.getTreeNode();
-		if (rootMove.susbequentMoveCount() == 3) {
-			rootNode.removeAllChildren();
-			List<Move> subsequentMoves = rootMove.getSubsequentMoves();
-			updateSubsequentMoves(subsequentMoves);
-			model.reload();
-		} else {
-			rootNode.add(move.getTreeNode());
-			model.reload(rootNode);
-		}
+		rootNode.removeAllChildren();
+		List<Move> subsequentMoves = rootMove.getSubsequentMoves();
+		updateSubsequentMoves(subsequentMoves);
+		model.reload();
 		expandPath(new TreePath(rootNode.getPath()));
 	}
 
 	private void updateSubsequentMoves(List<Move> subsequentMoves) {
 		for (Move subsequentMove : subsequentMoves) {
-			DefaultMutableTreeNode rootNode = subsequentMove.getRoot().getTreeNode();
+			Move root = subsequentMove.getRoot();
+			DefaultMutableTreeNode rootNode = root == null ? movesRoot : root.getTreeNode();
 			DefaultMutableTreeNode treeNode = subsequentMove.getTreeNode();
 			treeNode.removeFromParent();
 			rootNode.add(treeNode);

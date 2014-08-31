@@ -45,15 +45,25 @@ public class Moves {
 			if (previousMove == null) {
 				return null; // Initial position
 			}
+
 			if (previousMove.previousMove != null && previousMove.previousMove.susbequentMoveCount() > 2) {
-				return previousMove;
+				return previousMove; // the previous move have 3+ subsequent
 			}
+
 			if (previousMove.susbequentMoveCount() == 1) {
-				return previousMove.getRoot();
+				Move root = previousMove.getRoot();
+				if (root != null && root.susbequentMoveCount() > 1 && root.subsequentMoves.get(1).getRoot() == root) {
+					if (root.getRoot() == root.previousMove) {
+						return previousMove; // the root is either in this situation or the above
+					}
+				}
+				return root;
 			}
+
 			if (previousMove.susbequentMoveCount() == 2) {
 				return previousMove.subsequentMoves.indexOf(this) == 0 ? previousMove.getRoot() : previousMove;
 			}
+
 			return previousMove;
 		}
 
