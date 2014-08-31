@@ -11,10 +11,12 @@ import javax.swing.*;
 import javax.swing.tree.*;
 
 public class MoveTree extends JTree {
-	private DefaultMutableTreeNode movesRoot;
+	private Move initialPosition;
 	private DefaultTreeModel model;
 
-	public MoveTree(GameController gameController) {
+	public MoveTree(GameController gameController, Move initialPosition) {
+		reset(initialPosition);
+
 		setBorder(BorderFactory.createRaisedSoftBevelBorder());
 
 		setRootVisible(false);
@@ -22,10 +24,6 @@ public class MoveTree extends JTree {
 
 		getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 		setCellRenderer(new GoTreeCellRenderer());
-
-		movesRoot = new DefaultMutableTreeNode();
-		model = new DefaultTreeModel(movesRoot);
-		setModel(model);
 
 		addTreeSelectionListener(e -> {
 			DefaultMutableTreeNode node = (DefaultMutableTreeNode) getLastSelectedPathComponent();
@@ -40,13 +38,9 @@ public class MoveTree extends JTree {
 	}
 
 	public void reset(Move initialPosition) {
-		movesRoot.removeAllChildren();
-		addMove(initialPosition);
-	}
-
-	public void addMove(Move move) {
-		movesRoot.add(move.getTreeNode());
-		model.reload(movesRoot);
+		this.initialPosition = initialPosition;
+		model = new DefaultTreeModel(initialPosition.getTreeNode());
+		setModel(model);
 	}
 
 	public void addMove(Move rootMove, Move move) {
@@ -58,10 +52,14 @@ public class MoveTree extends JTree {
 		expandPath(new TreePath(rootNode.getPath()));
 	}
 
+	public void addMove(Move move) {
+		addMove(initialPosition, move);
+	}
+
 	private void updateSubsequentMoves(List<Move> subsequentMoves) {
 		for (Move subsequentMove : subsequentMoves) {
 			Move root = subsequentMove.getRoot();
-			DefaultMutableTreeNode rootNode = root == null ? movesRoot : root.getTreeNode();
+			DefaultMutableTreeNode rootNode = root == null ? initialPosition.getTreeNode() : root.getTreeNode();
 			DefaultMutableTreeNode treeNode = subsequentMove.getTreeNode();
 			treeNode.removeFromParent();
 			rootNode.add(treeNode);

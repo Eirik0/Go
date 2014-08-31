@@ -30,12 +30,11 @@ public class GameController {
 		mouseAdapter = new GoMouseAdapter(this, boardSizer);
 		analyzerPanel = new AnalyzerPanel();
 
-		moveTree = new MoveTree(this);
+		InitialPosition initialPosition = new InitialPosition(board, Go.DEFAULT_BOARD_SIZE, Go.DEFAULT_HANDICAP);
+		moveTree = new MoveTree(this, initialPosition);
 		goPanel = new GoPanel(this, mouseAdapter, boardSizer);
 
-		InitialPosition initialPosition = new InitialPosition(board, Go.DEFAULT_BOARD_SIZE, Go.DEFAULT_HANDICAP);
 		activeMove = initialPosition;
-		moveTree.addMove(activeMove);
 
 		analyzerPanel.analyze(board);
 	}
@@ -95,10 +94,10 @@ public class GameController {
 	private void addMoveToTree(Move move) {
 		if (activeMove.addSubsequentMove(move)) {
 			Move rootMove = move.getRoot();
-			if (rootMove != null) { // implies a variation exists
-				moveTree.addMove(rootMove, move);
-			} else {
+			if (rootMove == null) {
 				moveTree.addMove(move);
+			} else {
+				moveTree.addMove(rootMove, move);
 			}
 		}
 		activeMove = activeMove.getSubsequentMove(move);
