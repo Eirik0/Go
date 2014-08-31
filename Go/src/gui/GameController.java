@@ -9,6 +9,8 @@ import gui.Moves.PlayerPass;
 import java.awt.Graphics;
 import java.util.List;
 
+import analysis.AnalyzerPanel;
+
 public class GameController {
 	private Board board;
 
@@ -20,10 +22,13 @@ public class GameController {
 
 	Move activeMove;
 
+	private AnalyzerPanel analyzerPanel;
+
 	public GameController() {
 		board = new Board(Go.DEFAULT_BOARD_SIZE, Go.DEFAULT_HANDICAP);
 		boardSizer = new BoardSizer(Go.DEFAULT_BOARD_SIZE);
 		mouseAdapter = new GoMouseAdapter(this, boardSizer);
+		analyzerPanel = new AnalyzerPanel();
 
 		moveTree = new MoveTree(this);
 		goPanel = new GoPanel(this, mouseAdapter, boardSizer);
@@ -31,10 +36,16 @@ public class GameController {
 		InitialPosition initialPosition = new InitialPosition(board, Go.DEFAULT_BOARD_SIZE, Go.DEFAULT_HANDICAP);
 		activeMove = initialPosition;
 		moveTree.addMove(activeMove);
+
+		analyzerPanel.analyze(board);
 	}
 
 	public GoPanel getGoPanel() {
 		return goPanel;
+	}
+
+	public AnalyzerPanel getAnalysisPanel() {
+		return analyzerPanel;
 	}
 
 	public MoveTree getMoveTree() {
@@ -55,6 +66,8 @@ public class GameController {
 
 			List<Group> captures = board.makeMove(x, y);
 			goPanel.explodeCapturedGroups(captures);
+
+			analyzerPanel.analyze(board);
 		}
 	}
 
@@ -65,11 +78,16 @@ public class GameController {
 
 	public void resetGame(int boardSize, int handicap) {
 		board = new Board(boardSize, handicap);
+
 		boardSizer.setBoardSize(boardSize);
 		goPanel.reset();
+
 		InitialPosition initialPosition = new InitialPosition(board, boardSize, handicap);
 		activeMove = initialPosition;
+
 		moveTree.reset(initialPosition);
+
+		analyzerPanel.analyze(board);
 	}
 
 	private void addMoveToTree(Move move) {

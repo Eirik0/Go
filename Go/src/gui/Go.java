@@ -22,12 +22,12 @@ public class Go {
 		JFrame mainFrame = new JFrame();
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mainFrame.setTitle(TITLE);
-		mainFrame.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		mainFrame.setLayout(new BorderLayout());
 
 		mainFrame.add(createTopPanel(gameController), BorderLayout.NORTH);
 		mainFrame.add(createGameSplitPane(gameController), BorderLayout.CENTER);
 
+		mainFrame.pack();
 		mainFrame.setVisible(true);
 	}
 
@@ -35,13 +35,19 @@ public class Go {
 		JScrollPane moveScrollPane = new JScrollPane(gameController.getMoveTree());
 		moveScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		moveScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-		moveScrollPane.setPreferredSize(new Dimension(100, 100));
+		moveScrollPane.setPreferredSize(new Dimension(200, 200));
 
-		JSplitPane gameSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, moveScrollPane, gameController.getGoPanel());
+		JSplitPane gameSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, gameController.getGoPanel(), gameController.getAnalysisPanel());
 		gameSplitPane.setContinuousLayout(true);
+		gameSplitPane.setResizeWeight(1);
 		gameSplitPane.setDividerSize(3);
 
-		return gameSplitPane;
+		JSplitPane treeSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, moveScrollPane, gameSplitPane);
+		treeSplitPane.setContinuousLayout(true);
+		treeSplitPane.setResizeWeight(0);
+		treeSplitPane.setDividerSize(3);
+
+		return treeSplitPane;
 	}
 
 	private static JPanel createTopPanel(GameController gameController) {

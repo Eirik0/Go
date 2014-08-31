@@ -19,7 +19,8 @@ public class GoMouseAdapter extends MouseAdapter {
 	public void drawOn(Graphics g) {
 		if (drawMouse) {
 			g.setColor(BoardSizer.getPlayerColor(gameController.getCurrentPlayer()));
-			g.fillOval(mouseX, mouseY, boardSizer.getPieceRadius(), boardSizer.getPieceRadius());
+			double rad = boardSizer.getPieceRadius();
+			g.fillOval(BoardSizer.round(mouseX - rad / 2), BoardSizer.round(mouseY - rad / 2), BoardSizer.round(rad), BoardSizer.round(rad));
 
 			if (gameController.canPlayAt(boardSizer.getIntersectionX(mouseX), boardSizer.getIntersectionY(mouseY))) {
 				int snapX = boardSizer.getSnapX(boardSizer.getIntersectionX(mouseX));

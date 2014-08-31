@@ -24,6 +24,7 @@ public class GoPanel extends JPanel {
 		this.boardSizer = boardSizer;
 
 		setBorder(BorderFactory.createLoweredSoftBevelBorder());
+		setPreferredSize(new Dimension(Go.DEFAULT_WIDTH, Go.DEFAULT_HEIGHT));
 
 		try {
 			explosion = ImageIO.read(getClass().getResource("/resources/explosion.PNG"));

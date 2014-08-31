@@ -112,4 +112,8 @@ public class Board {
 			captures.add(group);
 		}
 	}
+
+	public List<Group> getGroups(int player) {
+		return player == PLAYER_1 ? player1Groups : player2Groups;
+	}
 }
