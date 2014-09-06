@@ -75,6 +75,12 @@ public class Intersection {
 	}
 
 	@Override
+	public Intersection clone() {
+		Intersection clone = new Intersection(x, y, player);
+		return clone;
+	}
+
+	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof Intersection) {
 			Intersection anotherIntersection = (Intersection) obj;

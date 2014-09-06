@@ -89,7 +89,7 @@ public class Moves {
 	public static class InitialPosition extends Move {
 		int handicap;
 
-		InitialPosition(Board board, int boardSize, int handicap) {
+		InitialPosition(int boardSize, int handicap) {
 			super(Board.PLAYER_1);
 			this.handicap = handicap;
 		}
@@ -104,7 +104,7 @@ public class Moves {
 		int x;
 		int y;
 
-		PlayerMove(Board board, int player, int x, int y) {
+		PlayerMove(int player, int x, int y) {
 			super(player);
 			this.x = x;
 			this.y = y;
@@ -126,7 +126,7 @@ public class Moves {
 	}
 
 	public static class PlayerPass extends Move {
-		PlayerPass(Board board, int player) {
+		PlayerPass(int player) {
 			super(player);
 		}
 

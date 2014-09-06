@@ -11,28 +11,82 @@ public class Board {
 	public static final int PLAYER_2 = 2;
 
 	private int boardSize;
+	private int handicap;
 
-	Intersection[][] intersections;
+	public Intersection[][] intersections;
 
 	private int currentPlayer = PLAYER_1;
 
-	private List<Group> player1Groups = new ArrayList<Group>();
-	private List<Group> player2Groups = new ArrayList<Group>();
+	private List<Group> player1Groups = new ArrayList<>();
+	private List<Group> player2Groups = new ArrayList<>();
+
+	private List<Group> captures = new ArrayList<>();
 
 	public Board(int boardSize, int handicap) {
 		this.boardSize = boardSize;
+		this.handicap = handicap;
+
 		intersections = new Intersection[boardSize][boardSize];
 		for (int x = 0; x < boardSize; ++x) {
 			for (int y = 0; y < boardSize; ++y) {
 				intersections[x][y] = new Intersection(x, y, UNPLAYED);
 			}
 		}
+		setLiberties();
+		addHandicap(handicap);
+	}
+
+	private void setLiberties() {
 		for (int x = 0; x < boardSize; ++x) {
 			for (int y = 0; y < boardSize; ++y) {
 				intersections[x][y].setLiberties(this);
 			}
 		}
-		addHandicap(handicap);
+	}
+
+	@Override
+	public Board clone() {
+		Board clone = new Board(boardSize, handicap);
+		clone.currentPlayer = currentPlayer;
+
+		for (int x = 0; x < boardSize; ++x) {
+			for (int y = 0; y < boardSize; ++y) {
+				clone.intersections[x][y] = intersections[x][y].clone();
+			}
+		}
+
+		clone.setLiberties();
+		clone.player1Groups.clear();
+
+		for (Group group : player1Groups) {
+			Group groupClone = new Group(PLAYER_1);
+			for (Intersection intersection : group.intersections) {
+				groupClone.intersections.add(clone.intersections[intersection.x][intersection.y]);
+			}
+			clone.player1Groups.add(groupClone);
+		}
+
+		for (Group group : player2Groups) {
+			Group groupClone = new Group(PLAYER_2);
+			for (Intersection intersection : group.intersections) {
+				groupClone.intersections.add(clone.intersections[intersection.x][intersection.y]);
+			}
+			clone.player2Groups.add(groupClone);
+		}
+
+		return clone;
+	}
+
+	public List<Intersection> getUnplayedIntersections() {
+		List<Intersection> unplayed = new ArrayList<>();
+		for (int x = 0; x < intersections.length; ++x) {
+			for (int y = 0; y < intersections[x].length; ++y) {
+				if (intersections[x][y].player == UNPLAYED) {
+					unplayed.add(intersections[x][y]);
+				}
+			}
+		}
+		return unplayed;
 	}
 
 	private void addHandicap(int handicap) {
@@ -59,16 +113,20 @@ public class Board {
 		return intersections[x][y].player;
 	}
 
-	public List<Group> makeMove(int x, int y) {
-		intersections[x][y].setPlayer(currentPlayer);
-		List<Group> captures = new ArrayList<Group>();
+	public Board makeMove(int x, int y) {
+		Board move = clone();
+		move.intersections[x][y].setPlayer(move.currentPlayer);
 
-		Group newGroup = createGroupWith(x, y);
-		checkOpponentCapture(x, y, captures);
-		removeIfCaptured(newGroup, currentPlayer == PLAYER_1 ? player1Groups : player2Groups, captures);
+		Group newGroup = move.createGroupWith(x, y);
+		move.checkOpponentCapture(x, y);
+		move.removeIfCaptured(newGroup, currentPlayer == PLAYER_1 ? move.player1Groups : move.player2Groups);
 
-		passTurn();
+		move.passTurn();
 
+		return move;
+	}
+
+	public List<Group> getCaptures() {
 		return captures;
 	}
 
@@ -98,14 +156,14 @@ public class Board {
 		return newGroup;
 	}
 
-	private void checkOpponentCapture(int x, int y, List<Group> captures) {
+	private void checkOpponentCapture(int x, int y) {
 		List<Group> currentOpponentGroups = (currentPlayer == PLAYER_1 ? player2Groups : player1Groups);
 		for (Group group : new ArrayList<Group>(currentOpponentGroups)) {
-			removeIfCaptured(group, currentOpponentGroups, captures);
+			removeIfCaptured(group, currentOpponentGroups);
 		}
 	}
 
-	private void removeIfCaptured(Group group, List<Group> playerGroups, List<Group> captures) {
+	private void removeIfCaptured(Group group, List<Group> playerGroups) {
 		if (group.isCaptured()) {
 			playerGroups.remove(group);
 			group.removeFrom(this);

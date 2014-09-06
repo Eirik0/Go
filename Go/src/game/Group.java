@@ -5,12 +5,15 @@ import java.util.*;
 public class Group {
 	int player;
 
-	List<Intersection> intersections;
+	List<Intersection> intersections = new ArrayList<>();
 
 	public Group(int player, Intersection intersection) {
 		this.player = player;
-		intersections = new ArrayList<>();
 		intersections.add(intersection);
+	}
+
+	public Group(int player) {
+		this.player = player;
 	}
 
 	public boolean isAdjacent(int x, int y) {

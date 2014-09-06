@@ -16,6 +16,10 @@ public class Go {
 	public static final Integer DEFAULT_BOARD_SIZE = 19;
 	public static final Integer DEFAULT_HANDICAP = 0;
 
+	public static final String HUMAN = "Human";
+	public static final String COMPUTER = "Computer";
+	public static final String[] POSSIBLE_PLAYERS = new String[] { HUMAN, COMPUTER };
+
 	public static void main(String[] args) {
 		GameController gameController = new GameController();
 
@@ -61,12 +65,18 @@ public class Go {
 		handicapComboBox.setSelectedItem(DEFAULT_HANDICAP);
 		handicapComboBox.setFocusable(false);
 
+		JComboBox<String> player1ComboBox = new JComboBox<>(POSSIBLE_PLAYERS);
+		JLabel vsLabel = new JLabel(" v. ");
+		JComboBox<String> player2ComboBox = new JComboBox<>(POSSIBLE_PLAYERS);
+
 		JButton resetButton = new JButton("Reset Game");
 		resetButton.setFocusable(false);
 		resetButton.addActionListener(e -> {
 			int boardSize = boardSizeComboBox.getItemAt(boardSizeComboBox.getSelectedIndex());
 			int handicap = handicapComboBox.getItemAt(handicapComboBox.getSelectedIndex());
-			gameController.resetGame(boardSize, handicap);
+			boolean player1isComputer = COMPUTER == player1ComboBox.getSelectedItem().toString();
+			boolean player2isComputer = COMPUTER == player2ComboBox.getSelectedItem().toString();
+			gameController.resetGame(boardSize, handicap, player1isComputer, player2isComputer);
 		});
 
 		JButton passButton = new JButton("Pass Turn");
@@ -82,6 +92,10 @@ public class Go {
 		buttonPanel.add(Box.createHorizontalStrut(20));
 		buttonPanel.add(handicapLabel);
 		buttonPanel.add(handicapComboBox);
+		buttonPanel.add(Box.createHorizontalStrut(20));
+		buttonPanel.add(player1ComboBox);
+		buttonPanel.add(vsLabel);
+		buttonPanel.add(player2ComboBox);
 		buttonPanel.add(Box.createHorizontalStrut(30));
 		buttonPanel.add(resetButton);
 

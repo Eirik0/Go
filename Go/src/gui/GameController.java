@@ -9,7 +9,7 @@ import gui.Moves.PlayerPass;
 import java.awt.Graphics;
 import java.util.List;
 
-import analysis.AnalyzerPanel;
+import analysis.*;
 
 public class GameController {
 	private Board board;
@@ -20,9 +20,14 @@ public class GameController {
 	private GoPanel goPanel;
 	private MoveTree moveTree;
 
+	private boolean player1isComputer = true;
+	private boolean player2isComputer = true;
+
 	Move activeMove;
 
 	private AnalyzerPanel analyzerPanel;
+
+	private GameAnalyzer analyzer = new GameAnalyzer();
 
 	public GameController() {
 		board = new Board(Go.DEFAULT_BOARD_SIZE, Go.DEFAULT_HANDICAP);
@@ -30,7 +35,7 @@ public class GameController {
 		mouseAdapter = new GoMouseAdapter(this, boardSizer);
 		analyzerPanel = new AnalyzerPanel();
 
-		InitialPosition initialPosition = new InitialPosition(board, Go.DEFAULT_BOARD_SIZE, Go.DEFAULT_HANDICAP);
+		InitialPosition initialPosition = new InitialPosition(Go.DEFAULT_BOARD_SIZE, Go.DEFAULT_HANDICAP);
 		moveTree = new MoveTree(this, initialPosition);
 		goPanel = new GoPanel(this, mouseAdapter, boardSizer);
 
@@ -61,29 +66,37 @@ public class GameController {
 
 	public void maybeMakeMove(int x, int y) {
 		if (board.canPlayAt(x, y)) {
-			addMoveToTree(new PlayerMove(board, board.getCurrentPlayer(), x, y));
+			addMoveToTree(new PlayerMove(board.getCurrentPlayer(), x, y));
 			makeMove(x, y);
 		}
 	}
 
 	private void makeMove(int x, int y) {
-		List<Group> captures = board.makeMove(x, y);
-		goPanel.explodeCapturedGroups(captures);
+		board = board.makeMove(x, y);
+		goPanel.explodeCapturedGroups(board.getCaptures());
 
-		analyzerPanel.analyze(board);
+		if ((board.getCurrentPlayer() == Board.PLAYER_1 && player1isComputer) || (board.getCurrentPlayer() == Board.PLAYER_2 && player2isComputer)) {
+			Intersection move = analyzer.findBestMove(board);
+			maybeMakeMove(move.x, move.y);
+		} else {
+			analyzerPanel.analyze(board);
+		}
 	}
 
 	public void passTurn() {
-		addMoveToTree(new PlayerPass(board, board.getCurrentPlayer()));
+		addMoveToTree(new PlayerPass(board.getCurrentPlayer()));
 		board.passTurn();
 	}
 
-	public void resetGame(int boardSize, int handicap) {
+	public void resetGame(int boardSize, int handicap, boolean player1isComputer, boolean player2isComputer) {
+		this.player1isComputer = player1isComputer;
+		this.player2isComputer = player2isComputer;
+
 		board = new Board(boardSize, handicap);
 		boardSizer.setBoardSize(boardSize);
 		goPanel.resetBoardSizer();
 
-		InitialPosition initialPosition = new InitialPosition(board, boardSize, handicap);
+		InitialPosition initialPosition = new InitialPosition(boardSize, handicap);
 		activeMove = initialPosition;
 
 		moveTree.reset(initialPosition);
@@ -115,7 +128,7 @@ public class GameController {
 					makeMove(playerMove.x, playerMove.y);
 					activeMove = playerMove;
 				} else {
-					board.makeMove(playerMove.x, playerMove.y);
+					board = board.makeMove(playerMove.x, playerMove.y);
 				}
 			} else if (move instanceof PlayerPass) {
 				board.passTurn();
