@@ -10,7 +10,8 @@ import java.awt.Graphics;
 import java.util.List;
 
 import analysis.*;
-import analysis.Analyzers.LibertyAnalyzer;
+import analysis.Players.ComputerPlayer;
+import analysis.Players.Player;
 
 public class GameController {
 	private Board board;
@@ -22,10 +23,8 @@ public class GameController {
 	private MoveTree moveTree;
 	private AnalyzerPanel analyzerPanel;
 
-	private GameAnalyzer analyzer;
-
-	private boolean player1isComputer = false;
-	private boolean player2isComputer = false;
+	Player player1;
+	Player player2;
 
 	Move activeMove;
 
@@ -40,14 +39,12 @@ public class GameController {
 		goPanel = new GoPanel(this, mouseAdapter, boardSizer);
 		analyzerPanel = new AnalyzerPanel();
 
-		analyzer = new GameAnalyzer(new LibertyAnalyzer(1));
-
 		analyzerPanel.analyze(board);
 	}
 
-	public void resetGame(int boardSize, int handicap, boolean player1isComputer, boolean player2isComputer) {
-		this.player1isComputer = player1isComputer;
-		this.player2isComputer = player2isComputer;
+	public void resetGame(int boardSize, int handicap, Player player1, Player player2) {
+		this.player1 = player1;
+		this.player2 = player2;
 
 		board = new Board(boardSize, handicap);
 		activeMove = new InitialPosition(boardSize, handicap);
@@ -58,7 +55,9 @@ public class GameController {
 		goPanel.repaint();
 		moveTree.reset(activeMove);
 
-		maybeMakeComputerMove();
+		new Thread(() -> {
+			maybeMakeComputerMove();
+		}).start();
 
 		analyzerPanel.analyze(board);
 	}
@@ -93,8 +92,9 @@ public class GameController {
 	}
 
 	private void maybeMakeComputerMove() {
-		if ((board.getCurrentPlayer() == Board.PLAYER_1 && player1isComputer) || (board.getCurrentPlayer() == Board.PLAYER_2 && player2isComputer)) {
-			Intersection move = analyzer.findBestMove(board);
+		Player currentPlayer = board.getCurrentPlayer() == Board.PLAYER_1 ? player1 : player2;
+		if (currentPlayer instanceof ComputerPlayer) {
+			Intersection move = ((ComputerPlayer) currentPlayer).makeMove(board);
 			if (move == null) {
 				passTurn();
 			} else {

@@ -8,11 +8,14 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class GoPanel extends JPanel {
+	private static final int FRAMES_PER_MILLI = (int) ((1.0 / 60) * 1000);
+
 	private BufferedImage explosion;
 	private GroupExploder groupExploder;
 
@@ -20,19 +23,7 @@ public class GoPanel extends JPanel {
 	private BoardSizer boardSizer;
 
 	GoPanel(GameController gameController, MouseAdapter mouseAdapter, BoardSizer boardSizer) {
-		this.gameController = gameController;
-		this.boardSizer = boardSizer;
-
-		try {
-			explosion = ImageIO.read(getClass().getResource("/resources/explosion.PNG"));
-		} catch (IOException e1) {
-			explosion = new BufferedImage(10, 10, BufferedImage.TYPE_INT_RGB);
-			Graphics2D g = explosion.createGraphics();
-			g.setColor(Color.RED);
-			g.fillRect(0, 0, 10, 10);
-		}
-
-		groupExploder = new GroupExploder();
+		init(gameController, boardSizer);
 
 		setBorder(BorderFactory.createLoweredSoftBevelBorder());
 		setPreferredSize(new Dimension(Go.DEFAULT_WIDTH, Go.DEFAULT_HEIGHT));
@@ -47,6 +38,24 @@ public class GoPanel extends JPanel {
 				repaint();
 			}
 		});
+
+		Executors.newScheduledThreadPool(1).scheduleAtFixedRate(() -> repaint(), 0, FRAMES_PER_MILLI, TimeUnit.MILLISECONDS);
+	}
+
+	private void init(GameController gameController, BoardSizer boardSizer) {
+		this.gameController = gameController;
+		this.boardSizer = boardSizer;
+
+		try {
+			explosion = ImageIO.read(getClass().getResource("/resources/explosion.PNG"));
+		} catch (IOException e1) {
+			explosion = new BufferedImage(10, 10, BufferedImage.TYPE_INT_RGB);
+			Graphics2D g = explosion.createGraphics();
+			g.setColor(Color.RED);
+			g.fillRect(0, 0, 10, 10);
+		}
+
+		groupExploder = new GroupExploder();
 	}
 
 	public void explodeCapturedGroups(List<Group> capturedGroups) {

@@ -5,6 +5,9 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 
+import analysis.*;
+import analysis.Players.Player;
+
 public class Go {
 	private static final String TITLE = "Go";
 
@@ -17,9 +20,7 @@ public class Go {
 	public static final Integer DEFAULT_BOARD_SIZE = 19;
 	public static final Integer DEFAULT_HANDICAP = 0;
 
-	public static final String HUMAN = "Human";
-	public static final String COMPUTER = "Computer";
-	public static final String[] POSSIBLE_PLAYERS = new String[] { HUMAN, COMPUTER };
+	public static final Player[] POSSIBLE_PLAYERS = new Player[] { Players.HUMAN, Players.LIBERTY, Players.LIBERTY_2 };
 
 	public static void main(String[] args) {
 		GameController gameController = new GameController();
@@ -58,17 +59,17 @@ public class Go {
 	private static JPanel createTopPanel(GameController gameController) {
 		JComboBox<Integer> boardSizeComboBox = createComboBox(BOARD_SIZES, DEFAULT_BOARD_SIZE);
 		JComboBox<Integer> handicapComboBox = createComboBox(HANDICAPS, DEFAULT_HANDICAP);
-		JComboBox<String> player1ComboBox = createComboBox(POSSIBLE_PLAYERS, HUMAN);
-		JComboBox<String> player2ComboBox = createComboBox(POSSIBLE_PLAYERS, HUMAN);
+		JComboBox<Player> player1ComboBox = createComboBox(POSSIBLE_PLAYERS, Players.HUMAN);
+		JComboBox<Player> player2ComboBox = createComboBox(POSSIBLE_PLAYERS, Players.HUMAN);
 
 		JButton resetButton = new JButton("Reset Game");
 		resetButton.setFocusable(false);
 		resetButton.addActionListener(e -> {
 			int boardSize = boardSizeComboBox.getItemAt(boardSizeComboBox.getSelectedIndex());
 			int handicap = handicapComboBox.getItemAt(handicapComboBox.getSelectedIndex());
-			boolean player1isComputer = COMPUTER == player1ComboBox.getItemAt(player1ComboBox.getSelectedIndex());
-			boolean player2isComputer = COMPUTER == player2ComboBox.getItemAt(player2ComboBox.getSelectedIndex());
-			gameController.resetGame(boardSize, handicap, player1isComputer, player2isComputer);
+			Player player1 = player1ComboBox.getItemAt(player1ComboBox.getSelectedIndex());
+			Player player2 = player2ComboBox.getItemAt(player2ComboBox.getSelectedIndex());
+			gameController.resetGame(boardSize, handicap, player1, player2);
 		});
 
 		JButton passButton = new JButton("Pass Turn");
