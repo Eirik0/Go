@@ -132,13 +132,13 @@ public class GameController {
 				PlayerMove playerMove = (PlayerMove) move;
 				if (moveCount == moves.size() - 1) {
 					makeMove(playerMove.x, playerMove.y);
-					activeMove = playerMove;
 				} else {
 					board = board.makeMove(playerMove.x, playerMove.y);
 				}
 			} else if (move instanceof PlayerPass) {
 				board.passTurn();
 			}
+			activeMove = move;
 			++moveCount;
 		}
 	}
