@@ -5,15 +5,15 @@ import java.util.*;
 public class Intersection {
 	private static final Intersection OUT_OF_BOUNDS = new Intersection();
 
-	public int player = Board.OUT_OF_BOUNDS;
+	int player = Board.OUT_OF_BOUNDS;
 
 	public int x;
 	public int y;
 
-	public Intersection upper;
-	public Intersection lower;
-	public Intersection left;
-	public Intersection right;
+	Intersection upper;
+	Intersection lower;
+	Intersection left;
+	Intersection right;
 
 	private Intersection() {
 	}
@@ -29,10 +29,6 @@ public class Intersection {
 		lower = y == board.getBoardSize() - 1 ? OUT_OF_BOUNDS : board.intersections[x][y + 1];
 		left = x == 0 ? OUT_OF_BOUNDS : board.intersections[x - 1][y];
 		right = x == board.getBoardSize() - 1 ? OUT_OF_BOUNDS : board.intersections[x + 1][y];
-	}
-
-	public void setPlayer(int player) {
-		this.player = player;
 	}
 
 	public boolean isAdjacent(int x2, int y2) {
@@ -75,18 +71,17 @@ public class Intersection {
 	}
 
 	@Override
-	public Intersection clone() {
-		Intersection clone = new Intersection(x, y, player);
-		return clone;
-	}
-
-	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof Intersection) {
 			Intersection anotherIntersection = (Intersection) obj;
 			return anotherIntersection.x == x && anotherIntersection.y == y;
 		}
 		return false;
+	}
+
+	@Override
+	public Intersection clone() {
+		return new Intersection(x, y, player);
 	}
 
 	@Override

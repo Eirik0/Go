@@ -23,6 +23,10 @@ public class Board {
 	private List<Group> captures = new ArrayList<>();
 
 	public Board(int boardSize, int handicap) {
+		this(boardSize, handicap, true);
+	}
+
+	public Board(int boardSize, int handicap, boolean setLibertiesAndGroups) {
 		this.boardSize = boardSize;
 		this.handicap = handicap;
 
@@ -32,8 +36,12 @@ public class Board {
 				intersections[x][y] = new Intersection(x, y, UNPLAYED);
 			}
 		}
-		setLiberties();
-		addHandicap(handicap);
+
+		if (setLibertiesAndGroups) {
+			setLiberties();
+		}
+
+		addHandicap(handicap, setLibertiesAndGroups);
 	}
 
 	private void setLiberties() {
@@ -44,37 +52,34 @@ public class Board {
 		}
 	}
 
-	@Override
-	public Board clone() {
-		Board clone = new Board(boardSize, handicap);
-		clone.currentPlayer = currentPlayer;
-
-		for (int x = 0; x < boardSize; ++x) {
-			for (int y = 0; y < boardSize; ++y) {
-				clone.intersections[x][y] = intersections[x][y].clone();
+	private void addHandicap(int handicap, boolean setGroups) {
+		List<StarPoint> handicapPoints = StarPointRegistry.getHandicapPoints(boardSize, handicap);
+		for (StarPoint starPoint : handicapPoints) {
+			Intersection intersection = intersections[starPoint.x][starPoint.y];
+			intersection.player = PLAYER_1;
+			if (setGroups) {
+				player1Groups.add(new Group(PLAYER_1, intersection));
 			}
 		}
-
-		clone.setLiberties();
-		clone.player1Groups.clear();
-
-		for (Group group : player1Groups) {
-			Group groupClone = new Group(PLAYER_1);
-			for (Intersection intersection : group.intersections) {
-				groupClone.intersections.add(clone.intersections[intersection.x][intersection.y]);
-			}
-			clone.player1Groups.add(groupClone);
+		if (handicapPoints.size() > 1) {
+			currentPlayer = PLAYER_2;
 		}
+	}
 
-		for (Group group : player2Groups) {
-			Group groupClone = new Group(PLAYER_2);
-			for (Intersection intersection : group.intersections) {
-				groupClone.intersections.add(clone.intersections[intersection.x][intersection.y]);
-			}
-			clone.player2Groups.add(groupClone);
-		}
+	public int getBoardSize() {
+		return boardSize;
+	}
 
-		return clone;
+	public int getCurrentPlayer() {
+		return currentPlayer;
+	}
+
+	public int getPlayerAt(int x, int y) {
+		return intersections[x][y].player;
+	}
+
+	public List<Group> getCaptures() {
+		return captures;
 	}
 
 	public List<Intersection> getUnplayedIntersections() {
@@ -89,33 +94,17 @@ public class Board {
 		return unplayed;
 	}
 
-	private void addHandicap(int handicap) {
-		List<StarPoint> handicapPoints = StarPointRegistry.getHandicapPoints(boardSize, handicap);
-		for (StarPoint starPoint : handicapPoints) {
-			Intersection intersection = intersections[starPoint.x][starPoint.y];
-			intersection.setPlayer(PLAYER_1);
-			player1Groups.add(new Group(PLAYER_1, intersection));
-		}
-		if (handicapPoints.size() > 1) {
-			currentPlayer = PLAYER_2;
-		}
-	}
-
-	public int getBoardSize() {
-		return boardSize;
+	public List<Group> getGroups(int player) {
+		return player == PLAYER_1 ? player1Groups : player2Groups;
 	}
 
 	public boolean canPlayAt(int x, int y) {
 		return x >= 0 && y >= 0 && x < boardSize && y < boardSize && intersections[x][y].player == UNPLAYED;
 	}
 
-	public int getPlayerAt(int x, int y) {
-		return intersections[x][y].player;
-	}
-
 	public Board makeMove(int x, int y) {
 		Board move = clone();
-		move.intersections[x][y].setPlayer(move.currentPlayer);
+		move.intersections[x][y].player = move.currentPlayer;
 
 		Group newGroup = move.createGroupWith(x, y);
 		move.checkOpponentCapture(x, y);
@@ -126,16 +115,8 @@ public class Board {
 		return move;
 	}
 
-	public List<Group> getCaptures() {
-		return captures;
-	}
-
 	public void passTurn() {
 		currentPlayer = currentPlayer == PLAYER_1 ? PLAYER_2 : PLAYER_1;
-	}
-
-	public int getCurrentPlayer() {
-		return currentPlayer;
 	}
 
 	private Group createGroupWith(int x, int y) {
@@ -171,7 +152,35 @@ public class Board {
 		}
 	}
 
-	public List<Group> getGroups(int player) {
-		return player == PLAYER_1 ? player1Groups : player2Groups;
+	@Override
+	public Board clone() {
+		Board clone = new Board(boardSize, handicap, false);
+		clone.currentPlayer = currentPlayer;
+
+		for (int x = 0; x < boardSize; ++x) {
+			for (int y = 0; y < boardSize; ++y) {
+				clone.intersections[x][y] = intersections[x][y].clone();
+			}
+		}
+
+		clone.setLiberties();
+
+		for (Group group : player1Groups) {
+			Group groupClone = new Group(PLAYER_1);
+			for (Intersection intersection : group.intersections) {
+				groupClone.intersections.add(clone.intersections[intersection.x][intersection.y]);
+			}
+			clone.player1Groups.add(groupClone);
+		}
+
+		for (Group group : player2Groups) {
+			Group groupClone = new Group(PLAYER_2);
+			for (Intersection intersection : group.intersections) {
+				groupClone.intersections.add(clone.intersections[intersection.x][intersection.y]);
+			}
+			clone.player2Groups.add(groupClone);
+		}
+
+		return clone;
 	}
 }

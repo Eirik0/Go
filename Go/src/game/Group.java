@@ -36,7 +36,7 @@ public class Group {
 
 	public void removeFrom(Board board) {
 		for (Intersection intersection : intersections) {
-			board.intersections[intersection.x][intersection.y].setPlayer(Board.UNPLAYED);
+			board.intersections[intersection.x][intersection.y].player = Board.UNPLAYED;
 		}
 	}
 
