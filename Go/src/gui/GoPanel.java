@@ -47,11 +47,6 @@ public class GoPanel extends JPanel {
 		});
 	}
 
-	public void resetBoardSizer() {
-		boardSizer.setImageSize(getWidth(), getHeight());
-		repaint();
-	}
-
 	public void explodeCapturedGroups(List<Group> capturedGroups) {
 		if (capturedGroups.size() == 0) {
 			repaint();
@@ -67,7 +62,8 @@ public class GoPanel extends JPanel {
 			for (Group capturedGroup : capturedGroups) {
 				for (int size = 2; size < boardSizer.getSquareWidth(); ++size) {
 					for (Intersection intersection : capturedGroup.getItersections()) {
-						g.drawImage(explosion, boardSizer.getSnapX(intersection.getX()), boardSizer.getSnapY(intersection.getY()), size, size, null);
+						g.drawImage(explosion, boardSizer.getSquareCornerX(intersection.getX()), boardSizer.getSquareCornerY(intersection.getY()), size, size,
+								null);
 					}
 					try {
 						Thread.sleep(8);

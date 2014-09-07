@@ -6,10 +6,11 @@ import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 
 public class Go {
+	private static final String TITLE = "Go";
+
 	public static final int DEFAULT_WIDTH = 800;
 	public static final int DEFAULT_HEIGHT = 800;
 
-	private static final String TITLE = "Go";
 	private static final Integer[] BOARD_SIZES = new Integer[] { 9, 13, 19 };
 	private static final Integer[] HANDICAPS = new Integer[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
@@ -28,73 +29,62 @@ public class Go {
 		mainFrame.setTitle(TITLE);
 		mainFrame.setLayout(new BorderLayout());
 
+		mainFrame.add(createMainSplitPane(gameController), BorderLayout.CENTER);
 		mainFrame.add(createTopPanel(gameController), BorderLayout.NORTH);
-		mainFrame.add(createGameSplitPane(gameController), BorderLayout.CENTER);
 
 		mainFrame.pack();
 		mainFrame.setVisible(true);
 	}
 
-	private static JSplitPane createGameSplitPane(GameController gameController) {
+	private static JSplitPane createMainSplitPane(GameController gameController) {
 		JScrollPane moveScrollPane = new JScrollPane(gameController.getMoveTree());
 		moveScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		moveScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		moveScrollPane.setPreferredSize(new Dimension(200, 200));
 
-		JSplitPane gameSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, gameController.getGoPanel(), gameController.getAnalysisPanel());
-		gameSplitPane.setContinuousLayout(true);
-		gameSplitPane.setResizeWeight(1);
-		gameSplitPane.setDividerSize(3);
+		JSplitPane rightSplitPane = createSplitPane(gameController.getGoPanel(), gameController.getAnalyzerPanel(), 1);
 
-		JSplitPane treeSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, moveScrollPane, gameSplitPane);
-		treeSplitPane.setContinuousLayout(true);
-		treeSplitPane.setResizeWeight(0);
-		treeSplitPane.setDividerSize(3);
+		return createSplitPane(moveScrollPane, rightSplitPane, 0);
+	}
 
-		return treeSplitPane;
+	private static JSplitPane createSplitPane(Component leftComponent, Component rightComponent, int resizeWeight) {
+		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftComponent, rightComponent);
+		splitPane.setContinuousLayout(true);
+		splitPane.setResizeWeight(resizeWeight);
+		splitPane.setDividerSize(3);
+		return splitPane;
 	}
 
 	private static JPanel createTopPanel(GameController gameController) {
-		JLabel boardSizeLabel = new JLabel("Board Size: ");
-		JComboBox<Integer> boardSizeComboBox = new JComboBox<>(BOARD_SIZES);
-		boardSizeComboBox.setSelectedItem(DEFAULT_BOARD_SIZE);
-		boardSizeComboBox.setFocusable(false);
-
-		JLabel handicapLabel = new JLabel("Handicap: ");
-		JComboBox<Integer> handicapComboBox = new JComboBox<>(HANDICAPS);
-		handicapComboBox.setSelectedItem(DEFAULT_HANDICAP);
-		handicapComboBox.setFocusable(false);
-
-		JComboBox<String> player1ComboBox = new JComboBox<>(POSSIBLE_PLAYERS);
-		JLabel vsLabel = new JLabel(" v. ");
-		JComboBox<String> player2ComboBox = new JComboBox<>(POSSIBLE_PLAYERS);
+		JComboBox<Integer> boardSizeComboBox = createComboBox(BOARD_SIZES, DEFAULT_BOARD_SIZE);
+		JComboBox<Integer> handicapComboBox = createComboBox(HANDICAPS, DEFAULT_HANDICAP);
+		JComboBox<String> player1ComboBox = createComboBox(POSSIBLE_PLAYERS, HUMAN);
+		JComboBox<String> player2ComboBox = createComboBox(POSSIBLE_PLAYERS, HUMAN);
 
 		JButton resetButton = new JButton("Reset Game");
 		resetButton.setFocusable(false);
 		resetButton.addActionListener(e -> {
 			int boardSize = boardSizeComboBox.getItemAt(boardSizeComboBox.getSelectedIndex());
 			int handicap = handicapComboBox.getItemAt(handicapComboBox.getSelectedIndex());
-			boolean player1isComputer = COMPUTER == player1ComboBox.getSelectedItem().toString();
-			boolean player2isComputer = COMPUTER == player2ComboBox.getSelectedItem().toString();
+			boolean player1isComputer = COMPUTER == player1ComboBox.getItemAt(player1ComboBox.getSelectedIndex());
+			boolean player2isComputer = COMPUTER == player2ComboBox.getItemAt(player2ComboBox.getSelectedIndex());
 			gameController.resetGame(boardSize, handicap, player1isComputer, player2isComputer);
 		});
 
 		JButton passButton = new JButton("Pass Turn");
 		passButton.setFocusable(false);
-		passButton.addActionListener(e -> {
-			gameController.passTurn();
-		});
+		passButton.addActionListener(e -> gameController.passTurn());
 
 		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEADING));
 		buttonPanel.add(Box.createHorizontalStrut(20));
-		buttonPanel.add(boardSizeLabel);
+		buttonPanel.add(new JLabel("Board Size: "));
 		buttonPanel.add(boardSizeComboBox);
 		buttonPanel.add(Box.createHorizontalStrut(20));
-		buttonPanel.add(handicapLabel);
+		buttonPanel.add(new JLabel("Handicap: "));
 		buttonPanel.add(handicapComboBox);
 		buttonPanel.add(Box.createHorizontalStrut(20));
 		buttonPanel.add(player1ComboBox);
-		buttonPanel.add(vsLabel);
+		buttonPanel.add(new JLabel(" v. "));
 		buttonPanel.add(player2ComboBox);
 		buttonPanel.add(Box.createHorizontalStrut(30));
 		buttonPanel.add(resetButton);
@@ -109,5 +99,12 @@ public class Go {
 		topPanel.add(passPanel, BorderLayout.EAST);
 
 		return topPanel;
+	}
+
+	private static <T> JComboBox<T> createComboBox(T[] values, T selectedItem) {
+		JComboBox<T> comboBox = new JComboBox<>(values);
+		comboBox.setSelectedItem(selectedItem);
+		comboBox.setFocusable(false);
+		return comboBox;
 	}
 }

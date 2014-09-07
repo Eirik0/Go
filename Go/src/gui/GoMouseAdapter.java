@@ -1,12 +1,12 @@
 package gui;
 
-import java.awt.Graphics;
 import java.awt.event.*;
 
 public class GoMouseAdapter extends MouseAdapter {
 	private int mouseX = 0;
 	private int mouseY = 0;
-	private boolean drawMouse = false;
+
+	private boolean mouseEntered = false;
 
 	private GameController gameController;
 	private BoardSizer boardSizer;
@@ -16,18 +16,16 @@ public class GoMouseAdapter extends MouseAdapter {
 		this.boardSizer = boardSizer;
 	}
 
-	public void drawOn(Graphics g) {
-		if (drawMouse) {
-			g.setColor(BoardSizer.getPlayerColor(gameController.getCurrentPlayer()));
-			double rad = boardSizer.getPieceRadius();
-			g.fillOval(BoardSizer.round(mouseX - rad / 2), BoardSizer.round(mouseY - rad / 2), BoardSizer.round(rad), BoardSizer.round(rad));
+	public int getMouseX() {
+		return mouseX;
+	}
 
-			if (gameController.canPlayAt(boardSizer.getIntersectionX(mouseX), boardSizer.getIntersectionY(mouseY))) {
-				int snapX = boardSizer.getSnapX(boardSizer.getIntersectionX(mouseX));
-				int snapY = boardSizer.getSnapY(boardSizer.getIntersectionY(mouseY));
-				g.drawRect(snapX, snapY, boardSizer.getSquareWidth(), boardSizer.getSquareWidth());
-			}
-		}
+	public int getMouseY() {
+		return mouseY;
+	}
+
+	public boolean isMouseEntered() {
+		return mouseEntered;
 	}
 
 	@Override
@@ -42,20 +40,20 @@ public class GoMouseAdapter extends MouseAdapter {
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		drawMouse = true;
+		mouseEntered = true;
 		setMousePosition(e);
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		drawMouse = false;
+		mouseEntered = false;
 		setMousePosition(e);
 	}
 
 	private void setMousePosition(MouseEvent e) {
 		mouseX = e.getX();
 		mouseY = e.getY();
-		gameController.getGoPanel().repaint();
+		gameController.paintGoPanel();
 	}
 
 	@Override
