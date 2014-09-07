@@ -23,10 +23,13 @@ public class GameController {
 	private MoveTree moveTree;
 	private AnalyzerPanel analyzerPanel;
 
-	Player player1;
-	Player player2;
+	private Player player1;
+	private Player player2;
 
-	Move activeMove;
+	private Move activeMove;
+
+	private boolean gameOver = false;
+	private boolean lastMovePass = false;
 
 	public GameController() {
 		board = new Board(Go.DEFAULT_BOARD_SIZE, Go.DEFAULT_HANDICAP);
@@ -38,15 +41,17 @@ public class GameController {
 		moveTree = new MoveTree(this, activeMove);
 		goPanel = new GoPanel(this, mouseAdapter, boardSizer);
 		analyzerPanel = new AnalyzerPanel();
-
 		analyzerPanel.analyze(board);
 	}
 
 	public void resetGame(int boardSize, int handicap, Player player1, Player player2) {
+		gameOver = false;
+
 		this.player1 = player1;
 		this.player2 = player2;
 
 		board = new Board(boardSize, handicap);
+		analyzerPanel.analyze(board);
 		activeMove = new InitialPosition(boardSize, handicap);
 
 		boardSizer.setBoardSize(boardSize);
@@ -58,8 +63,6 @@ public class GameController {
 		new Thread(() -> {
 			maybeMakeComputerMove();
 		}).start();
-
-		analyzerPanel.analyze(board);
 	}
 
 	public GoPanel getGoPanel() {
@@ -77,18 +80,25 @@ public class GameController {
 	// Moves
 	public void maybeMakeMove(int x, int y) {
 		if (board.canPlayAt(x, y)) {
-			makeMove(x, y);
+			makeMove(x, y, true);
 		}
 	}
 
-	private void makeMove(int x, int y) {
-		board = board.makeMove(x, y);
+	private void makeMove(int x, int y, boolean allowComputerMove) {
+		if (gameOver) {
+			return;
+		}
+		lastMovePass = false;
+
 		addMoveToTree(new PlayerMove(board.getCurrentPlayer(), x, y));
+		board = board.makeMove(x, y);
+		analyzerPanel.analyze(board);
+
 		goPanel.explodeCapturedGroups(board.getCaptures());
 
-		maybeMakeComputerMove();
-
-		analyzerPanel.analyze(board);
+		if (allowComputerMove) {
+			maybeMakeComputerMove();
+		}
 	}
 
 	private void maybeMakeComputerMove() {
@@ -98,14 +108,25 @@ public class GameController {
 			if (move == null) {
 				passTurn();
 			} else {
-				makeMove(move.x, move.y);
+				makeMove(move.x, move.y, true);
 			}
 		}
 	}
 
 	public void passTurn() {
-		board.passTurn();
+		if (gameOver) {
+			return;
+		}
+
 		addMoveToTree(new PlayerPass(board.getCurrentPlayer()));
+		board.passTurn();
+
+		if (lastMovePass) {
+			gameOver = true;
+		} else {
+			lastMovePass = true;
+			maybeMakeComputerMove();
+		}
 	}
 
 	// Tree
@@ -122,6 +143,8 @@ public class GameController {
 	}
 
 	public void makeMovesFromTree(List<Move> moves) {
+		gameOver = false;
+
 		int moveCount = 0;
 
 		for (Move move : moves) {
@@ -131,7 +154,7 @@ public class GameController {
 			} else if (move instanceof PlayerMove) {
 				PlayerMove playerMove = (PlayerMove) move;
 				if (moveCount == moves.size() - 1) {
-					makeMove(playerMove.x, playerMove.y);
+					makeMove(playerMove.x, playerMove.y, false);
 				} else {
 					board = board.makeMove(playerMove.x, playerMove.y);
 				}
@@ -173,9 +196,12 @@ public class GameController {
 			g.setColor(BoardSizer.getPlayerColor(board.getCurrentPlayer()));
 			g.fillOval(BoardSizer.round(mouseX - rad / 2), BoardSizer.round(mouseY - rad / 2), BoardSizer.round(rad), BoardSizer.round(rad));
 
-			if (board.canPlayAt(boardSizer.getIntersectionX(mouseX), boardSizer.getIntersectionY(mouseY))) {
-				int snapX = boardSizer.getSquareCornerX(boardSizer.getIntersectionX(mouseX));
-				int snapY = boardSizer.getSquareCornerY(boardSizer.getIntersectionY(mouseY));
+			int intersectionX = boardSizer.getIntersectionX(mouseX);
+			int intersectionY = boardSizer.getIntersectionY(mouseY);
+
+			if (!gameOver && board.canPlayAt(intersectionX, intersectionY)) {
+				int snapX = boardSizer.getSquareCornerX(intersectionX);
+				int snapY = boardSizer.getSquareCornerY(intersectionY);
 				g.drawRect(snapX, snapY, boardSizer.getSquareWidth(), boardSizer.getSquareWidth());
 			}
 		}
