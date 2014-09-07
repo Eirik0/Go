@@ -11,6 +11,7 @@ import java.util.List;
 
 import analysis.*;
 import analysis.Players.ComputerPlayer;
+import analysis.Players.Human;
 import analysis.Players.Player;
 
 public class GameController {
@@ -23,8 +24,8 @@ public class GameController {
 	private MoveTree moveTree;
 	private AnalyzerPanel analyzerPanel;
 
-	private Player player1;
-	private Player player2;
+	private Player player1 = Players.HUMAN;
+	private Player player2 = Players.HUMAN;
 
 	private Move activeMove;
 
@@ -78,16 +79,17 @@ public class GameController {
 	}
 
 	// Moves
+	public boolean canPlayAt(int x, int y) {
+		return !gameOver && getCurrentPlayer() instanceof Human && board.canPlayAt(x, y);
+	}
+
 	public void maybeMakeMove(int x, int y) {
-		if (board.canPlayAt(x, y)) {
+		if (canPlayAt(x, y)) {
 			makeMove(x, y, true);
 		}
 	}
 
 	private void makeMove(int x, int y, boolean allowComputerMove) {
-		if (gameOver) {
-			return;
-		}
 		lastMovePass = false;
 
 		addMoveToTree(new PlayerMove(board.getCurrentPlayer(), x, y));
@@ -102,19 +104,23 @@ public class GameController {
 	}
 
 	private void maybeMakeComputerMove() {
-		Player currentPlayer = board.getCurrentPlayer() == Board.PLAYER_1 ? player1 : player2;
-		if (currentPlayer instanceof ComputerPlayer) {
+		Player currentPlayer = getCurrentPlayer();
+		if (!gameOver && currentPlayer instanceof ComputerPlayer) {
 			Intersection move = ((ComputerPlayer) currentPlayer).makeMove(board);
 			if (move == null) {
-				passTurn();
+				passTurn(false);
 			} else {
 				makeMove(move.x, move.y, true);
 			}
 		}
 	}
 
-	public void passTurn() {
-		if (gameOver) {
+	private Player getCurrentPlayer() {
+		return board.getCurrentPlayer() == Board.PLAYER_1 ? player1 : player2;
+	}
+
+	public void passTurn(boolean isHuman) {
+		if (isHuman && getCurrentPlayer() instanceof ComputerPlayer) {
 			return;
 		}
 
@@ -199,7 +205,7 @@ public class GameController {
 			int intersectionX = boardSizer.getIntersectionX(mouseX);
 			int intersectionY = boardSizer.getIntersectionY(mouseY);
 
-			if (!gameOver && board.canPlayAt(intersectionX, intersectionY)) {
+			if (canPlayAt(intersectionX, intersectionY)) {
 				int snapX = boardSizer.getSquareCornerX(intersectionX);
 				int snapY = boardSizer.getSquareCornerY(intersectionY);
 				g.drawRect(snapX, snapY, boardSizer.getSquareWidth(), boardSizer.getSquareWidth());

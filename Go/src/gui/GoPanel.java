@@ -8,14 +8,11 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
-import java.util.concurrent.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class GoPanel extends JPanel {
-	private static final int FRAMES_PER_MILLI = (int) ((1.0 / 60) * 1000);
-
 	private BufferedImage explosion;
 	private GroupExploder groupExploder;
 
@@ -38,8 +35,6 @@ public class GoPanel extends JPanel {
 				repaint();
 			}
 		});
-
-		Executors.newScheduledThreadPool(1).scheduleAtFixedRate(() -> repaint(), 0, FRAMES_PER_MILLI, TimeUnit.MILLISECONDS);
 	}
 
 	private void init(GameController gameController, BoardSizer boardSizer) {

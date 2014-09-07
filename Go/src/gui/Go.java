@@ -74,7 +74,7 @@ public class Go {
 
 		JButton passButton = new JButton("Pass Turn");
 		passButton.setFocusable(false);
-		passButton.addActionListener(e -> gameController.passTurn());
+		passButton.addActionListener(e -> gameController.passTurn(true));
 
 		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEADING));
 		buttonPanel.add(Box.createHorizontalStrut(20));
