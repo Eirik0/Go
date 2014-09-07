@@ -5,11 +5,28 @@ import game.*;
 import java.util.*;
 
 public class Analyzers {
-	public interface Analyzer {
-		public double analyze(int player, Board board);
+	public abstract static class Analyzer {
+		public double coefficient;
+
+		public Analyzer(double coeffiecient) {
+			coefficient = coeffiecient;
+		}
+
+		public abstract double analyze(int player, Board board);
+
+		public double getBoardValue(Board possiblePosition, int player) {
+			double myScore = analyze(player, possiblePosition);
+			double opponentsScore = analyze(Board.getOpponent(player), possiblePosition);
+			return myScore - opponentsScore;
+		}
 	}
 
-	public static class LibertyAnalyzer implements Analyzer {
+	// Liberties
+	public static class LibertyAnalyzer extends Analyzer {
+		public LibertyAnalyzer(double coefficient) {
+			super(coefficient);
+		}
+
 		@Override
 		public double analyze(int player, Board board) {
 			Set<Intersection> liberties = new HashSet<>();
@@ -27,7 +44,12 @@ public class Analyzers {
 		}
 	}
 
-	public static class LibertiesOfLibertiesAnalyzer implements Analyzer {
+	// Liberties of liberties
+	public static class LibertiesOfLibertiesAnalyzer extends Analyzer {
+		public LibertiesOfLibertiesAnalyzer(double coefficient) {
+			super(coefficient);
+		}
+
 		@Override
 		public double analyze(int player, Board board) {
 			Set<Intersection> libertiesOfLiberties = new HashSet<>();
@@ -52,7 +74,12 @@ public class Analyzers {
 		}
 	}
 
-	public static class GroupAnalyzer implements Analyzer {
+	// Groups
+	public static class GroupAnalyzer extends Analyzer {
+		public GroupAnalyzer(double coefficient) {
+			super(coefficient);
+		}
+
 		@Override
 		public double analyze(int player, Board board) {
 			return board.getGroups(player).size();
@@ -64,7 +91,12 @@ public class Analyzers {
 		}
 	}
 
-	public static class AverageDistance implements Analyzer {
+	// Average distance
+	public static class AverageDistance extends Analyzer {
+		public AverageDistance(double coefficient) {
+			super(coefficient);
+		}
+
 		@Override
 		public double analyze(int player, Board board) {
 			Set<Intersection> intersectionSet = new HashSet<>();
@@ -96,6 +128,6 @@ public class Analyzers {
 	}
 
 	public static List<Analyzer> analyzers() {
-		return Arrays.asList(new LibertyAnalyzer(), new LibertiesOfLibertiesAnalyzer(), new GroupAnalyzer(), new AverageDistance());
+		return Arrays.asList(new LibertyAnalyzer(1), new LibertiesOfLibertiesAnalyzer(1), new GroupAnalyzer(1), new AverageDistance(1));
 	}
 }

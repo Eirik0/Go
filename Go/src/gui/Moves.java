@@ -82,6 +82,7 @@ public class Moves {
 		}
 	}
 
+	// Initial position
 	public static class InitialPosition extends Move {
 		int handicap;
 
@@ -96,6 +97,7 @@ public class Moves {
 		}
 	}
 
+	// Player move
 	public static class PlayerMove extends Move {
 		int x;
 		int y;
@@ -121,6 +123,7 @@ public class Moves {
 		}
 	}
 
+	// pass
 	public static class PlayerPass extends Move {
 		PlayerPass(int player) {
 			super(player);

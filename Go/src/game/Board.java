@@ -78,6 +78,10 @@ public class Board {
 		return intersections[x][y].player;
 	}
 
+	public static int getOpponent(int player) {
+		return player == PLAYER_1 ? PLAYER_2 : PLAYER_1;
+	}
+
 	public List<Group> getCaptures() {
 		return captures;
 	}

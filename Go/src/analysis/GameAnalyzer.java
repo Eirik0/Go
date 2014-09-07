@@ -1,32 +1,38 @@
 package analysis;
 
 import game.*;
-
-import java.util.List;
-
-import analysis.Analyzers.LibertyAnalyzer;
+import analysis.Analyzers.Analyzer;
 
 public class GameAnalyzer {
+	private Analyzer[] analyzers;
+
+	public GameAnalyzer(Analyzer... analyzers) {
+		this.analyzers = analyzers;
+	}
+
 	public Intersection findBestMove(Board board) {
 		int player = board.getCurrentPlayer();
-		List<Intersection> possibleMoves = board.getUnplayedIntersections();
+
 		Intersection bestMove = null;
-		double bestScore = Integer.MAX_VALUE + 1;
-		for (Intersection intersection : possibleMoves) {
+		double bestScore = 0;
+		for (Analyzer analyzer : analyzers) {
+			bestScore += analyzer.getBoardValue(board, player);
+		}
+
+		for (Intersection intersection : board.getUnplayedIntersections()) {
 			Board possiblePosition = board.makeMove(intersection.x, intersection.y);
-			LibertyAnalyzer analyzer1 = new LibertyAnalyzer();
-			double myScore = analyzer1.analyze(player, possiblePosition);
-			double opponentsScore = analyzer1.analyze(getOpponent(player), board);
-			double score = myScore - opponentsScore;
+
+			double score = 0;
+			for (Analyzer analyzer : analyzers) {
+				score += analyzer.getBoardValue(possiblePosition, player);
+			}
+
 			if (score > bestScore) {
 				bestMove = intersection;
 				bestScore = score;
 			}
 		}
-		return bestMove;
-	}
 
-	private int getOpponent(int player) {
-		return player == Board.PLAYER_1 ? Board.PLAYER_2 : Board.PLAYER_1;
+		return bestMove;
 	}
 }

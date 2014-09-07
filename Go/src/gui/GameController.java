@@ -10,6 +10,7 @@ import java.awt.Graphics;
 import java.util.List;
 
 import analysis.*;
+import analysis.Analyzers.LibertyAnalyzer;
 
 public class GameController {
 	private Board board;
@@ -39,7 +40,7 @@ public class GameController {
 		goPanel = new GoPanel(this, mouseAdapter, boardSizer);
 		analyzerPanel = new AnalyzerPanel();
 
-		analyzer = new GameAnalyzer();
+		analyzer = new GameAnalyzer(new LibertyAnalyzer(1));
 
 		analyzerPanel.analyze(board);
 	}
@@ -54,6 +55,7 @@ public class GameController {
 		boardSizer.setBoardSize(boardSize);
 		boardSizer.setImageSize(goPanel.getWidth(), goPanel.getHeight());
 
+		goPanel.repaint();
 		moveTree.reset(activeMove);
 
 		maybeMakeComputerMove();
@@ -76,13 +78,13 @@ public class GameController {
 	// Moves
 	public void maybeMakeMove(int x, int y) {
 		if (board.canPlayAt(x, y)) {
-			addMoveToTree(new PlayerMove(board.getCurrentPlayer(), x, y));
 			makeMove(x, y);
 		}
 	}
 
 	private void makeMove(int x, int y) {
 		board = board.makeMove(x, y);
+		addMoveToTree(new PlayerMove(board.getCurrentPlayer(), x, y));
 		goPanel.explodeCapturedGroups(board.getCaptures());
 
 		maybeMakeComputerMove();
@@ -93,13 +95,17 @@ public class GameController {
 	private void maybeMakeComputerMove() {
 		if ((board.getCurrentPlayer() == Board.PLAYER_1 && player1isComputer) || (board.getCurrentPlayer() == Board.PLAYER_2 && player2isComputer)) {
 			Intersection move = analyzer.findBestMove(board);
-			maybeMakeMove(move.x, move.y);
+			if (move == null) {
+				passTurn();
+			} else {
+				makeMove(move.x, move.y);
+			}
 		}
 	}
 
 	public void passTurn() {
-		addMoveToTree(new PlayerPass(board.getCurrentPlayer()));
 		board.passTurn();
+		addMoveToTree(new PlayerPass(board.getCurrentPlayer()));
 	}
 
 	// Tree
