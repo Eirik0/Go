@@ -15,6 +15,9 @@ import analysis.Players.Human;
 import analysis.Players.Player;
 
 public class GameController {
+	private static final int COMPUTER_MOVE_LIMIT = 500;
+	private static final int MAX_COMPUTER_MOVES_PER_SECOND = 60;
+
 	private Board board;
 
 	private BoardSizer boardSizer;
@@ -61,9 +64,15 @@ public class GameController {
 		goPanel.repaint();
 		moveTree.reset(activeMove);
 
-		new Thread(() -> {
-			maybeMakeComputerMove();
-		}).start();
+		if (player1 instanceof ComputerPlayer) {
+			new Thread(() -> {
+				if (player2 instanceof ComputerPlayer) {
+					startCompterMatch();
+				} else {
+					makeComputerMove();
+				}
+			}).start();
+		}
 	}
 
 	public GoPanel getGoPanel() {
@@ -78,18 +87,7 @@ public class GameController {
 		return analyzerPanel;
 	}
 
-	// Moves
-	public boolean canPlayAt(int x, int y) {
-		return !gameOver && getCurrentPlayer() instanceof Human && board.canPlayAt(x, y);
-	}
-
-	public void maybeMakeMove(int x, int y) {
-		if (canPlayAt(x, y)) {
-			makeMove(x, y, true);
-		}
-	}
-
-	private void makeMove(int x, int y, boolean allowComputerMove) {
+	private void makeMove(int x, int y) {
 		lastMovePass = false;
 
 		addMoveToTree(new PlayerMove(board.getCurrentPlayer(), x, y));
@@ -97,33 +95,14 @@ public class GameController {
 		analyzerPanel.analyze(board);
 
 		goPanel.explodeCapturedGroups(board.captures);
-
-		if (allowComputerMove) {
-			maybeMakeComputerMove();
-		}
 	}
 
-	private void maybeMakeComputerMove() {
-		Player currentPlayer = getCurrentPlayer();
-		if (!gameOver && currentPlayer instanceof ComputerPlayer) {
-			Intersection move = ((ComputerPlayer) currentPlayer).makeMove(board);
-			if (move == null) {
-				passTurn(false);
-			} else {
-				makeMove(move.x, move.y, true);
-			}
-		}
-	}
-
+	// Moves
 	private Player getCurrentPlayer() {
 		return board.getCurrentPlayer() == Board.PLAYER_1 ? player1 : player2;
 	}
 
-	public void passTurn(boolean isHuman) {
-		if (isHuman && getCurrentPlayer() instanceof ComputerPlayer) {
-			return;
-		}
-
+	public void passTurn() {
 		addMoveToTree(new PlayerPass(board.getCurrentPlayer()));
 		board.passTurn();
 
@@ -131,7 +110,58 @@ public class GameController {
 			gameOver = true;
 		} else {
 			lastMovePass = true;
+		}
+	}
+
+	// Human
+	public boolean validHumanMove(int x, int y) {
+		return !gameOver && getCurrentPlayer() instanceof Human && board.canPlayAt(x, y);
+	}
+
+	public void makeHumanMove(int x, int y) {
+		if (validHumanMove(x, y)) {
+			makeMove(x, y);
 			maybeMakeComputerMove();
+		}
+	}
+
+	public void passHumanTurn() {
+		if (getCurrentPlayer() instanceof Human) {
+			passTurn();
+			maybeMakeComputerMove();
+		}
+	}
+
+	// Computer
+	private void startCompterMatch() {
+		int moveCount = 0;
+		while (!gameOver && moveCount < COMPUTER_MOVE_LIMIT) {
+			double t0 = System.nanoTime();
+			makeComputerMove();
+			++moveCount;
+			while (((System.nanoTime() - t0) / 1000000) * MAX_COMPUTER_MOVES_PER_SECOND < 1000) {
+				try {
+					Thread.sleep(1);
+				} catch (Exception e) {
+				}
+			}
+		}
+	}
+
+	private void maybeMakeComputerMove() {
+		if (!gameOver && getCurrentPlayer() instanceof ComputerPlayer) {
+			new Thread(() -> {
+				makeComputerMove();
+			}).start();
+		}
+	}
+
+	private void makeComputerMove() {
+		Intersection move = ((ComputerPlayer) getCurrentPlayer()).makeMove(board);
+		if (move == null) {
+			passTurn();
+		} else {
+			makeMove(move.x, move.y);
 		}
 	}
 
@@ -160,7 +190,7 @@ public class GameController {
 			} else if (move instanceof PlayerMove) {
 				PlayerMove playerMove = (PlayerMove) move;
 				if (moveCount == moves.size() - 1) {
-					makeMove(playerMove.x, playerMove.y, false);
+					makeMove(playerMove.x, playerMove.y);
 				} else {
 					board = board.makeMove(playerMove.x, playerMove.y);
 				}
@@ -211,7 +241,7 @@ public class GameController {
 			int intersectionX = boardSizer.getIntersectionX(mouseX);
 			int intersectionY = boardSizer.getIntersectionY(mouseY);
 
-			if (canPlayAt(intersectionX, intersectionY)) {
+			if (validHumanMove(intersectionX, intersectionY)) {
 				int snapX = boardSizer.getSquareCornerX(intersectionX);
 				int snapY = boardSizer.getSquareCornerY(intersectionY);
 				g.drawRect(snapX, snapY, boardSizer.getSquareWidth(), boardSizer.getSquareWidth());

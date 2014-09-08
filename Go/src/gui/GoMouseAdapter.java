@@ -60,6 +60,6 @@ public class GoMouseAdapter extends MouseAdapter {
 	public void mouseReleased(MouseEvent e) {
 		int x = boardSizer.getIntersectionX(mouseX);
 		int y = boardSizer.getIntersectionY(mouseY);
-		gameController.maybeMakeMove(x, y);
+		gameController.makeHumanMove(x, y);
 	}
 }
