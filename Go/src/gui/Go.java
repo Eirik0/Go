@@ -20,7 +20,7 @@ public class Go {
 	public static final Integer DEFAULT_BOARD_SIZE = 19;
 	public static final Integer DEFAULT_HANDICAP = 0;
 
-	public static final Player[] POSSIBLE_PLAYERS = new Player[] { Players.HUMAN, Players.LIBERTY, Players.LIBERTY_2 };
+	public static final Player[] POSSIBLE_PLAYERS = Players.getPlayers();
 
 	public static void main(String[] args) {
 		GameController gameController = new GameController();

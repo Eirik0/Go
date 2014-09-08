@@ -12,10 +12,6 @@ public class Group {
 		intersections.add(intersection);
 	}
 
-	public Group(int player) {
-		this.player = player;
-	}
-
 	public boolean isAdjacent(int x, int y) {
 		for (Intersection intersection : intersections) {
 			if (intersection.isAdjacent(x, y)) {
@@ -34,9 +30,9 @@ public class Group {
 		return true;
 	}
 
-	public void removeFrom(Board board) {
+	public void removeFrom(EnhancedBoard enhancedBoard) {
 		for (Intersection intersection : intersections) {
-			board.intersections[intersection.x][intersection.y].player = Board.UNPLAYED;
+			enhancedBoard.intersections[intersection.x][intersection.y].player = Board.UNPLAYED;
 		}
 	}
 

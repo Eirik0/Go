@@ -24,11 +24,11 @@ public class Intersection {
 		this.player = player;
 	}
 
-	public void setLiberties(Board board) {
-		upper = y == 0 ? OUT_OF_BOUNDS : board.intersections[x][y - 1];
-		lower = y == board.getBoardSize() - 1 ? OUT_OF_BOUNDS : board.intersections[x][y + 1];
-		left = x == 0 ? OUT_OF_BOUNDS : board.intersections[x - 1][y];
-		right = x == board.getBoardSize() - 1 ? OUT_OF_BOUNDS : board.intersections[x + 1][y];
+	public void setLiberties(EnhancedBoard enhancedBoard) {
+		upper = y == 0 ? OUT_OF_BOUNDS : enhancedBoard.intersections[x][y - 1];
+		lower = y == enhancedBoard.getBoardSize() - 1 ? OUT_OF_BOUNDS : enhancedBoard.intersections[x][y + 1];
+		left = x == 0 ? OUT_OF_BOUNDS : enhancedBoard.intersections[x - 1][y];
+		right = x == enhancedBoard.getBoardSize() - 1 ? OUT_OF_BOUNDS : enhancedBoard.intersections[x + 1][y];
 	}
 
 	public boolean isAdjacent(int x2, int y2) {

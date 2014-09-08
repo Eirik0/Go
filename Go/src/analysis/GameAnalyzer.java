@@ -12,6 +12,7 @@ public class GameAnalyzer {
 
 	public Intersection findBestMove(Board board) {
 		int player = board.getCurrentPlayer();
+		int boardSize = board.getBoardSize();
 
 		Intersection bestMove = null;
 		double bestScore = 0;
@@ -19,20 +20,23 @@ public class GameAnalyzer {
 			bestScore += analyzer.getBoardValue(board, player);
 		}
 
-		for (Intersection intersection : board.getUnplayedIntersections()) {
-			Board possiblePosition = board.makeMove(intersection.x, intersection.y);
+		for (int x = 0; x < boardSize; ++x) {
+			for (int y = 0; y < boardSize; ++y) {
+				if (board.intersections[x][y] == Board.UNPLAYED) {
+					Board possiblePosition = BoardUtilities.makeMove(board, x, y).board;
 
-			double score = 0;
-			for (Analyzer analyzer : analyzers) {
-				score += analyzer.getBoardValue(possiblePosition, player);
-			}
+					double score = 0;
+					for (Analyzer analyzer : analyzers) {
+						score += analyzer.getBoardValue(possiblePosition, player);
+					}
 
-			if (score > bestScore) {
-				bestMove = intersection;
-				bestScore = score;
+					if (score > bestScore) {
+						bestMove = new Intersection(x, y, player);
+						bestScore = score;
+					}
+				}
 			}
 		}
-
 		return bestMove;
 	}
 }
