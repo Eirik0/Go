@@ -1,7 +1,6 @@
 package gui;
 
 import game.*;
-import game.BoardUtilities.BoardState;
 import gui.Moves.InitialPosition;
 import gui.Moves.Move;
 import gui.Moves.PlayerMove;
@@ -81,7 +80,7 @@ public class GameController {
 
 	// Moves
 	public boolean canPlayAt(int x, int y) {
-		return !gameOver && getCurrentPlayer() instanceof Human && BoardUtilities.canPlayAt(board, x, y);
+		return !gameOver && getCurrentPlayer() instanceof Human && board.canPlayAt(x, y);
 	}
 
 	public void maybeMakeMove(int x, int y) {
@@ -94,11 +93,10 @@ public class GameController {
 		lastMovePass = false;
 
 		addMoveToTree(new PlayerMove(board.getCurrentPlayer(), x, y));
-		BoardState state = BoardUtilities.makeMove(board, x, y);
-		board = state.board;
+		board = board.makeMove(x, y);
 		analyzerPanel.analyze(board);
 
-		goPanel.explodeCapturedGroups(state.captures);
+		goPanel.explodeCapturedGroups(board.captures);
 
 		if (allowComputerMove) {
 			maybeMakeComputerMove();
@@ -127,7 +125,7 @@ public class GameController {
 		}
 
 		addMoveToTree(new PlayerPass(board.getCurrentPlayer()));
-		BoardUtilities.passTurn(board);
+		board.passTurn();
 
 		if (lastMovePass) {
 			gameOver = true;
@@ -164,10 +162,10 @@ public class GameController {
 				if (moveCount == moves.size() - 1) {
 					makeMove(playerMove.x, playerMove.y, false);
 				} else {
-					board = BoardUtilities.makeMove(board, playerMove.x, playerMove.y).board;
+					board = board.makeMove(playerMove.x, playerMove.y);
 				}
 			} else if (move instanceof PlayerPass) {
-				BoardUtilities.passTurn(board);
+				board.passTurn();
 			}
 			activeMove = move;
 			++moveCount;

@@ -1,6 +1,6 @@
 package gui;
 
-import game.*;
+import game.Intersection;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -53,7 +53,7 @@ public class GoPanel extends JPanel {
 		groupExploder = new GroupExploder();
 	}
 
-	public void explodeCapturedGroups(List<Group> capturedGroups) {
+	public void explodeCapturedGroups(List<Intersection> capturedGroups) {
 		if (capturedGroups.size() == 0) {
 			repaint();
 			return;
@@ -75,13 +75,13 @@ public class GoPanel extends JPanel {
 		boolean isExploding = false;
 		boolean stopRequested = false;
 
-		private List<Group> capturedGroups = new ArrayList<Group>();
+		private List<Intersection> capturedGroups = new ArrayList<>();
 		int explosionSize = 0;
 
 		public GroupExploder() {
 		}
 
-		public GroupExploder(List<Group> capturedGroups) {
+		public GroupExploder(List<Intersection> capturedGroups) {
 			this.capturedGroups = capturedGroups;
 			new Thread(() -> {
 				isExploding = true;
@@ -100,17 +100,12 @@ public class GoPanel extends JPanel {
 		}
 
 		public void drawExplosions(Graphics g) {
-			for (Group group : capturedGroups) {
-				for (Intersection intersection : group.getItersections()) {
-					int squareCornerX = boardSizer.getSquareCornerX(intersection.getX());
-					int squareCornerY = boardSizer.getSquareCornerY(intersection.getY());
-					if (!stopRequested) {
-						g.drawImage(explosion, squareCornerX, squareCornerY, explosionSize, explosionSize, null);
-					} else {
-						break;
-					}
-				}
-				if (stopRequested) {
+			for (Intersection intersection : capturedGroups) {
+				int squareCornerX = boardSizer.getSquareCornerX(intersection.getX());
+				int squareCornerY = boardSizer.getSquareCornerY(intersection.getY());
+				if (!stopRequested) {
+					g.drawImage(explosion, squareCornerX, squareCornerY, explosionSize, explosionSize, null);
+				} else {
 					break;
 				}
 			}

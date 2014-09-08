@@ -16,14 +16,15 @@ public class GameAnalyzer {
 
 		Intersection bestMove = null;
 		double bestScore = 0;
+
 		for (Analyzer analyzer : analyzers) {
 			bestScore += analyzer.getBoardValue(board, player);
 		}
 
 		for (int x = 0; x < boardSize; ++x) {
 			for (int y = 0; y < boardSize; ++y) {
-				if (board.intersections[x][y] == Board.UNPLAYED) {
-					Board possiblePosition = BoardUtilities.makeMove(board, x, y).board;
+				if (board.canPlayAt(x, y)) {
+					Board possiblePosition = board.makeMove(x, y);
 
 					double score = 0;
 					for (Analyzer analyzer : analyzers) {
@@ -37,6 +38,7 @@ public class GameAnalyzer {
 				}
 			}
 		}
+
 		return bestMove;
 	}
 }
