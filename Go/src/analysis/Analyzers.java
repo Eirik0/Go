@@ -88,7 +88,7 @@ public class Analyzers {
 
 		@Override
 		public double analyze(int player, Board board) {
-			return BoardUtilities.toEnhancedBoard(board).getGroups(player).size();
+			return BoardUtilities.getGroups(board, player).size();
 		}
 
 		@Override
@@ -111,7 +111,7 @@ public class Analyzers {
 			for (int x = 0; x < boardSize; ++x) {
 				for (int y = 0; y < boardSize; ++y) {
 					if (board.intersections[x][y] == player) {
-						intersections.add(new Intersection(x, y, player));
+						intersections.add(new Intersection(x, y));
 					}
 				}
 			}

@@ -101,8 +101,8 @@ public class GoPanel extends JPanel {
 
 		public void drawExplosions(Graphics g) {
 			for (Intersection intersection : capturedGroups) {
-				int squareCornerX = boardSizer.getSquareCornerX(intersection.getX());
-				int squareCornerY = boardSizer.getSquareCornerY(intersection.getY());
+				int squareCornerX = boardSizer.getSquareCornerX(intersection.x);
+				int squareCornerY = boardSizer.getSquareCornerY(intersection.y);
 				if (!stopRequested) {
 					g.drawImage(explosion, squareCornerX, squareCornerY, explosionSize, explosionSize, null);
 				} else {

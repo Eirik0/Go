@@ -67,7 +67,7 @@ public class BoardUtilities {
 		int player = intersections[moveX][moveY];
 
 		List<Intersection> group = new ArrayList<>();
-		group.add(new Intersection(moveX, moveY, player));
+		group.add(new Intersection(moveX, moveY));
 
 		int oldSize = 0;
 		int newSize = 1;
@@ -77,25 +77,25 @@ public class BoardUtilities {
 				int x = group.get(i).x;
 				int y = group.get(i).y;
 				if (x > 0 && intersections[x - 1][y] == player) {
-					Intersection intersection = new Intersection(x - 1, y, player);
+					Intersection intersection = new Intersection(x - 1, y);
 					if (!group.contains(intersection)) {
 						group.add(intersection);
 					}
 				}
 				if (x < boardSize - 1 && intersections[x + 1][y] == player) {
-					Intersection intersection = new Intersection(x + 1, y, player);
+					Intersection intersection = new Intersection(x + 1, y);
 					if (!group.contains(intersection)) {
 						group.add(intersection);
 					}
 				}
 				if (y > 0 && intersections[x][y - 1] == player) {
-					Intersection intersection = new Intersection(x, y - 1, player);
+					Intersection intersection = new Intersection(x, y - 1);
 					if (!group.contains(intersection)) {
 						group.add(intersection);
 					}
 				}
 				if (y < boardSize - 1 && intersections[x][y + 1] == player) {
-					Intersection intersection = new Intersection(x, y + 1, player);
+					Intersection intersection = new Intersection(x, y + 1);
 					if (!group.contains(intersection)) {
 						group.add(intersection);
 					}
@@ -136,7 +136,29 @@ public class BoardUtilities {
 		return liberties;
 	}
 
-	public static EnhancedBoard toEnhancedBoard(Board board) {
-		return new EnhancedBoard(board);
+	public static List<List<Intersection>> getGroups(Board board, int player) {
+		int boardSize = board.boardSize;
+		int[][] intersections = board.intersections;
+
+		List<List<Intersection>> groups = new ArrayList<>();
+		for (int x = 0; x < boardSize; ++x) {
+			for (int y = 0; y < boardSize; ++y) {
+				if (intersections[x][y] == player) {
+					Intersection intersection = new Intersection(x, y);
+					boolean alreadyFound = false;
+					for (List<Intersection> group : groups) {
+						if (group.contains(intersection)) {
+							alreadyFound = true;
+							break;
+						}
+					}
+					if (!alreadyFound) {
+						groups.add(getGroup(board, x, y));
+					}
+				}
+			}
+		}
+
+		return groups;
 	}
 }

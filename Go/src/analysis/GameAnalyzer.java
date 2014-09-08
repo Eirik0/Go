@@ -32,7 +32,7 @@ public class GameAnalyzer {
 					}
 
 					if (score > bestScore) {
-						bestMove = new Intersection(x, y, player);
+						bestMove = new Intersection(x, y);
 						bestScore = score;
 					}
 				}
