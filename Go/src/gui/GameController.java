@@ -6,7 +6,7 @@ import gui.Moves.Move;
 import gui.Moves.PlayerMove;
 import gui.Moves.PlayerPass;
 
-import java.awt.Graphics;
+import java.awt.*;
 import java.util.List;
 
 import analysis.*;
@@ -189,6 +189,12 @@ public class GameController {
 					g.fillOval(boardSizer.getCenterX(x) - radius / 2, boardSizer.getCenterY(y) - radius / 2, radius, radius);
 				}
 			}
+		}
+
+		Intersection lastMove = board.lastMove;
+		if (lastMove != null) {
+			g.setColor(Color.RED);
+			g.drawOval(boardSizer.getCenterX(lastMove.x) - radius / 4, boardSizer.getCenterY(lastMove.y) - radius / 4, radius / 2, radius / 2);
 		}
 	}
 

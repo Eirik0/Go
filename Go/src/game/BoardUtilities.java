@@ -31,34 +31,31 @@ public class BoardUtilities {
 
 	public static void removeCaptures(Board board, int opponent, int x, int y) {
 		int boardSize = board.boardSize;
-		int[][] intersections = board.intersections;
-		if (x > 0 && intersections[x - 1][y] == opponent) {
-			List<Intersection> group = getGroup(board, x - 1, y);
+		if (x > 0) {
+			removeIfCaputred(board, opponent, x - 1, y);
+		}
+		if (x < boardSize - 1) {
+			removeIfCaputred(board, opponent, x + 1, y);
+		}
+		if (y > 0) {
+			removeIfCaputred(board, opponent, x, y - 1);
+		}
+		if (y < boardSize - 1) {
+			removeIfCaputred(board, opponent, x, y + 1);
+		}
+	}
+
+	public static void removeIfCaputred(Board board, int player, int x, int y) {
+		if (board.intersections[x][y] == player) {
+			List<Intersection> group = getGroup(board, x, y);
 			if (countLiberties(board, group) == 0) {
 				board.captures.addAll(group);
+				for (Intersection intersection : group) {
+					board.intersections[intersection.x][intersection.y] = Board.UNPLAYED;
+				}
 			}
 		}
-		if (x < boardSize - 1 && intersections[x + 1][y] == opponent) {
-			List<Intersection> group = getGroup(board, x + 1, y);
-			if (countLiberties(board, group) == 0) {
-				board.captures.addAll(group);
-			}
-		}
-		if (y > 0 && intersections[x][y - 1] == opponent) {
-			List<Intersection> group = getGroup(board, x, y - 1);
-			if (countLiberties(board, group) == 0) {
-				board.captures.addAll(group);
-			}
-		}
-		if (y < boardSize - 1 && intersections[x][y + 1] == opponent) {
-			List<Intersection> group = getGroup(board, x, y + 1);
-			if (countLiberties(board, group) == 0) {
-				board.captures.addAll(group);
-			}
-		}
-		for (Intersection intersection : board.captures) {
-			board.intersections[intersection.x][intersection.y] = Board.UNPLAYED;
-		}
+
 	}
 
 	public static List<Intersection> getGroup(Board board, int moveX, int moveY) {

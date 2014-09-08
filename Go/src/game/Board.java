@@ -13,18 +13,20 @@ public class Board {
 
 	public int[][] intersections;
 	public List<Intersection> captures = new ArrayList<Intersection>();
+	public Intersection lastMove;
 
 	int currentPlayer;
 
 	public Board(int boardSize, int handicap) {
-		this(boardSize, handicap, new int[boardSize][boardSize], PLAYER_1);
+		this(boardSize, handicap, new int[boardSize][boardSize], PLAYER_1, null);
 	}
 
-	private Board(int boardSize, int handicap, int[][] intersections, int currentPlayer) {
+	private Board(int boardSize, int handicap, int[][] intersections, int currentPlayer, Intersection lastMove) {
 		this.boardSize = boardSize;
 		this.handicap = handicap;
 		this.intersections = intersections;
 		this.currentPlayer = currentPlayer;
+		this.lastMove = lastMove;
 	}
 
 	public int getBoardSize() {
@@ -67,13 +69,15 @@ public class Board {
 		intersectionsCopy[moveX][moveY] = currentPlayer;
 
 		int opponent = BoardUtilities.getOpponent(currentPlayer);
-		Board board = new Board(boardSize, handicap, intersectionsCopy, opponent);
+		Board board = new Board(boardSize, handicap, intersectionsCopy, opponent, new Intersection(moveX, moveY));
 		BoardUtilities.removeCaptures(board, opponent, moveX, moveY);
+		BoardUtilities.removeIfCaputred(board, currentPlayer, moveX, moveY);
 
 		return board;
 	}
 
 	public void passTurn() {
+		lastMove = null;
 		currentPlayer = BoardUtilities.getOpponent(currentPlayer);
 	}
 
