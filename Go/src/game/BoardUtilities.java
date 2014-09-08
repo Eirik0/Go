@@ -29,7 +29,7 @@ public class BoardUtilities {
 
 	}
 
-	public static void removeCaptures(Board board, int opponent, int x, int y) {
+	public static void removeOpponentCaptures(Board board, int opponent, int x, int y) {
 		int boardSize = board.boardSize;
 		if (x > 0) {
 			removeIfCaputred(board, opponent, x - 1, y);

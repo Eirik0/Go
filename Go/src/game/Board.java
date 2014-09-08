@@ -19,6 +19,7 @@ public class Board {
 
 	public Board(int boardSize, int handicap) {
 		this(boardSize, handicap, new int[boardSize][boardSize], PLAYER_1, null);
+		BoardUtilities.addHandicap(this);
 	}
 
 	private Board(int boardSize, int handicap, int[][] intersections, int currentPlayer, Intersection lastMove) {
@@ -70,7 +71,7 @@ public class Board {
 
 		int opponent = BoardUtilities.getOpponent(currentPlayer);
 		Board board = new Board(boardSize, handicap, intersectionsCopy, opponent, new Intersection(moveX, moveY));
-		BoardUtilities.removeCaptures(board, opponent, moveX, moveY);
+		BoardUtilities.removeOpponentCaptures(board, opponent, moveX, moveY);
 		BoardUtilities.removeIfCaputred(board, currentPlayer, moveX, moveY);
 
 		return board;
