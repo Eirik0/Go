@@ -31,7 +31,7 @@ public class MoveTree extends JTree {
 				Object userObject = node.getUserObject();
 				if (userObject instanceof Move) {
 					Move move = (Move) userObject;
-					gameController.makeMoves(move.getMoves());
+					gameController.makeMovesFromTree(move.getMoves());
 				}
 			}
 		});
@@ -43,6 +43,10 @@ public class MoveTree extends JTree {
 		setModel(model);
 	}
 
+	public void addMove(Move move) {
+		addMove(initialPosition, move);
+	}
+
 	public void addMove(Move rootMove, Move move) {
 		DefaultMutableTreeNode rootNode = rootMove.getTreeNode();
 		rootNode.removeAllChildren();
@@ -50,10 +54,6 @@ public class MoveTree extends JTree {
 		updateSubsequentMoves(subsequentMoves);
 		model.reload();
 		expandPath(new TreePath(rootNode.getPath()));
-	}
-
-	public void addMove(Move move) {
-		addMove(initialPosition, move);
 	}
 
 	private void updateSubsequentMoves(List<Move> subsequentMoves) {

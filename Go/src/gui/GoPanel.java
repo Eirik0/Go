@@ -1,11 +1,12 @@
 package gui;
 
-import game.*;
+import game.Intersection;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.*;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -13,27 +14,16 @@ import javax.swing.*;
 
 public class GoPanel extends JPanel {
 	private BufferedImage explosion;
-	private BufferedImage explodingImage;
-	private boolean isExploding = false;
+	private GroupExploder groupExploder;
 
 	private GameController gameController;
 	private BoardSizer boardSizer;
 
 	GoPanel(GameController gameController, MouseAdapter mouseAdapter, BoardSizer boardSizer) {
-		this.gameController = gameController;
-		this.boardSizer = boardSizer;
+		init(gameController, boardSizer);
 
 		setBorder(BorderFactory.createLoweredSoftBevelBorder());
 		setPreferredSize(new Dimension(Go.DEFAULT_WIDTH, Go.DEFAULT_HEIGHT));
-
-		try {
-			explosion = ImageIO.read(getClass().getResource("/resources/explosion.PNG"));
-		} catch (IOException e1) {
-			explosion = new BufferedImage(10, 10, BufferedImage.TYPE_INT_RGB);
-			Graphics2D g = explosion.createGraphics();
-			g.setColor(Color.RED);
-			g.fillRect(0, 0, 10, 10);
-		}
 
 		addMouseListener(mouseAdapter);
 		addMouseMotionListener(mouseAdapter);
@@ -47,48 +37,82 @@ public class GoPanel extends JPanel {
 		});
 	}
 
-	public void resetBoardSizer() {
-		boardSizer.setImageSize(getWidth(), getHeight());
-		repaint();
+	private void init(GameController gameController, BoardSizer boardSizer) {
+		this.gameController = gameController;
+		this.boardSizer = boardSizer;
+
+		try {
+			explosion = ImageIO.read(getClass().getResource("/resources/explosion.PNG"));
+		} catch (IOException e1) {
+			explosion = new BufferedImage(10, 10, BufferedImage.TYPE_INT_RGB);
+			Graphics2D g = explosion.createGraphics();
+			g.setColor(Color.RED);
+			g.fillRect(0, 0, 10, 10);
+		}
+
+		groupExploder = new GroupExploder();
 	}
 
-	public void explodeCapturedGroups(List<Group> capturedGroups) {
+	public void explodeCapturedGroups(List<Intersection> capturedGroups) {
 		if (capturedGroups.size() == 0) {
 			repaint();
 			return;
 		}
+		groupExploder.requestStop();
+		groupExploder = new GroupExploder(capturedGroups);
+	}
 
-		new Thread(() -> {
-			explodingImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
-			Graphics2D g = explodingImage.createGraphics();
-			gameController.drawBoard(g);
+	@Override
+	public void paintComponent(Graphics g) {
+		gameController.drawBoard(g);
+		if (groupExploder.isExploding) {
+			groupExploder.drawExplosions(g);
+		}
+		gameController.drawMouse(g);
+	}
 
-			isExploding = true;
-			for (Group capturedGroup : capturedGroups) {
-				for (int size = 2; size < boardSizer.getSquareWidth(); ++size) {
-					for (Intersection intersection : capturedGroup.getItersections()) {
-						g.drawImage(explosion, boardSizer.getSnapX(intersection.getX()), boardSizer.getSnapY(intersection.getY()), size, size, null);
-					}
+	private class GroupExploder {
+		boolean isExploding = false;
+		boolean stopRequested = false;
+
+		private List<Intersection> capturedGroups = new ArrayList<>();
+		int explosionSize = 0;
+
+		public GroupExploder() {
+		}
+
+		public GroupExploder(List<Intersection> capturedGroups) {
+			this.capturedGroups = capturedGroups;
+			new Thread(() -> {
+				isExploding = true;
+				explosionSize = 0;
+				while (!stopRequested && explosionSize < boardSizer.getSquareWidth()) {
+					++explosionSize;
 					try {
 						Thread.sleep(8);
 					} catch (InterruptedException e) {
 					}
 					repaint();
 				}
-			}
-			isExploding = false;
-
-			repaint();
-		}).start();
-	}
-
-	@Override
-	public void paintComponent(Graphics g) {
-		if (isExploding) {
-			g.drawImage(explodingImage, 0, 0, null);
-		} else {
-			gameController.drawBoard(g);
+				isExploding = false;
+				repaint();
+			}).start();
 		}
-		gameController.drawMouse(g);
+
+		public void drawExplosions(Graphics g) {
+			for (Intersection intersection : capturedGroups) {
+				int squareCornerX = boardSizer.getSquareCornerX(intersection.x);
+				int squareCornerY = boardSizer.getSquareCornerY(intersection.y);
+				if (!stopRequested) {
+					g.drawImage(explosion, squareCornerX, squareCornerY, explosionSize, explosionSize, null);
+				} else {
+					break;
+				}
+			}
+		}
+
+		public void requestStop() {
+			stopRequested = true;
+		}
 	}
 }

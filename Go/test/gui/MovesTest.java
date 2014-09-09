@@ -236,17 +236,17 @@ public class MovesTest {
 	}
 
 	public class MoveSetup {
-		PlayerMove move1 = new PlayerMove(null, 0, 1, 0);
-		PlayerMove move2 = new PlayerMove(null, 0, 2, 0);
-		PlayerMove move3 = new PlayerMove(null, 0, 3, 0);
-		PlayerMove move4 = new PlayerMove(null, 0, 4, 0);
-		PlayerMove move5 = new PlayerMove(null, 0, 5, 0);
-		PlayerMove move4c = new PlayerMove(null, 0, 4, 3);
-		PlayerMove move5c = new PlayerMove(null, 0, 5, 3);
-		PlayerMove move3a = new PlayerMove(null, 0, 3, 1);
-		PlayerMove move4a = new PlayerMove(null, 0, 4, 1);
-		PlayerMove move3b = new PlayerMove(null, 0, 3, 2);
-		PlayerMove move4b = new PlayerMove(null, 0, 4, 2);
+		PlayerMove move1 = new PlayerMove(0, 1, 0);
+		PlayerMove move2 = new PlayerMove(0, 2, 0);
+		PlayerMove move3 = new PlayerMove(0, 3, 0);
+		PlayerMove move4 = new PlayerMove(0, 4, 0);
+		PlayerMove move5 = new PlayerMove(0, 5, 0);
+		PlayerMove move4c = new PlayerMove(0, 4, 3);
+		PlayerMove move5c = new PlayerMove(0, 5, 3);
+		PlayerMove move3a = new PlayerMove(0, 3, 1);
+		PlayerMove move4a = new PlayerMove(0, 4, 1);
+		PlayerMove move3b = new PlayerMove(0, 3, 2);
+		PlayerMove move4b = new PlayerMove(0, 4, 2);
 
 		MoveSetup() {
 			move1.addSubsequentMove(move2);

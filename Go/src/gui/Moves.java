@@ -46,13 +46,13 @@ public class Moves {
 				return null; // Initial position
 			}
 
-			if (previousMove.previousMove != null && previousMove.previousMove.susbequentMoveCount() > 2) {
+			if (previousMove.previousMove != null && previousMove.previousMove.subsequentMoves.size() > 2) {
 				return previousMove; // the previous move have 3+ subsequent
 			}
 
-			if (previousMove.susbequentMoveCount() == 1) {
+			if (previousMove.subsequentMoves.size() == 1) {
 				Move root = previousMove.getRoot();
-				if (root != null && root.susbequentMoveCount() > 1 && root.subsequentMoves.get(1).getRoot() == root) {
+				if (root != null && root.subsequentMoves.size() > 1 && root.subsequentMoves.get(1).getRoot() == root) {
 					if (root.getRoot() == root.previousMove) {
 						return previousMove; // the root is either in this situation or the above
 					}
@@ -60,15 +60,11 @@ public class Moves {
 				return root;
 			}
 
-			if (previousMove.susbequentMoveCount() == 2) {
+			if (previousMove.subsequentMoves.size() == 2) {
 				return previousMove.subsequentMoves.indexOf(this) == 0 ? previousMove.getRoot() : previousMove;
 			}
 
 			return previousMove;
-		}
-
-		public int susbequentMoveCount() {
-			return subsequentMoves.size();
 		}
 
 		public List<Move> getMoves() {
@@ -86,10 +82,11 @@ public class Moves {
 		}
 	}
 
+	// Initial position
 	public static class InitialPosition extends Move {
 		int handicap;
 
-		InitialPosition(Board board, int boardSize, int handicap) {
+		InitialPosition(int boardSize, int handicap) {
 			super(Board.PLAYER_1);
 			this.handicap = handicap;
 		}
@@ -100,11 +97,12 @@ public class Moves {
 		}
 	}
 
+	// Player move
 	public static class PlayerMove extends Move {
 		int x;
 		int y;
 
-		PlayerMove(Board board, int player, int x, int y) {
+		PlayerMove(int player, int x, int y) {
 			super(player);
 			this.x = x;
 			this.y = y;
@@ -125,8 +123,9 @@ public class Moves {
 		}
 	}
 
+	// pass
 	public static class PlayerPass extends Move {
-		PlayerPass(Board board, int player) {
+		PlayerPass(int player) {
 			super(player);
 		}
 

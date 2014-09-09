@@ -33,10 +33,6 @@ public class BoardSizer {
 		squareWidth = (double) Go.DEFAULT_WIDTH / boardSize;
 	}
 
-	public void setBoardSize(int boardSize) {
-		this.boardSize = boardSize;
-	}
-
 	public void setImageSize(int width, int height) {
 		if (width <= 0 || height <= 0) {
 			return;
@@ -52,53 +48,6 @@ public class BoardSizer {
 		squareWidth = (double) boardWidth / boardSize;
 
 		redrawBoard();
-	}
-
-	public void draw(Graphics g, Board board) {
-		g.drawImage(boardImage, 0, 0, null);
-
-		int radius = getPieceRadius();
-		for (int x = 0; x < board.getBoardSize(); ++x) {
-			for (int y = 0; y < board.getBoardSize(); ++y) {
-				int move = board.getPlayerAt(x, y);
-				if (move == Board.PLAYER_1 || move == Board.PLAYER_2) {
-					g.setColor(getPlayerColor(move));
-					g.fillOval(getCenterX(x) - radius / 2, getCenterY(y) - radius / 2, radius, radius);
-				}
-			}
-		}
-	}
-
-	public static Color getPlayerColor(int player) {
-		return player == Board.PLAYER_1 ? P1_COLOR : P2_COLOR;
-	}
-
-	public int getPieceRadius() {
-		return round(squareWidth * PIECE_SCALE);
-	}
-
-	public int getSquareWidth() {
-		return round(squareWidth);
-	}
-
-	public int getIntersectionX(int x) {
-		return round((x - offsetX - squareWidth / 2) / squareWidth);
-	}
-
-	public int getIntersectionY(int y) {
-		return round((y - offsetY - squareWidth / 2) / squareWidth);
-	}
-
-	public int getSnapX(int x) {
-		return round(x * squareWidth + offsetX);
-	}
-
-	public int getSnapY(int y) {
-		return round(y * squareWidth + offsetY);
-	}
-
-	public static int round(double d) {
-		return (int) Math.round(d);
 	}
 
 	private void redrawBoard() {
@@ -117,25 +66,64 @@ public class BoardSizer {
 			g.drawLine(getCenterX(0), getCenterY(i), getCenterX(boardSize - 1), getCenterY(i));
 		}
 		// Small Circles
-		double smallDiameter = Math.min(2, (double) boardWidth / 200);
+		double small = Math.min(2, (double) boardWidth / 200);
 		for (int x = 0; x < boardSize; ++x) {
 			for (int y = 0; y < boardSize; ++y) {
-				g.fillOval(round(getCenterX(x) - smallDiameter), round(getCenterY(y) - smallDiameter), round(2 * smallDiameter), round(2 * smallDiameter));
+				g.fillOval(round(getCenterX(x) - small), round(getCenterY(y) - small), round(2 * small), round(2 * small));
 			}
 		}
 		// Large
-		double largeDiameter = Math.min(4, (double) boardWidth / 100);
+		double large = Math.min(4, (double) boardWidth / 100);
 		for (StarPoint starPoint : StarPointRegistry.getStarPoints(boardSize)) {
-			g.fillOval(round(getCenterX(starPoint.x) - largeDiameter), round(getCenterY(starPoint.y) - largeDiameter), round(2 * largeDiameter),
-					round(2 * largeDiameter));
+			g.fillOval(round(getCenterX(starPoint.x) - large), round(getCenterY(starPoint.y) - large), round(2 * large), round(2 * large));
 		}
 	}
 
-	private int getCenterX(int x) {
+	public void setBoardSize(int boardSize) {
+		this.boardSize = boardSize;
+	}
+
+	public BufferedImage getBoardImage() {
+		return boardImage;
+	}
+
+	public int getCenterX(int x) {
 		return round(x * squareWidth + squareWidth / 2 + offsetX);
 	}
 
-	private int getCenterY(int y) {
+	public int getCenterY(int y) {
 		return round(y * squareWidth + squareWidth / 2 + offsetY);
+	}
+
+	public int getIntersectionX(int x) {
+		return round((x - offsetX - squareWidth / 2) / squareWidth);
+	}
+
+	public int getIntersectionY(int y) {
+		return round((y - offsetY - squareWidth / 2) / squareWidth);
+	}
+
+	public int getPieceRadius() {
+		return round(squareWidth * PIECE_SCALE);
+	}
+
+	public int getSquareCornerX(int x) {
+		return round(x * squareWidth + offsetX);
+	}
+
+	public int getSquareCornerY(int y) {
+		return round(y * squareWidth + offsetY);
+	}
+
+	public int getSquareWidth() {
+		return round(squareWidth);
+	}
+
+	public static Color getPlayerColor(int player) {
+		return player == Board.PLAYER_1 ? P1_COLOR : P2_COLOR;
+	}
+
+	public static int round(double d) {
+		return (int) Math.round(d);
 	}
 }

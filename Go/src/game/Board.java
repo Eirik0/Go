@@ -1,7 +1,5 @@
 package game;
 
-import game.StarPointRegistry.StarPoint;
-
 import java.util.*;
 
 public class Board {
@@ -10,110 +8,95 @@ public class Board {
 	public static final int PLAYER_1 = 1;
 	public static final int PLAYER_2 = 2;
 
-	private int boardSize;
+	int boardSize;
+	int handicap;
 
-	Intersection[][] intersections;
+	public int[][] intersections;
+	public List<Intersection> captures = new ArrayList<Intersection>();
+	public Intersection lastMove;
 
-	private int currentPlayer = PLAYER_1;
-
-	private List<Group> player1Groups = new ArrayList<Group>();
-	private List<Group> player2Groups = new ArrayList<Group>();
+	int currentPlayer;
 
 	public Board(int boardSize, int handicap) {
-		this.boardSize = boardSize;
-		intersections = new Intersection[boardSize][boardSize];
-		for (int x = 0; x < boardSize; ++x) {
-			for (int y = 0; y < boardSize; ++y) {
-				intersections[x][y] = new Intersection(x, y, UNPLAYED);
-			}
-		}
-		for (int x = 0; x < boardSize; ++x) {
-			for (int y = 0; y < boardSize; ++y) {
-				intersections[x][y].setLiberties(this);
-			}
-		}
-		addHandicap(handicap);
+		this(boardSize, handicap, new int[boardSize][boardSize], PLAYER_1, null);
+		BoardUtilities.addHandicap(this);
 	}
 
-	private void addHandicap(int handicap) {
-		List<StarPoint> handicapPoints = StarPointRegistry.getHandicapPoints(boardSize, handicap);
-		for (StarPoint starPoint : handicapPoints) {
-			Intersection intersection = intersections[starPoint.x][starPoint.y];
-			intersection.setPlayer(PLAYER_1);
-			player1Groups.add(new Group(PLAYER_1, intersection));
-		}
-		if (handicapPoints.size() > 1) {
-			currentPlayer = PLAYER_2;
-		}
+	private Board(int boardSize, int handicap, int[][] intersections, int currentPlayer, Intersection lastMove) {
+		this.boardSize = boardSize;
+		this.handicap = handicap;
+		this.intersections = intersections;
+		this.currentPlayer = currentPlayer;
+		this.lastMove = lastMove;
 	}
 
 	public int getBoardSize() {
 		return boardSize;
 	}
 
-	public boolean canPlayAt(int x, int y) {
-		return x >= 0 && y >= 0 && x < boardSize && y < boardSize && intersections[x][y].player == UNPLAYED;
-	}
-
-	public int getPlayerAt(int x, int y) {
-		return intersections[x][y].player;
-	}
-
-	public List<Group> makeMove(int x, int y) {
-		intersections[x][y].setPlayer(currentPlayer);
-		List<Group> captures = new ArrayList<Group>();
-
-		Group newGroup = createGroupWith(x, y);
-		checkOpponentCapture(x, y, captures);
-		removeIfCaptured(newGroup, currentPlayer == PLAYER_1 ? player1Groups : player2Groups, captures);
-
-		passTurn();
-
-		return captures;
-	}
-
-	public void passTurn() {
-		currentPlayer = currentPlayer == PLAYER_1 ? PLAYER_2 : PLAYER_1;
-	}
-
 	public int getCurrentPlayer() {
 		return currentPlayer;
 	}
 
-	private Group createGroupWith(int x, int y) {
-		Group newGroup = new Group(currentPlayer, intersections[x][y]);
+	public boolean canPlayAt(int x, int y) {
+		if (x >= 0 && x < boardSize && y >= 0 && y < boardSize && intersections[x][y] != UNPLAYED) {
+			return false;
+		}
 
-		List<Group> currentPlayerGroups = currentPlayer == PLAYER_1 ? player1Groups : player2Groups;
-		Iterator<Group> groupIterator = currentPlayerGroups.iterator();
+		Intersection koIntersection = getKoIntersection();
+		if (koIntersection != null && koIntersection.x == x && koIntersection.y == y) {
+			return false;
+		}
 
-		while (groupIterator.hasNext()) {
-			Group group = groupIterator.next();
-			if (group.isAdjacent(x, y)) {
-				newGroup.combineWith(group);
-				groupIterator.remove();
+		return true;
+	}
+
+	private Intersection getKoIntersection() {
+		if (captures.size() == 1) {
+			return captures.get(0);
+		}
+		return null;
+	}
+
+	public Board makeMove(int moveX, int moveY) {
+		int[][] intersectionsCopy = new int[boardSize][boardSize];
+
+		for (int x = 0; x < boardSize; ++x) {
+			for (int y = 0; y < boardSize; ++y) {
+				intersectionsCopy[x][y] = intersections[x][y];
 			}
 		}
 
-		currentPlayerGroups.add(newGroup);
-		return newGroup;
+		intersectionsCopy[moveX][moveY] = currentPlayer;
+
+		int opponent = BoardUtilities.getOpponent(currentPlayer);
+		Board board = new Board(boardSize, handicap, intersectionsCopy, opponent, new Intersection(moveX, moveY));
+		BoardUtilities.removeOpponentCaptures(board, opponent, moveX, moveY);
+		BoardUtilities.removeIfCaputred(board, currentPlayer, moveX, moveY);
+
+		return board;
 	}
 
-	private void checkOpponentCapture(int x, int y, List<Group> captures) {
-		List<Group> currentOpponentGroups = (currentPlayer == PLAYER_1 ? player2Groups : player1Groups);
-		for (Group group : new ArrayList<Group>(currentOpponentGroups)) {
-			removeIfCaptured(group, currentOpponentGroups, captures);
+	public void passTurn() {
+		lastMove = null;
+		currentPlayer = BoardUtilities.getOpponent(currentPlayer);
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		for (int y = 0; y < boardSize; ++y) {
+			for (int x = 0; x < boardSize; ++x) {
+				String player = " ";
+				if (intersections[x][y] == PLAYER_1) {
+					player = "X";
+				} else if (intersections[x][y] == PLAYER_2) {
+					player = "O";
+				}
+				sb.append(player + " ");
+			}
+			sb.append("\n");
 		}
-	}
-
-	private void removeIfCaptured(Group group, List<Group> playerGroups, List<Group> captures) {
-		if (group.isCaptured()) {
-			playerGroups.remove(group);
-			group.removeFrom(this);
-			captures.add(group);
-		}
-	}
-
-	public List<Group> getGroups(int player) {
-		return player == PLAYER_1 ? player1Groups : player2Groups;
+		return sb.toString();
 	}
 }

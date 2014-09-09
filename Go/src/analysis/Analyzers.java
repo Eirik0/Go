@@ -5,20 +5,40 @@ import game.*;
 import java.util.*;
 
 public class Analyzers {
-	public interface Analyzer {
-		public double analyze(int player, Board board);
+	public abstract static class Analyzer {
+		public double coefficient;
+
+		public Analyzer(double coeffiecient) {
+			coefficient = coeffiecient;
+		}
+
+		public abstract double analyze(int player, Board board);
+
+		public double getBoardValue(Board possiblePosition, int player) {
+			double myScore = analyze(player, possiblePosition);
+			double opponentsScore = analyze(BoardUtilities.getOpponent(player), possiblePosition);
+			return coefficient * (myScore - opponentsScore);
+		}
 	}
 
-	public static class LibertyAnalyzer implements Analyzer {
+	// Liberties
+	public static class LibertyAnalyzer extends Analyzer {
+		public LibertyAnalyzer(double coefficient) {
+			super(coefficient);
+		}
+
 		@Override
 		public double analyze(int player, Board board) {
-			Set<Intersection> liberties = new HashSet<>();
-			for (Group group : board.getGroups(player)) {
-				for (Intersection intersection : group.getItersections()) {
-					liberties.addAll(intersection.liberties());
+			int boardSize = board.getBoardSize();
+			int liberties = 0;
+			for (int x = 0; x < boardSize; ++x) {
+				for (int y = 0; y < boardSize; ++y) {
+					if (board.intersections[x][y] == Board.UNPLAYED && BoardUtilities.isAdjacentTo(board, player, x, y)) {
+						++liberties;
+					}
 				}
 			}
-			return liberties.size();
+			return liberties;
 		}
 
 		@Override
@@ -27,23 +47,31 @@ public class Analyzers {
 		}
 	}
 
-	public static class LibertiesOfLibertiesAnalyzer implements Analyzer {
+	// Liberties of liberties
+	public static class LibertiesOfLibertiesAnalyzer extends Analyzer {
+		public LibertiesOfLibertiesAnalyzer(double coefficient) {
+			super(coefficient);
+		}
+
 		@Override
 		public double analyze(int player, Board board) {
-			Set<Intersection> libertiesOfLiberties = new HashSet<>();
-			Set<Intersection> liberties = new HashSet<>();
-			for (Group group : board.getGroups(player)) {
-				for (Intersection intersection : group.getItersections()) {
-					liberties.addAll(intersection.liberties());
-					for (Intersection liberty : intersection.liberties()) {
-						if (liberty.isLiberty()) {
-							libertiesOfLiberties.addAll(liberty.liberties());
+			int boardSize = board.getBoardSize();
+			int[][] intersections = board.intersections;
+
+			int libertiesOfLiberties = 0;
+			for (int x = 0; x < boardSize; ++x) {
+				for (int y = 0; y < boardSize; ++y) {
+					if (intersections[x][y] == Board.UNPLAYED && !BoardUtilities.isAdjacentTo(board, player, x, y)) {
+						if (x > 0 && intersections[x - 1][y] == Board.UNPLAYED && BoardUtilities.isAdjacentTo(board, player, x - 1, y) ||
+								(x < boardSize - 1 && intersections[x + 1][y] == Board.UNPLAYED && BoardUtilities.isAdjacentTo(board, player, x + 1, y)) ||
+								(y > 0 && intersections[x][y - 1] == Board.UNPLAYED && BoardUtilities.isAdjacentTo(board, player, x, y - 1)) ||
+								(y < boardSize - 1 && intersections[x][y + 1] == Board.UNPLAYED && BoardUtilities.isAdjacentTo(board, player, x, y + 1))) {
+							++libertiesOfLiberties;
 						}
 					}
 				}
 			}
-			libertiesOfLiberties.removeAll(liberties);
-			return libertiesOfLiberties.size();
+			return libertiesOfLiberties;
 		}
 
 		@Override
@@ -52,10 +80,15 @@ public class Analyzers {
 		}
 	}
 
-	public static class GroupAnalyzer implements Analyzer {
+	// Groups
+	public static class GroupAnalyzer extends Analyzer {
+		public GroupAnalyzer(double coefficient) {
+			super(coefficient);
+		}
+
 		@Override
 		public double analyze(int player, Board board) {
-			return board.getGroups(player).size();
+			return BoardUtilities.getGroups(board, player).size();
 		}
 
 		@Override
@@ -64,15 +97,25 @@ public class Analyzers {
 		}
 	}
 
-	public static class AverageDistance implements Analyzer {
+	// Average distance
+	public static class AverageDistance extends Analyzer {
+		public AverageDistance(double coefficient) {
+			super(coefficient);
+		}
+
 		@Override
 		public double analyze(int player, Board board) {
-			Set<Intersection> intersectionSet = new HashSet<>();
-			for (Group group : board.getGroups(player)) {
-				intersectionSet.addAll(group.getItersections());
+			int boardSize = board.getBoardSize();
+
+			List<Intersection> intersections = new ArrayList<>();
+			for (int x = 0; x < boardSize; ++x) {
+				for (int y = 0; y < boardSize; ++y) {
+					if (board.intersections[x][y] == player) {
+						intersections.add(new Intersection(x, y));
+					}
+				}
 			}
 
-			List<Intersection> intersections = new ArrayList<>(intersectionSet);
 			int count = 0;
 			double totalDistance = 0;
 			for (int i = 0; i < intersections.size(); ++i) {
@@ -96,6 +139,6 @@ public class Analyzers {
 	}
 
 	public static List<Analyzer> analyzers() {
-		return Arrays.asList(new LibertyAnalyzer(), new LibertiesOfLibertiesAnalyzer(), new GroupAnalyzer(), new AverageDistance());
+		return Arrays.asList(new LibertyAnalyzer(1), new LibertiesOfLibertiesAnalyzer(1), new GroupAnalyzer(1), new AverageDistance(1));
 	}
 }
