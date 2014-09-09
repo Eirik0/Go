@@ -15,9 +15,6 @@ import analysis.Players.Human;
 import analysis.Players.Player;
 
 public class GameController {
-	private static final int COMPUTER_MOVE_LIMIT = 500;
-	private static final int MAX_COMPUTER_MOVES_PER_SECOND = 60;
-
 	private Board board;
 
 	private BoardSizer boardSizer;
@@ -35,6 +32,8 @@ public class GameController {
 	private boolean gameOver = false;
 	private boolean lastMovePass = false;
 
+	private ComputerMatch computerMatch;
+
 	public GameController() {
 		board = new Board(Go.DEFAULT_BOARD_SIZE, Go.DEFAULT_HANDICAP);
 		activeMove = new InitialPosition(Go.DEFAULT_BOARD_SIZE, Go.DEFAULT_HANDICAP);
@@ -49,6 +48,10 @@ public class GameController {
 	}
 
 	public void resetGame(int boardSize, int handicap, Player player1, Player player2) {
+		if (computerMatch != null) {
+			computerMatch.requestStop();
+		}
+
 		gameOver = false;
 
 		this.player1 = player1;
@@ -65,13 +68,11 @@ public class GameController {
 		moveTree.reset(activeMove);
 
 		if (player1 instanceof ComputerPlayer) {
-			new Thread(() -> {
-				if (player2 instanceof ComputerPlayer) {
-					startCompterMatch();
-				} else {
-					makeComputerMove();
-				}
-			}).start();
+			if (player2 instanceof ComputerPlayer) {
+				computerMatch = new ComputerMatch();
+			} else {
+				maybeMakeComputerMove();
+			}
 		}
 	}
 
@@ -133,21 +134,6 @@ public class GameController {
 	}
 
 	// Computer
-	private void startCompterMatch() {
-		int moveCount = 0;
-		while (!gameOver && moveCount < COMPUTER_MOVE_LIMIT) {
-			double t0 = System.nanoTime();
-			makeComputerMove();
-			++moveCount;
-			while (((System.nanoTime() - t0) / 1000000) * MAX_COMPUTER_MOVES_PER_SECOND < 1000) {
-				try {
-					Thread.sleep(1);
-				} catch (Exception e) {
-				}
-			}
-		}
-	}
-
 	private void maybeMakeComputerMove() {
 		if (!gameOver && getCurrentPlayer() instanceof ComputerPlayer) {
 			new Thread(() -> {
@@ -229,7 +215,7 @@ public class GameController {
 	}
 
 	public void drawMouse(Graphics g) {
-		if (mouseAdapter.isMouseEntered()) {
+		if (getCurrentPlayer() instanceof Human && mouseAdapter.isMouseEntered()) {
 			int mouseX = mouseAdapter.getMouseX();
 			int mouseY = mouseAdapter.getMouseY();
 
@@ -246,6 +232,43 @@ public class GameController {
 				int snapY = boardSizer.getSquareCornerY(intersectionY);
 				g.drawRect(snapX, snapY, boardSizer.getSquareWidth(), boardSizer.getSquareWidth());
 			}
+		}
+	}
+
+	public class ComputerMatch {
+		private static final int COMPUTER_MOVE_LIMIT = 500;
+		private static final int MAX_COMPUTER_MOVES_PER_SECOND = 60;
+
+		boolean stopRequested = false;
+
+		ComputerMatch() {
+			new Thread(() -> {
+				int moveCount = 0;
+				while (!stopRequested && !gameOver && moveCount < COMPUTER_MOVE_LIMIT) {
+					double t0 = System.nanoTime();
+
+					Intersection move = ((ComputerPlayer) getCurrentPlayer()).makeMove(board);
+					if (!stopRequested) {
+						if (move == null) {
+							passTurn();
+						} else {
+							makeMove(move.x, move.y);
+						}
+						++moveCount;
+					}
+
+					while (!stopRequested && ((System.nanoTime() - t0) / 1000000) * MAX_COMPUTER_MOVES_PER_SECOND < 1000) {
+						try {
+							Thread.sleep(1);
+						} catch (Exception e) {
+						}
+					}
+				}
+			}).start();
+		}
+
+		void requestStop() {
+			stopRequested = true;
 		}
 	}
 }
