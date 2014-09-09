@@ -1,0 +1,19 @@
+package serialization;
+
+enum Color {
+     EMPTY = 0;
+     BLACK = 1;
+     WHITE = 2;
+}
+message Intersection {
+	required int32 X = 1;
+	required int32 Y = 2;
+}
+message Placement {
+	required Intersection place = 1;
+	required Color player = 2;
+}
+message Moment {
+	required Color toMove = 1;
+	repeated Placement boardState = 2;
+}
