@@ -2,6 +2,9 @@ package game;
 
 import java.util.*;
 
+import serialization.GameState;
+import serialization.GameState.Color;
+
 public class Board {
 	public static final int OUT_OF_BOUNDS = -1;
 	public static final int UNPLAYED = 0;
@@ -14,6 +17,7 @@ public class Board {
 	public int[][] intersections;
 	public List<Intersection> captures = new ArrayList<Intersection>();
 	public Intersection lastMove;
+	public GameState.Moment serializationCache;
 
 	int currentPlayer;
 
@@ -28,6 +32,12 @@ public class Board {
 		this.intersections = intersections;
 		this.currentPlayer = currentPlayer;
 		this.lastMove = lastMove;
+		GameState.Color colorToMove = Color.BLACK;
+		if(this.handicap > 1) {
+			colorToMove = Color.WHITE;
+		}
+		this.serializationCache = 
+				GameState.Moment.newBuilder().setToMove(colorToMove).build();
 	}
 
 	public int getBoardSize() {
@@ -73,7 +83,16 @@ public class Board {
 		Board board = new Board(boardSize, handicap, intersectionsCopy, opponent, new Intersection(moveX, moveY));
 		BoardUtilities.removeOpponentCaptures(board, opponent, moveX, moveY);
 		BoardUtilities.removeIfCaputred(board, currentPlayer, moveX, moveY);
-
+		GameState.Color currentPlayerColor = GameState.Color.valueOf(currentPlayer);
+		GameState.Placement currentMove = GameState.Placement.newBuilder().setPlace(
+				GameState.Intersection.newBuilder()
+				.setX(moveX)
+				.setY(moveY).build())
+				.setPlayer(currentPlayerColor).build();
+		this.serializationCache = 
+				this.serializationCache.toBuilder()
+				.addBoardState(currentMove)
+				.build();
 		return board;
 	}
 
@@ -98,5 +117,9 @@ public class Board {
 			sb.append("\n");
 		}
 		return sb.toString();
+	}
+	
+	public GameState.Moment toMoment() {
+		return this.serializationCache;
 	}
 }
