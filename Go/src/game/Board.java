@@ -99,6 +99,10 @@ public class Board {
 	public void passTurn() {
 		lastMove = null;
 		currentPlayer = BoardUtilities.getOpponent(currentPlayer);
+		this.serializationCache = 
+				this.serializationCache.toBuilder()
+				.setToMove(GameState.Color.valueOf(currentPlayer))
+				.build();
 	}
 
 	@Override
