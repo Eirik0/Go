@@ -36,7 +36,7 @@ public class Board {
 		if(this.handicap > 1) {
 			colorToMove = Color.WHITE;
 		}
-		this.serializationCache = 
+		this.serializationCache =
 				GameState.Moment.newBuilder().setToMove(colorToMove).build();
 	}
 
@@ -89,7 +89,7 @@ public class Board {
 				.setX(moveX)
 				.setY(moveY).build())
 				.setPlayer(currentPlayerColor).build();
-		this.serializationCache = 
+		this.serializationCache =
 				this.serializationCache.toBuilder()
 				.addBoardState(currentMove)
 				.build();
@@ -99,7 +99,7 @@ public class Board {
 	public void passTurn() {
 		lastMove = null;
 		currentPlayer = BoardUtilities.getOpponent(currentPlayer);
-		this.serializationCache = 
+		this.serializationCache =
 				this.serializationCache.toBuilder()
 				.setToMove(GameState.Color.valueOf(currentPlayer))
 				.build();
@@ -122,8 +122,21 @@ public class Board {
 		}
 		return sb.toString();
 	}
-	
+
 	public GameState.Moment toMoment() {
 		return this.serializationCache;
+	}
+	public void placeStone(final GameState.Placement placement) {
+		if(placement.getPlayer().getNumber() < 1 ||
+				placement.getPlayer().getNumber() > 2) {
+			throw new RuntimeException("invalid player");
+		}
+		makeMove(placement.getPlace().getX(), placement.getPlace().getY());
+		this.currentPlayer = placement.getPlayer().getNumber();
+	}
+	public void fromMoment(final GameState.Moment moment) {
+		for(GameState.Placement p : moment.getBoardStateList()) {
+			placeStone(p);
+		}
 	}
 }
