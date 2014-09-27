@@ -1,12 +1,13 @@
 package analysis;
 
-import game.*;
-import analysis.Analyzers.Analyzer;
+import game.Board;
+import game.Intersection;
+import analysis.CoefficientAnalyzers.CoefficientAnalyzer;
 
 public class GameAnalyzer {
-	private Analyzer[] analyzers;
+	private CoefficientAnalyzer[] analyzers;
 
-	public GameAnalyzer(Analyzer... analyzers) {
+	public GameAnalyzer(CoefficientAnalyzer... analyzers) {
 		this.analyzers = analyzers;
 	}
 
@@ -17,7 +18,7 @@ public class GameAnalyzer {
 		Intersection bestMove = null;
 		double bestScore = 0;
 
-		for (Analyzer analyzer : analyzers) {
+		for (CoefficientAnalyzer analyzer : analyzers) {
 			bestScore += analyzer.getBoardValue(board, player);
 		}
 
@@ -27,7 +28,7 @@ public class GameAnalyzer {
 					Board possiblePosition = board.makeMove(x, y);
 
 					double score = 0;
-					for (Analyzer analyzer : analyzers) {
+					for (CoefficientAnalyzer analyzer : analyzers) {
 						score += analyzer.getBoardValue(possiblePosition, player);
 					}
 

@@ -8,7 +8,7 @@ import java.util.List;
 
 import javax.swing.*;
 
-import analysis.Analyzers.Analyzer;
+import analysis.CoefficientAnalyzers.CoefficientAnalyzer;
 
 @SuppressWarnings("serial")
 public class AnalyzerPanel extends JPanel {
@@ -21,7 +21,7 @@ public class AnalyzerPanel extends JPanel {
 		setBorder(BorderFactory.createLoweredSoftBevelBorder());
 		setPreferredSize(new Dimension(300, 300));
 
-		for (Analyzer analyzer : Analyzers.analyzers()) {
+		for (CoefficientAnalyzer analyzer : CoefficientAnalyzers.analyzers()) {
 			AnalysisPanel analysisPanel = new AnalysisPanel(analyzer);
 			analysisPanels.add(analysisPanel);
 			add(analysisPanel);
@@ -57,12 +57,12 @@ public class AnalyzerPanel extends JPanel {
 	}
 
 	private static class AnalysisPanel extends JPanel {
-		Analyzer analyzer;
+		CoefficientAnalyzer analyzer;
 
 		private JLabel blackAnalysis = new JLabel("");
 		private JLabel whiteAnalysis = new JLabel("");
 
-		AnalysisPanel(Analyzer analyzer) {
+		AnalysisPanel(CoefficientAnalyzer analyzer) {
 			this.analyzer = analyzer;
 			setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 			add(createAnalysisPanel(new JLabel(analyzer.toString() + " (black): "), blackAnalysis));

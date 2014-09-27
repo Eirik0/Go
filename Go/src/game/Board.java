@@ -1,6 +1,7 @@
 package game;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Board {
 	public static final int OUT_OF_BOUNDS = -1;

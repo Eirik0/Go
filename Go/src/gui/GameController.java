@@ -1,15 +1,18 @@
 package gui;
 
-import game.*;
+import game.Board;
+import game.Intersection;
 import gui.Moves.InitialPosition;
 import gui.Moves.Move;
 import gui.Moves.PlayerMove;
 import gui.Moves.PlayerPass;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
 import java.util.List;
 
-import analysis.*;
+import analysis.AnalyzerPanel;
+import analysis.Players;
 import analysis.Players.ComputerPlayer;
 import analysis.Players.Player;
 

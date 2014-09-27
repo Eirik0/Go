@@ -1,11 +1,26 @@
 package gui;
 
-import java.awt.*;
 
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JPanel;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EtchedBorder;
 
-import analysis.*;
+
+
+import analysis.Players;
 import analysis.Players.Player;
 
 public class Go {

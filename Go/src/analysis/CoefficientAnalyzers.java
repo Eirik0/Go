@@ -1,18 +1,20 @@
 package analysis;
 
-import game.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.ArrayList;
 
-import java.util.*;
+import game.Board;
+import game.BoardUtilities;
+import game.Intersection;
 
-public class Analyzers {
-	public abstract static class Analyzer {
+public class CoefficientAnalyzers {
+	public abstract static class CoefficientAnalyzer implements Analyzer {
 		public double coefficient;
 
-		public Analyzer(double coeffiecient) {
+		public CoefficientAnalyzer(double coeffiecient) {
 			coefficient = coeffiecient;
 		}
-
-		public abstract double analyze(int player, Board board);
 
 		public double getBoardValue(Board possiblePosition, int player) {
 			double myScore = analyze(player, possiblePosition);
@@ -22,7 +24,7 @@ public class Analyzers {
 	}
 
 	// Liberties
-	public static class LibertyAnalyzer extends Analyzer {
+	public static class LibertyAnalyzer extends CoefficientAnalyzer {
 		public LibertyAnalyzer(double coefficient) {
 			super(coefficient);
 		}
@@ -48,7 +50,7 @@ public class Analyzers {
 	}
 
 	// Liberties of liberties
-	public static class LibertiesOfLibertiesAnalyzer extends Analyzer {
+	public static class LibertiesOfLibertiesAnalyzer extends CoefficientAnalyzer {
 		public LibertiesOfLibertiesAnalyzer(double coefficient) {
 			super(coefficient);
 		}
@@ -81,7 +83,7 @@ public class Analyzers {
 	}
 
 	// Groups
-	public static class GroupAnalyzer extends Analyzer {
+	public static class GroupAnalyzer extends CoefficientAnalyzer {
 		public GroupAnalyzer(double coefficient) {
 			super(coefficient);
 		}
@@ -98,7 +100,7 @@ public class Analyzers {
 	}
 
 	// Average distance
-	public static class AverageDistance extends Analyzer {
+	public static class AverageDistance extends CoefficientAnalyzer {
 		public AverageDistance(double coefficient) {
 			super(coefficient);
 		}
@@ -138,7 +140,7 @@ public class Analyzers {
 		}
 	}
 
-	public static List<Analyzer> analyzers() {
+	public static List<CoefficientAnalyzer> analyzers() {
 		return Arrays.asList(new LibertyAnalyzer(1), new LibertiesOfLibertiesAnalyzer(1), new GroupAnalyzer(1), new AverageDistance(1));
 	}
 }

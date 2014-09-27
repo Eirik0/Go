@@ -1,8 +1,9 @@
 package gui;
 
-import game.Board;
+import java.util.ArrayList;
+import java.util.List;
 
-import java.util.*;
+import game.Board;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
