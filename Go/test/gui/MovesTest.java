@@ -1,6 +1,6 @@
 package gui;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import gui.Moves.PlayerMove;
 
 import org.junit.Test;
@@ -9,22 +9,22 @@ public class MovesTest {
 	// No Variations
 	@Test
 	public void testNoVariationsMove1() {
-		assertTrue(new MoveSetup().move1.getRoot() == null);
+		assertNull(new MoveSetup().move1.getRoot());
 	}
 
 	@Test
 	public void testNoVariationsMove2() {
-		assertTrue(new MoveSetup().move2.getRoot() == null);
+		assertNull(new MoveSetup().move2.getRoot());
 	}
 
 	@Test
 	public void testNoVariationsMove3() {
-		assertTrue(new MoveSetup().move3.getRoot() == null);
+		assertNull(new MoveSetup().move3.getRoot());
 	}
 
 	@Test
 	public void testNoVariationsMove4() {
-		assertTrue(new MoveSetup().move4.getRoot() == null);
+		assertNull(new MoveSetup().move4.getRoot());
 	}
 
 	// One Variation
@@ -32,42 +32,42 @@ public class MovesTest {
 	public void testOneVariationMove1() {
 		MoveSetup moveSetup = new MoveSetup();
 		moveSetup.addFirstVariation();
-		assertTrue(moveSetup.move1.getRoot() == null);
+		assertNull(moveSetup.move1.getRoot());
 	}
 
 	@Test
 	public void testOneVariationMove2() {
 		MoveSetup moveSetup = new MoveSetup();
 		moveSetup.addFirstVariation();
-		assertTrue(moveSetup.move2.getRoot() == null);
+		assertNull(moveSetup.move2.getRoot());
 	}
 
 	@Test
 	public void testOneVariationMove3() {
 		MoveSetup moveSetup = new MoveSetup();
 		moveSetup.addFirstVariation();
-		assertTrue(moveSetup.move3.getRoot() == null);
+		assertNull(moveSetup.move3.getRoot());
 	}
 
 	@Test
 	public void testOneVariationMove4() {
 		MoveSetup moveSetup = new MoveSetup();
 		moveSetup.addFirstVariation();
-		assertTrue(moveSetup.move4.getRoot() == null);
+		assertNull(moveSetup.move4.getRoot());
 	}
 
 	@Test
 	public void testOneVariationMove3a() {
 		MoveSetup moveSetup = new MoveSetup();
 		moveSetup.addFirstVariation();
-		assertTrue(String.valueOf(moveSetup.move3a.getRoot()), moveSetup.move3a.getRoot() == moveSetup.move2);
+		assertEquals(moveSetup.move2, moveSetup.move3a.getRoot());
 	}
 
 	@Test
 	public void testOneVariationMove4a() {
 		MoveSetup moveSetup = new MoveSetup();
 		moveSetup.addFirstVariation();
-		assertTrue(String.valueOf(moveSetup.move4a.getRoot()), moveSetup.move4a.getRoot() == moveSetup.move2);
+		assertEquals(moveSetup.move2, moveSetup.move4a.getRoot());
 	}
 
 	// Two Variations
@@ -76,7 +76,7 @@ public class MovesTest {
 		MoveSetup moveSetup = new MoveSetup();
 		moveSetup.addFirstVariation();
 		moveSetup.addSecondVariation();
-		assertTrue(moveSetup.move1.getRoot() == null);
+		assertNull(moveSetup.move1.getRoot());
 	}
 
 	@Test
@@ -84,7 +84,7 @@ public class MovesTest {
 		MoveSetup moveSetup = new MoveSetup();
 		moveSetup.addFirstVariation();
 		moveSetup.addSecondVariation();
-		assertTrue(moveSetup.move2.getRoot() == null);
+		assertNull(moveSetup.move2.getRoot());
 	}
 
 	@Test
@@ -92,7 +92,7 @@ public class MovesTest {
 		MoveSetup moveSetup = new MoveSetup();
 		moveSetup.addFirstVariation();
 		moveSetup.addSecondVariation();
-		assertTrue(String.valueOf(moveSetup.move3.getRoot()), moveSetup.move3.getRoot() == moveSetup.move2);
+		assertEquals(moveSetup.move2, moveSetup.move3.getRoot());
 	}
 
 	@Test
@@ -100,7 +100,7 @@ public class MovesTest {
 		MoveSetup moveSetup = new MoveSetup();
 		moveSetup.addFirstVariation();
 		moveSetup.addSecondVariation();
-		assertTrue(String.valueOf(moveSetup.move4.getRoot()), moveSetup.move4.getRoot() == moveSetup.move3);
+		assertEquals(moveSetup.move3, moveSetup.move4.getRoot());
 	}
 
 	@Test
@@ -108,7 +108,7 @@ public class MovesTest {
 		MoveSetup moveSetup = new MoveSetup();
 		moveSetup.addFirstVariation();
 		moveSetup.addSecondVariation();
-		assertTrue(String.valueOf(moveSetup.move3a.getRoot()), moveSetup.move3a.getRoot() == moveSetup.move2);
+		assertEquals(moveSetup.move2, moveSetup.move3a.getRoot());
 	}
 
 	@Test
@@ -116,7 +116,7 @@ public class MovesTest {
 		MoveSetup moveSetup = new MoveSetup();
 		moveSetup.addFirstVariation();
 		moveSetup.addSecondVariation();
-		assertTrue(String.valueOf(moveSetup.move4a.getRoot()), moveSetup.move4a.getRoot() == moveSetup.move3a);
+		assertEquals(moveSetup.move3a, moveSetup.move4a.getRoot());
 	}
 
 	@Test
@@ -124,7 +124,7 @@ public class MovesTest {
 		MoveSetup moveSetup = new MoveSetup();
 		moveSetup.addFirstVariation();
 		moveSetup.addSecondVariation();
-		assertTrue(String.valueOf(moveSetup.move3b.getRoot()), moveSetup.move3b.getRoot() == moveSetup.move2);
+		assertEquals(moveSetup.move2, moveSetup.move3b.getRoot());
 	}
 
 	@Test
@@ -132,7 +132,7 @@ public class MovesTest {
 		MoveSetup moveSetup = new MoveSetup();
 		moveSetup.addFirstVariation();
 		moveSetup.addSecondVariation();
-		assertTrue(String.valueOf(moveSetup.move4b.getRoot()), moveSetup.move4b.getRoot() == moveSetup.move3b);
+		assertEquals(moveSetup.move3b, moveSetup.move4b.getRoot());
 	}
 
 	// Beyond Two Variations
@@ -142,7 +142,7 @@ public class MovesTest {
 		moveSetup.addFirstVariation();
 		moveSetup.addSecondVariation();
 		moveSetup.addBeyondSecondVariation();
-		assertTrue(String.valueOf(moveSetup.move1.getRoot()), moveSetup.move1.getRoot() == null);
+		assertNull(moveSetup.move1.getRoot());
 	}
 
 	@Test
@@ -151,7 +151,7 @@ public class MovesTest {
 		moveSetup.addFirstVariation();
 		moveSetup.addSecondVariation();
 		moveSetup.addBeyondSecondVariation();
-		assertTrue(String.valueOf(moveSetup.move2.getRoot()), moveSetup.move2.getRoot() == null);
+		assertNull(moveSetup.move2.getRoot());
 	}
 
 	@Test
@@ -160,7 +160,7 @@ public class MovesTest {
 		moveSetup.addFirstVariation();
 		moveSetup.addSecondVariation();
 		moveSetup.addBeyondSecondVariation();
-		assertTrue(String.valueOf(moveSetup.move3.getRoot()), moveSetup.move3.getRoot() == moveSetup.move2);
+		assertEquals(moveSetup.move2, moveSetup.move3.getRoot());
 	}
 
 	@Test
@@ -169,7 +169,7 @@ public class MovesTest {
 		moveSetup.addFirstVariation();
 		moveSetup.addSecondVariation();
 		moveSetup.addBeyondSecondVariation();
-		assertTrue(String.valueOf(moveSetup.move4.getRoot()), moveSetup.move4.getRoot() == moveSetup.move3);
+		assertEquals(moveSetup.move3, moveSetup.move4.getRoot());
 	}
 
 	@Test
@@ -178,7 +178,7 @@ public class MovesTest {
 		moveSetup.addFirstVariation();
 		moveSetup.addSecondVariation();
 		moveSetup.addBeyondSecondVariation();
-		assertTrue(String.valueOf(moveSetup.move5.getRoot()), moveSetup.move5.getRoot() == moveSetup.move4);
+		assertEquals(moveSetup.move4, moveSetup.move5.getRoot());
 	}
 
 	@Test
@@ -187,7 +187,7 @@ public class MovesTest {
 		moveSetup.addFirstVariation();
 		moveSetup.addSecondVariation();
 		moveSetup.addBeyondSecondVariation();
-		assertTrue(String.valueOf(moveSetup.move4c.getRoot()), moveSetup.move4c.getRoot() == moveSetup.move3);
+		assertEquals(moveSetup.move3, moveSetup.move4c.getRoot());
 	}
 
 	@Test
@@ -196,7 +196,7 @@ public class MovesTest {
 		moveSetup.addFirstVariation();
 		moveSetup.addSecondVariation();
 		moveSetup.addBeyondSecondVariation();
-		assertTrue(String.valueOf(moveSetup.move5c.getRoot()), moveSetup.move5c.getRoot() == moveSetup.move4c);
+		assertEquals(moveSetup.move4c, moveSetup.move5c.getRoot());
 	}
 
 	@Test
@@ -205,7 +205,7 @@ public class MovesTest {
 		moveSetup.addFirstVariation();
 		moveSetup.addSecondVariation();
 		moveSetup.addBeyondSecondVariation();
-		assertTrue(String.valueOf(moveSetup.move3a.getRoot()), moveSetup.move3a.getRoot() == moveSetup.move2);
+		assertEquals(moveSetup.move2, moveSetup.move3a.getRoot());
 	}
 
 	@Test
@@ -214,7 +214,7 @@ public class MovesTest {
 		moveSetup.addFirstVariation();
 		moveSetup.addSecondVariation();
 		moveSetup.addBeyondSecondVariation();
-		assertTrue(String.valueOf(moveSetup.move4a.getRoot()), moveSetup.move4a.getRoot() == moveSetup.move3a);
+		assertEquals(moveSetup.move3a, moveSetup.move4a.getRoot());
 	}
 
 	@Test
@@ -223,7 +223,7 @@ public class MovesTest {
 		moveSetup.addFirstVariation();
 		moveSetup.addSecondVariation();
 		moveSetup.addBeyondSecondVariation();
-		assertTrue(String.valueOf(moveSetup.move3b.getRoot()), moveSetup.move3b.getRoot() == moveSetup.move2);
+		assertEquals(moveSetup.move2, moveSetup.move3b.getRoot());
 	}
 
 	@Test
@@ -232,7 +232,7 @@ public class MovesTest {
 		moveSetup.addFirstVariation();
 		moveSetup.addSecondVariation();
 		moveSetup.addBeyondSecondVariation();
-		assertTrue(String.valueOf(moveSetup.move4b.getRoot()), moveSetup.move4b.getRoot() == moveSetup.move3b);
+		assertEquals(moveSetup.move3b, moveSetup.move4b.getRoot());
 	}
 
 	public class MoveSetup {
