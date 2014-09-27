@@ -10,6 +10,7 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.tree.*;
 
+@SuppressWarnings("serial")
 public class MoveTree extends JTree {
 	private Move initialPosition;
 	private DefaultTreeModel model;

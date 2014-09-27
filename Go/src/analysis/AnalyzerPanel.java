@@ -10,6 +10,7 @@ import javax.swing.*;
 
 import analysis.Analyzers.Analyzer;
 
+@SuppressWarnings("serial")
 public class AnalyzerPanel extends JPanel {
 	private AnalysisWorker worker = new AnalysisWorker();
 
