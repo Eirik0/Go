@@ -1,6 +1,8 @@
 package game;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class StarPointRegistry {
 	public static List<StarPoint> getStarPoints(int boardSize) {

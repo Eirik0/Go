@@ -1,9 +1,11 @@
 package gui;
 
-import game.*;
+import game.Board;
+import game.StarPointRegistry;
 import game.StarPointRegistry.StarPoint;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
 public class BoardSizer {

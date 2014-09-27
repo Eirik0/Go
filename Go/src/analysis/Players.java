@@ -1,8 +1,9 @@
 package analysis;
 
-import game.*;
-import analysis.Analyzers.LibertiesOfLibertiesAnalyzer;
-import analysis.Analyzers.LibertyAnalyzer;
+import game.Board;
+import game.Intersection;
+import analysis.CoefficientAnalyzers.LibertiesOfLibertiesAnalyzer;
+import analysis.CoefficientAnalyzers.LibertyAnalyzer;
 
 public class Players {
 	public static final Human HUMAN = new Human();
