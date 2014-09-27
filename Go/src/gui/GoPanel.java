@@ -12,6 +12,7 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
+@SuppressWarnings("serial")
 public class GoPanel extends JPanel {
 	private BufferedImage explosion;
 	private GroupExploder groupExploder;
