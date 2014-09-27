@@ -11,7 +11,6 @@ import java.util.List;
 
 import analysis.*;
 import analysis.Players.ComputerPlayer;
-import analysis.Players.Human;
 import analysis.Players.Player;
 
 public class GameController {
@@ -105,7 +104,8 @@ public class GameController {
 
 	public void passTurn() {
 		addMoveToTree(new PlayerPass(board.getCurrentPlayer()));
-		board.passTurn();
+		board = board.passTurn();
+		goPanel.repaint();
 
 		if (lastMovePass) {
 			gameOver = true;
@@ -115,19 +115,19 @@ public class GameController {
 	}
 
 	// Human
-	public boolean validHumanMove(int x, int y) {
-		return !gameOver && getCurrentPlayer() instanceof Human && board.canPlayAt(x, y);
+	public boolean isValidHumanMove(int x, int y) {
+		return !gameOver && Players.isHuman(getCurrentPlayer()) && board.canPlayAt(x, y);
 	}
 
 	public void makeHumanMove(int x, int y) {
-		if (validHumanMove(x, y)) {
+		if (isValidHumanMove(x, y)) {
 			makeMove(x, y);
 			maybeMakeComputerMove();
 		}
 	}
 
 	public void passHumanTurn() {
-		if (getCurrentPlayer() instanceof Human) {
+		if (Players.isHuman(getCurrentPlayer())) {
 			passTurn();
 			maybeMakeComputerMove();
 		}
@@ -181,7 +181,11 @@ public class GameController {
 					board = board.makeMove(playerMove.x, playerMove.y);
 				}
 			} else if (move instanceof PlayerPass) {
-				board.passTurn();
+				if (moveCount == moves.size() - 1) {
+					passTurn();
+				} else {
+					board = board.passTurn();
+				}
 			}
 			activeMove = move;
 			++moveCount;
@@ -215,7 +219,7 @@ public class GameController {
 	}
 
 	public void drawMouse(Graphics g) {
-		if (getCurrentPlayer() instanceof Human && mouseAdapter.isMouseEntered()) {
+		if (Players.isHuman(getCurrentPlayer()) && mouseAdapter.isMouseEntered()) {
 			int mouseX = mouseAdapter.getMouseX();
 			int mouseY = mouseAdapter.getMouseY();
 
@@ -227,7 +231,7 @@ public class GameController {
 			int intersectionX = boardSizer.getIntersectionX(mouseX);
 			int intersectionY = boardSizer.getIntersectionY(mouseY);
 
-			if (validHumanMove(intersectionX, intersectionY)) {
+			if (isValidHumanMove(intersectionX, intersectionY)) {
 				int snapX = boardSizer.getSquareCornerX(intersectionX);
 				int snapY = boardSizer.getSquareCornerY(intersectionY);
 				g.drawRect(snapX, snapY, boardSizer.getSquareWidth(), boardSizer.getSquareWidth());

@@ -17,6 +17,10 @@ public class Players {
 		return new Player[] { HUMAN, LIBERTY, LIBERTY_2, LIBERTY_3, LIBERTY_4 };
 	}
 
+	public static boolean isHuman(Player player) {
+		return player == HUMAN;
+	}
+
 	public abstract static class Player {
 		String name;
 
