@@ -16,11 +16,11 @@ public final class MonteCarloStrategy implements Strategy {
 	/**
 	 * For testing purposes
 	 */
-	protected static interface TestingCallback {
+	protected static interface InvariantChecker {
 		void treeSize(int size);
 	}
 	
-	protected TestingCallback testingCallback = null;
+	protected InvariantChecker invariantChecker = null;
 
 	private MonteCarloStrategy(Random random, Analyzer analyzer, int iterations) {
 		this.random = random;
@@ -151,8 +151,8 @@ public final class MonteCarloStrategy implements Strategy {
 		GameTree tree = GameTree.getInstance(root);
 		
 		for(int iteration = 0; iteration < iterations; iteration++) {
-			if(testingCallback != null) {
-				testingCallback.treeSize(tree.nodes.size());
+			if(invariantChecker != null) {
+				invariantChecker.treeSize(tree.nodes.size());
 			}
 			
 			// Select

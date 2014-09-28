@@ -5,6 +5,7 @@ import game.Intersection;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 import org.junit.Test;
@@ -51,23 +52,19 @@ public class MonteCarloStrategyTest {
 				MonteCarloStrategy.DEFAULT_ANALYZER,
 				MonteCarloStrategy.DEFAULT_ITERATIONS);
 		
-		Reference<Integer> oldSize = new Reference<>(-1);
 		
-		mcs.testingCallback = new MonteCarloStrategy.TestingCallback() {
+		mcs.invariantChecker = new MonteCarloStrategy.InvariantChecker() {
+			Optional<Integer> oldSize = Optional.empty();
+			
 			@Override
 			public void treeSize(int size) {
-				assertTrue(oldSize.contents < size);
-				oldSize.contents = size;
+				if(oldSize.isPresent()) {
+					assertEquals(oldSize.get().intValue() + 1, size);
+				}
+				oldSize = Optional.of(size);
 			}
 		};
 		
 		mcs.findBestMove(board);
-	}
-	
-	private static class Reference<T> {
-		public T contents;
-		public Reference(T contents) {
-			this.contents = contents;
-		}
 	}
 }
