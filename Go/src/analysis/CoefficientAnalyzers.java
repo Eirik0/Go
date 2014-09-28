@@ -20,8 +20,8 @@ public class CoefficientAnalyzers {
 
 		@Override
 		public double analyze(int player, Board possiblePosition) {
-			double myScore = analyze(player, possiblePosition);
-			double opponentsScore = analyze(BoardUtilities.getOpponent(player), possiblePosition);
+			double myScore = getBoardValue(player, possiblePosition);
+			double opponentsScore = getBoardValue(BoardUtilities.getOpponent(player), possiblePosition);
 			return coefficient * (myScore - opponentsScore);
 		}
 	}

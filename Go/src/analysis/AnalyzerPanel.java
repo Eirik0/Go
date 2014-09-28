@@ -2,11 +2,16 @@ package analysis;
 
 import game.Board;
 
-import java.awt.*;
-import java.util.*;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import analysis.CoefficientAnalyzers.CoefficientAnalyzer;
 
@@ -59,8 +64,8 @@ public class AnalyzerPanel extends JPanel {
 	private static class AnalysisPanel extends JPanel {
 		CoefficientAnalyzer analyzer;
 
-		private JLabel blackAnalysis = new JLabel("");
-		private JLabel whiteAnalysis = new JLabel("");
+		private final JLabel blackAnalysis = new JLabel("");
+		private final JLabel whiteAnalysis = new JLabel("");
 
 		AnalysisPanel(CoefficientAnalyzer analyzer) {
 			this.analyzer = analyzer;
@@ -78,9 +83,9 @@ public class AnalyzerPanel extends JPanel {
 		}
 
 		public void displayAnalysis(Board board) {
-			String blackValue = String.valueOf(analyzer.analyze(Board.PLAYER_1, board));
+			String blackValue = String.valueOf(analyzer.getBoardValue(Board.PLAYER_1, board));
 			blackAnalysis.setText(blackValue);
-			String whiteValue = String.valueOf(analyzer.analyze(Board.PLAYER_2, board));
+			String whiteValue = String.valueOf(analyzer.getBoardValue(Board.PLAYER_2, board));
 			whiteAnalysis.setText(whiteValue);
 		}
 	}
