@@ -1,12 +1,12 @@
 package analysis;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.ArrayList;
-
 import game.Board;
 import game.BoardUtilities;
 import game.Intersection;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class CoefficientAnalyzers {
 	public abstract static class CoefficientAnalyzer implements Analyzer {
@@ -16,7 +16,10 @@ public class CoefficientAnalyzers {
 			coefficient = coeffiecient;
 		}
 
-		public double getBoardValue(Board possiblePosition, int player) {
+		public abstract double getBoardValue(int player, Board possiblePosition);
+
+		@Override
+		public double analyze(int player, Board possiblePosition) {
 			double myScore = analyze(player, possiblePosition);
 			double opponentsScore = analyze(BoardUtilities.getOpponent(player), possiblePosition);
 			return coefficient * (myScore - opponentsScore);
@@ -30,7 +33,7 @@ public class CoefficientAnalyzers {
 		}
 
 		@Override
-		public double analyze(int player, Board board) {
+		public double getBoardValue(int player, Board board) {
 			int boardSize = board.getBoardSize();
 			int liberties = 0;
 			for (int x = 0; x < boardSize; ++x) {
@@ -56,7 +59,7 @@ public class CoefficientAnalyzers {
 		}
 
 		@Override
-		public double analyze(int player, Board board) {
+		public double getBoardValue(int player, Board board) {
 			int boardSize = board.getBoardSize();
 			int[][] intersections = board.intersections;
 
@@ -89,7 +92,7 @@ public class CoefficientAnalyzers {
 		}
 
 		@Override
-		public double analyze(int player, Board board) {
+		public double getBoardValue(int player, Board board) {
 			return BoardUtilities.getGroups(board, player).size();
 		}
 
@@ -106,7 +109,7 @@ public class CoefficientAnalyzers {
 		}
 
 		@Override
-		public double analyze(int player, Board board) {
+		public double getBoardValue(int player, Board board) {
 			int boardSize = board.getBoardSize();
 
 			List<Intersection> intersections = new ArrayList<>();

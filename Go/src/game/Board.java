@@ -12,7 +12,7 @@ public class Board {
 	int boardSize;
 	int handicap;
 
-	public int[][] intersections;
+	public final int[][] intersections;
 	public List<Intersection> captures = new ArrayList<Intersection>();
 	public Intersection lastMove;
 
