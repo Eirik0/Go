@@ -32,7 +32,7 @@ public class Go {
 	private static final Integer[] BOARD_SIZES = new Integer[] { 9, 13, 19 };
 	private static final Integer[] HANDICAPS = new Integer[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
-	public static final Integer DEFAULT_BOARD_SIZE = 19;
+	public static final Integer MAXIMUM_BOARD_SIZE = 19;
 	public static final Integer DEFAULT_HANDICAP = 0;
 
 	public static final Player[] POSSIBLE_PLAYERS = Players.getPlayers();
@@ -72,7 +72,7 @@ public class Go {
 	}
 
 	private static JPanel createTopPanel(GameController gameController) {
-		JComboBox<Integer> boardSizeComboBox = createComboBox(BOARD_SIZES, DEFAULT_BOARD_SIZE);
+		JComboBox<Integer> boardSizeComboBox = createComboBox(BOARD_SIZES, MAXIMUM_BOARD_SIZE);
 		JComboBox<Integer> handicapComboBox = createComboBox(HANDICAPS, DEFAULT_HANDICAP);
 		JComboBox<Player> player1ComboBox = createComboBox(POSSIBLE_PLAYERS, Players.HUMAN);
 		JComboBox<Player> player2ComboBox = createComboBox(POSSIBLE_PLAYERS, Players.HUMAN);

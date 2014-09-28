@@ -1,27 +1,26 @@
 package game;
 
+import gui.Go;
+
 public class Intersection {
 	public final int x;
 	public final int y;
-	
-	public static final int BOARD_SIZE = 19;
-	private static final Intersection[] pool =
-			new Intersection[BOARD_SIZE * BOARD_SIZE];
+
+	private static final Intersection[] pool = new Intersection[Go.MAXIMUM_BOARD_SIZE * Go.MAXIMUM_BOARD_SIZE];
 
 	private Intersection(int x, int y) {
 		this.x = x;
 		this.y = y;
 	}
-	
+
 	public static Intersection getInstance(int x, int y) {
-		int index = y * BOARD_SIZE + x;
+		int index = y * Go.MAXIMUM_BOARD_SIZE + x;
 		Intersection cached = pool[index];
-		if(cached == null) {
+		if (cached == null) {
 			Intersection intersection = new Intersection(x, y);
 			pool[index] = intersection;
 			return intersection;
-		}
-		else {
+		} else {
 			return cached;
 		}
 	}

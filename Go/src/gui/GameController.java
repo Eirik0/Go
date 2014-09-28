@@ -37,10 +37,10 @@ public class GameController {
 	private ComputerMatch computerMatch;
 
 	public GameController() {
-		board = new Board(Go.DEFAULT_BOARD_SIZE, Go.DEFAULT_HANDICAP);
-		activeMove = new InitialPosition(Go.DEFAULT_BOARD_SIZE, Go.DEFAULT_HANDICAP);
+		board = new Board(Go.MAXIMUM_BOARD_SIZE, Go.DEFAULT_HANDICAP);
+		activeMove = new InitialPosition(Go.MAXIMUM_BOARD_SIZE, Go.DEFAULT_HANDICAP);
 
-		boardSizer = new BoardSizer(Go.DEFAULT_BOARD_SIZE);
+		boardSizer = new BoardSizer(Go.MAXIMUM_BOARD_SIZE);
 		mouseAdapter = new GoMouseAdapter(this, boardSizer);
 
 		moveTree = new MoveTree(this, activeMove);
