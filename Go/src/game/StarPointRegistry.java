@@ -45,6 +45,6 @@ public class StarPointRegistry {
 	}
 
 	private static Intersection star(int x, int y) {
-		return new Intersection(x, y);
+		return Intersection.getInstance(x, y);
 	}
 }

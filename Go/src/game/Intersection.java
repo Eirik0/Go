@@ -3,10 +3,27 @@ package game;
 public class Intersection {
 	public final int x;
 	public final int y;
+	
+	public static final int BOARD_SIZE = 19;
+	private static final Intersection[] pool =
+			new Intersection[BOARD_SIZE * BOARD_SIZE];
 
-	public Intersection(int x, int y) {
+	private Intersection(int x, int y) {
 		this.x = x;
 		this.y = y;
+	}
+	
+	public static Intersection getInstance(int x, int y) {
+		int index = y * BOARD_SIZE + x;
+		Intersection cached = pool[index];
+		if(cached == null) {
+			Intersection intersection = new Intersection(x, y);
+			pool[index] = intersection;
+			return intersection;
+		}
+		else {
+			return cached;
+		}
 	}
 
 	@Override

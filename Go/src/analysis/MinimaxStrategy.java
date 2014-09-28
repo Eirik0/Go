@@ -23,7 +23,7 @@ public class MinimaxStrategy implements Strategy {
 			double score = score(possiblePosition, player);
 
 			if (score > bestScore) {
-				bestMove = new Intersection(intersection.x, intersection.y);
+				bestMove = Intersection.getInstance(intersection.x, intersection.y);
 				bestScore = score;
 			}
 		}

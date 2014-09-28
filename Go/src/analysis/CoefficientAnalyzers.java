@@ -116,7 +116,7 @@ public class CoefficientAnalyzers {
 			for (int x = 0; x < boardSize; ++x) {
 				for (int y = 0; y < boardSize; ++y) {
 					if (board.intersections[x][y] == player) {
-						intersections.add(new Intersection(x, y));
+						intersections.add(Intersection.getInstance(x, y));
 					}
 				}
 			}

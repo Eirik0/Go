@@ -40,7 +40,7 @@ public class Board {
 		for (int x = 0; x < boardSize; ++x) {
 			for (int y = 0; y < boardSize; ++y) {
 				if (canPlayAt(x, y)) {
-					moves.add(new Intersection(x, y));
+					moves.add(Intersection.getInstance(x, y));
 				}
 			}
 		}
@@ -73,7 +73,7 @@ public class Board {
 		intersectionsCopy[moveX][moveY] = currentPlayer;
 
 		int opponent = BoardUtilities.getOpponent(currentPlayer);
-		Board board = new Board(boardSize, handicap, intersectionsCopy, opponent, new Intersection(moveX, moveY));
+		Board board = new Board(boardSize, handicap, intersectionsCopy, opponent, Intersection.getInstance(moveX, moveY));
 		BoardUtilities.removeOpponentCaptures(board, opponent, moveX, moveY);
 		BoardUtilities.removeIfCaputred(board, currentPlayer, moveX, moveY);
 

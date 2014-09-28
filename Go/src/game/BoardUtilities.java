@@ -61,7 +61,7 @@ public class BoardUtilities {
 		int player = intersections[moveX][moveY];
 
 		List<Intersection> group = new ArrayList<>();
-		group.add(new Intersection(moveX, moveY));
+		group.add(Intersection.getInstance(moveX, moveY));
 
 		int oldSize = 0;
 		int newSize = 1;
@@ -71,25 +71,25 @@ public class BoardUtilities {
 				int x = group.get(i).x;
 				int y = group.get(i).y;
 				if (x > 0 && intersections[x - 1][y] == player) {
-					Intersection intersection = new Intersection(x - 1, y);
+					Intersection intersection = Intersection.getInstance(x - 1, y);
 					if (!group.contains(intersection)) {
 						group.add(intersection);
 					}
 				}
 				if (x < boardSize - 1 && intersections[x + 1][y] == player) {
-					Intersection intersection = new Intersection(x + 1, y);
+					Intersection intersection = Intersection.getInstance(x + 1, y);
 					if (!group.contains(intersection)) {
 						group.add(intersection);
 					}
 				}
 				if (y > 0 && intersections[x][y - 1] == player) {
-					Intersection intersection = new Intersection(x, y - 1);
+					Intersection intersection = Intersection.getInstance(x, y - 1);
 					if (!group.contains(intersection)) {
 						group.add(intersection);
 					}
 				}
 				if (y < boardSize - 1 && intersections[x][y + 1] == player) {
-					Intersection intersection = new Intersection(x, y + 1);
+					Intersection intersection = Intersection.getInstance(x, y + 1);
 					if (!group.contains(intersection)) {
 						group.add(intersection);
 					}
@@ -138,7 +138,7 @@ public class BoardUtilities {
 		for (int x = 0; x < boardSize; ++x) {
 			for (int y = 0; y < boardSize; ++y) {
 				if (intersections[x][y] == player) {
-					Intersection intersection = new Intersection(x, y);
+					Intersection intersection = Intersection.getInstance(x, y);
 					boolean alreadyFound = false;
 					for (List<Intersection> group : groups) {
 						if (group.contains(intersection)) {
