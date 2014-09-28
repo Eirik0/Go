@@ -1,8 +1,8 @@
 package game;
 
 public class Intersection {
-	public int x;
-	public int y;
+	public final int x;
+	public final int y;
 
 	public Intersection(int x, int y) {
 		this.x = x;
