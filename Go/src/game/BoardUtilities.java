@@ -29,20 +29,20 @@ public class BoardUtilities {
 	public static void removeOpponentCaptures(Board board, int opponent, int x, int y) {
 		int boardSize = board.boardSize;
 		if (x > 0) {
-			removeIfCaputred(board, opponent, x - 1, y);
+			removeIfCaptured(board, opponent, x - 1, y);
 		}
 		if (x < boardSize - 1) {
-			removeIfCaputred(board, opponent, x + 1, y);
+			removeIfCaptured(board, opponent, x + 1, y);
 		}
 		if (y > 0) {
-			removeIfCaputred(board, opponent, x, y - 1);
+			removeIfCaptured(board, opponent, x, y - 1);
 		}
 		if (y < boardSize - 1) {
-			removeIfCaputred(board, opponent, x, y + 1);
+			removeIfCaptured(board, opponent, x, y + 1);
 		}
 	}
 
-	public static void removeIfCaputred(Board board, int player, int x, int y) {
+	public static void removeIfCaptured(Board board, int player, int x, int y) {
 		if (board.intersections[x][y] == player) {
 			List<Intersection> group = getGroup(board, x, y);
 			if (countLiberties(board, group) == 0) {

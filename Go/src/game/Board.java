@@ -75,7 +75,7 @@ public class Board {
 		int opponent = BoardUtilities.getOpponent(currentPlayer);
 		Board board = new Board(boardSize, handicap, intersectionsCopy, opponent, Intersection.getInstance(moveX, moveY));
 		BoardUtilities.removeOpponentCaptures(board, opponent, moveX, moveY);
-		BoardUtilities.removeIfCaputred(board, currentPlayer, moveX, moveY);
+		BoardUtilities.removeIfCaptured(board, currentPlayer, moveX, moveY);
 
 		return board;
 	}
