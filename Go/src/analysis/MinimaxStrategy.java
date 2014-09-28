@@ -25,7 +25,7 @@ public class MinimaxStrategy implements Strategy {
 		for (Intersection intersection : board.getMoves()) {
 			Board possiblePosition = board.makeMove(intersection.x, intersection.y);
 
-			double score = scoreByDepth(possiblePosition, 0);
+			double score = scoreByDepth(possiblePosition, 1);
 
 			if (score > bestScore) {
 				bestMove = intersection;
@@ -43,7 +43,7 @@ public class MinimaxStrategy implements Strategy {
 			List<Double> scores = board.getMoves().stream().map(move -> scoreByDepth(board.makeMove(move.x, move.y), depth - 1)).collect(Collectors.toList());
 			if (scores.isEmpty()) {
 				return score(initialPlayer, board);
-			} else if (board.currentPlayer == initialPlayer) {
+			} else if (board.currentPlayer != initialPlayer) { // a move has been made
 				return scores.stream().max((d1, d2) -> Double.compare(d1, d2)).get();
 			} else {
 				return scores.stream().min((d1, d2) -> Double.compare(d1, d2)).get();
