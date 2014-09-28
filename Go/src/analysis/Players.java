@@ -7,12 +7,12 @@ import analysis.CoefficientAnalyzers.LibertyAnalyzer;
 
 public class Players {
 	public static final Human HUMAN = new Human();
-	public static final ComputerPlayer LIBERTY = new ComputerPlayer("Liberty", new GameAnalyzer(new LibertyAnalyzer(1)));
-	public static final ComputerPlayer LIBERTY_2 = new ComputerPlayer("Liberty 2", new GameAnalyzer(new LibertiesOfLibertiesAnalyzer(1)));
+	public static final ComputerPlayer LIBERTY = new ComputerPlayer("Liberty", new ScoreAnalyzerStrategy(new LibertyAnalyzer(1)));
+	public static final ComputerPlayer LIBERTY_2 = new ComputerPlayer("Liberty 2", new ScoreAnalyzerStrategy(new LibertiesOfLibertiesAnalyzer(1)));
 	public static final ComputerPlayer LIBERTY_3 = new ComputerPlayer("Liberty 3",
-			new GameAnalyzer(new LibertyAnalyzer(1), new LibertiesOfLibertiesAnalyzer(0.25)));
+			new ScoreAnalyzerStrategy(new LibertyAnalyzer(1), new LibertiesOfLibertiesAnalyzer(0.25)));
 	public static final ComputerPlayer LIBERTY_4 = new ComputerPlayer("Liberty 4",
-			new GameAnalyzer(new LibertyAnalyzer(1), new LibertiesOfLibertiesAnalyzer(0.5)));
+			new ScoreAnalyzerStrategy(new LibertyAnalyzer(1), new LibertiesOfLibertiesAnalyzer(0.5)));
 
 	public static Player[] getPlayers() {
 		return new Player[] { HUMAN, LIBERTY, LIBERTY_2, LIBERTY_3, LIBERTY_4 };
@@ -42,15 +42,15 @@ public class Players {
 	}
 
 	public static class ComputerPlayer extends Player {
-		GameAnalyzer analyzer;
+		Strategy strategy;
 
-		public ComputerPlayer(String name, GameAnalyzer analyzer) {
+		public ComputerPlayer(String name, Strategy strategy) {
 			super(name);
-			this.analyzer = analyzer;
+			this.strategy = strategy;
 		}
 
 		public Intersection makeMove(Board board) {
-			return analyzer.findBestMove(board);
+			return strategy.findBestMove(board);
 		}
 	}
 }

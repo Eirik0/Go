@@ -3,13 +3,14 @@ package analysis;
 import game.Board;
 import game.Intersection;
 
-public class GameAnalyzer {
+public class ScoreAnalyzerStrategy implements Strategy {
 	private final Analyzer[] analyzers;
 
-	public GameAnalyzer(Analyzer... analyzers) {
+	public ScoreAnalyzerStrategy(Analyzer... analyzers) {
 		this.analyzers = analyzers;
 	}
 
+	@Override
 	public Intersection findBestMove(Board board) {
 		int player = board.getCurrentPlayer();
 		int boardSize = board.getBoardSize();
