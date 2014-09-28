@@ -7,12 +7,12 @@ import analysis.CoefficientAnalyzers.LibertyAnalyzer;
 
 public class Players {
 	public static final Human HUMAN = new Human();
-	public static final ComputerPlayer LIBERTY = new ComputerPlayer("Liberty", new ScoreAnalyzerStrategy(new LibertyAnalyzer(1)));
-	public static final ComputerPlayer LIBERTY_2 = new ComputerPlayer("Liberty 2", new ScoreAnalyzerStrategy(new LibertiesOfLibertiesAnalyzer(1)));
+	public static final ComputerPlayer LIBERTY = new ComputerPlayer("Liberty", new MinimaxStrategy(new LibertyAnalyzer(1)));
+	public static final ComputerPlayer LIBERTY_2 = new ComputerPlayer("Liberty 2", new MinimaxStrategy(new LibertiesOfLibertiesAnalyzer(1)));
 	public static final ComputerPlayer LIBERTY_3 = new ComputerPlayer("Liberty 3",
-			new ScoreAnalyzerStrategy(new LibertyAnalyzer(1), new LibertiesOfLibertiesAnalyzer(0.25)));
+			new MinimaxStrategy(new LibertyAnalyzer(1), new LibertiesOfLibertiesAnalyzer(0.25)));
 	public static final ComputerPlayer LIBERTY_4 = new ComputerPlayer("Liberty 4",
-			new ScoreAnalyzerStrategy(new LibertyAnalyzer(1), new LibertiesOfLibertiesAnalyzer(0.5)));
+			new MinimaxStrategy(new LibertyAnalyzer(1), new LibertiesOfLibertiesAnalyzer(0.5)));
 
 	public static Player[] getPlayers() {
 		return new Player[] { HUMAN, LIBERTY, LIBERTY_2, LIBERTY_3, LIBERTY_4 };

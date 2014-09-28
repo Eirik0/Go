@@ -9,17 +9,21 @@ public class Board {
 	public static final int PLAYER_1 = 1;
 	public static final int PLAYER_2 = 2;
 
-	int boardSize;
-	int handicap;
+	public final int boardSize;
+	public final int handicap;
 
 	public final int[][] intersections;
-	public List<Intersection> captures = new ArrayList<Intersection>();
-	public Intersection lastMove;
+	public List<Intersection> captures = new ArrayList<>();
+	public final Intersection lastMove;
 
-	int currentPlayer;
+	public final int currentPlayer;
 
 	public Board(int boardSize, int handicap) {
-		this(boardSize, handicap, new int[boardSize][boardSize], PLAYER_1, null);
+		this.boardSize = boardSize;
+		this.handicap = handicap;
+		intersections = new int[boardSize][boardSize];
+		currentPlayer = handicap > 1 ? PLAYER_2 : PLAYER_1;
+		lastMove = null;
 		BoardUtilities.addHandicap(this);
 	}
 
@@ -31,12 +35,16 @@ public class Board {
 		this.lastMove = lastMove;
 	}
 
-	public int getBoardSize() {
-		return boardSize;
-	}
-
-	public int getCurrentPlayer() {
-		return currentPlayer;
+	public List<Intersection> getMoves() {
+		List<Intersection> moves = new ArrayList<>();
+		for (int x = 0; x < boardSize; ++x) {
+			for (int y = 0; y < boardSize; ++y) {
+				if (canPlayAt(x, y)) {
+					moves.add(new Intersection(x, y));
+				}
+			}
+		}
+		return moves;
 	}
 
 	public boolean canPlayAt(int x, int y) {

@@ -19,12 +19,12 @@ import analysis.Players.Player;
 public class GameController {
 	private Board board;
 
-	private BoardSizer boardSizer;
-	private GoMouseAdapter mouseAdapter;
+	private final BoardSizer boardSizer;
+	private final GoMouseAdapter mouseAdapter;
 
-	private GoPanel goPanel;
-	private MoveTree moveTree;
-	private AnalyzerPanel analyzerPanel;
+	private final GoPanel goPanel;
+	private final MoveTree moveTree;
+	private final AnalyzerPanel analyzerPanel;
 
 	private Player player1 = Players.HUMAN;
 	private Player player2 = Players.HUMAN;
@@ -93,7 +93,7 @@ public class GameController {
 	private void makeMove(int x, int y) {
 		lastMovePass = false;
 
-		addMoveToTree(new PlayerMove(board.getCurrentPlayer(), x, y));
+		addMoveToTree(new PlayerMove(board.currentPlayer, x, y));
 		board = board.makeMove(x, y);
 		analyzerPanel.analyze(board);
 
@@ -102,11 +102,11 @@ public class GameController {
 
 	// Moves
 	private Player getCurrentPlayer() {
-		return board.getCurrentPlayer() == Board.PLAYER_1 ? player1 : player2;
+		return board.currentPlayer == Board.PLAYER_1 ? player1 : player2;
 	}
 
 	public void passTurn() {
-		addMoveToTree(new PlayerPass(board.getCurrentPlayer()));
+		addMoveToTree(new PlayerPass(board.currentPlayer));
 		board = board.passTurn();
 		goPanel.repaint();
 
@@ -175,7 +175,7 @@ public class GameController {
 		for (Move move : moves) {
 			if (move instanceof InitialPosition) {
 				InitialPosition initialPosition = (InitialPosition) move;
-				board = new Board(board.getBoardSize(), initialPosition.handicap);
+				board = new Board(board.boardSize, initialPosition.handicap);
 			} else if (move instanceof PlayerMove) {
 				PlayerMove playerMove = (PlayerMove) move;
 				if (moveCount == moves.size() - 1) {
@@ -204,8 +204,8 @@ public class GameController {
 		g.drawImage(boardSizer.getBoardImage(), 0, 0, null);
 
 		int radius = boardSizer.getPieceRadius();
-		for (int x = 0; x < board.getBoardSize(); ++x) {
-			for (int y = 0; y < board.getBoardSize(); ++y) {
+		for (int x = 0; x < board.boardSize; ++x) {
+			for (int y = 0; y < board.boardSize; ++y) {
 				int move = board.intersections[x][y];
 				if (move == Board.PLAYER_1 || move == Board.PLAYER_2) {
 					g.setColor(BoardSizer.getPlayerColor(move));
@@ -228,7 +228,7 @@ public class GameController {
 
 			double rad = boardSizer.getPieceRadius();
 
-			g.setColor(BoardSizer.getPlayerColor(board.getCurrentPlayer()));
+			g.setColor(BoardSizer.getPlayerColor(board.currentPlayer));
 			g.fillOval(BoardSizer.round(mouseX - rad / 2), BoardSizer.round(mouseY - rad / 2), BoardSizer.round(rad), BoardSizer.round(rad));
 
 			int intersectionX = boardSizer.getIntersectionX(mouseX);

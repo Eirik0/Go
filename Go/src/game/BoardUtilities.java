@@ -6,11 +6,9 @@ import java.util.List;
 public class BoardUtilities {
 	public static void addHandicap(Board board) {
 		List<Intersection> handicapPoints = StarPointRegistry.getHandicapPoints(board.boardSize, board.handicap);
+
 		for (Intersection starPoint : handicapPoints) {
 			board.intersections[starPoint.x][starPoint.y] = Board.PLAYER_1;
-		}
-		if (handicapPoints.size() > 1) {
-			board.currentPlayer = Board.PLAYER_2;
 		}
 	}
 

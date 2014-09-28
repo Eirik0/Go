@@ -34,7 +34,7 @@ public class CoefficientAnalyzers {
 
 		@Override
 		public double getBoardValue(int player, Board board) {
-			int boardSize = board.getBoardSize();
+			int boardSize = board.boardSize;
 			int liberties = 0;
 			for (int x = 0; x < boardSize; ++x) {
 				for (int y = 0; y < boardSize; ++y) {
@@ -60,7 +60,7 @@ public class CoefficientAnalyzers {
 
 		@Override
 		public double getBoardValue(int player, Board board) {
-			int boardSize = board.getBoardSize();
+			int boardSize = board.boardSize;
 			int[][] intersections = board.intersections;
 
 			int libertiesOfLiberties = 0;
@@ -110,7 +110,7 @@ public class CoefficientAnalyzers {
 
 		@Override
 		public double getBoardValue(int player, Board board) {
-			int boardSize = board.getBoardSize();
+			int boardSize = board.boardSize;
 
 			List<Intersection> intersections = new ArrayList<>();
 			for (int x = 0; x < boardSize; ++x) {
