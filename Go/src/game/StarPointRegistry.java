@@ -5,8 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class StarPointRegistry {
-	public static List<StarPoint> getStarPoints(int boardSize) {
-		List<StarPoint> starPoints = new ArrayList<StarPoint>();
+	public static List<Intersection> getStarPoints(int boardSize) {
+		List<Intersection> starPoints = new ArrayList<Intersection>();
 		if (boardSize == 9) {
 			starPoints.addAll(Arrays.asList(star(2, 2), star(2, 4), star(2, 6), star(4, 2), star(4, 4), star(4, 6), star(6, 2), star(6, 4), star(6, 6)));
 		} else if (boardSize == 13) {
@@ -18,8 +18,8 @@ public class StarPointRegistry {
 		return starPoints;
 	}
 
-	public static List<StarPoint> getHandicapPoints(int boardSize, int handicap) {
-		List<StarPoint> starPoints = getStarPoints(boardSize);
+	public static List<Intersection> getHandicapPoints(int boardSize, int handicap) {
+		List<Intersection> starPoints = getStarPoints(boardSize);
 
 		if (handicap == 2) {
 			return Arrays.asList(starPoints.get(6), starPoints.get(2));
@@ -41,20 +41,10 @@ public class StarPointRegistry {
 			return starPoints;
 		}
 
-		return new ArrayList<StarPoint>();
+		return new ArrayList<Intersection>();
 	}
 
-	private static StarPoint star(int x, int y) {
-		return new StarPoint(x, y);
-	}
-
-	public static class StarPoint {
-		public int x;
-		public int y;
-
-		StarPoint(int x, int y) {
-			this.x = x;
-			this.y = y;
-		}
+	private static Intersection star(int x, int y) {
+		return new Intersection(x, y);
 	}
 }

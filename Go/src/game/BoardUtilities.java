@@ -1,13 +1,12 @@
 package game;
 
-import game.StarPointRegistry.StarPoint;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BoardUtilities {
 	public static void addHandicap(Board board) {
-		List<StarPoint> handicapPoints = StarPointRegistry.getHandicapPoints(board.boardSize, board.handicap);
-		for (StarPoint starPoint : handicapPoints) {
+		List<Intersection> handicapPoints = StarPointRegistry.getHandicapPoints(board.boardSize, board.handicap);
+		for (Intersection starPoint : handicapPoints) {
 			board.intersections[starPoint.x][starPoint.y] = Board.PLAYER_1;
 		}
 		if (handicapPoints.size() > 1) {

@@ -1,8 +1,8 @@
 package gui;
 
 import game.Board;
+import game.Intersection;
 import game.StarPointRegistry;
-import game.StarPointRegistry.StarPoint;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -76,7 +76,7 @@ public class BoardSizer {
 		}
 		// Large
 		double large = Math.min(4, (double) boardWidth / 100);
-		for (StarPoint starPoint : StarPointRegistry.getStarPoints(boardSize)) {
+		for (Intersection starPoint : StarPointRegistry.getStarPoints(boardSize)) {
 			g.fillOval(round(getCenterX(starPoint.x) - large), round(getCenterY(starPoint.y) - large), round(2 * large), round(2 * large));
 		}
 	}

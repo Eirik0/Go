@@ -16,21 +16,14 @@ public class ScoreAnalyzerStrategy implements Strategy {
 		int boardSize = board.getBoardSize();
 
 		Intersection bestMove = null;
-		double bestScore = 0;
-
-		for (Analyzer analyzer : analyzers) {
-			bestScore += analyzer.analyze(player, board);
-		}
+		double bestScore = score(board, player);
 
 		for (int x = 0; x < boardSize; ++x) {
 			for (int y = 0; y < boardSize; ++y) {
 				if (board.canPlayAt(x, y)) {
 					Board possiblePosition = board.makeMove(x, y);
 
-					double score = 0;
-					for (Analyzer analyzer : analyzers) {
-						score += analyzer.analyze(player, possiblePosition);
-					}
+					double score = score(possiblePosition, player);
 
 					if (score > bestScore) {
 						bestMove = new Intersection(x, y);
@@ -41,5 +34,13 @@ public class ScoreAnalyzerStrategy implements Strategy {
 		}
 
 		return bestMove;
+	}
+
+	private double score(Board board, int player) {
+		double score = 0;
+		for (Analyzer analyzer : analyzers) {
+			score += analyzer.analyze(player, board);
+		}
+		return score;
 	}
 }
