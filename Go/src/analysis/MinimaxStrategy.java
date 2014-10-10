@@ -3,9 +3,6 @@ package analysis;
 import game.Board;
 import game.Intersection;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 public class MinimaxStrategy implements Strategy {
 	private final Analyzer[] analyzers;
 
@@ -20,7 +17,7 @@ public class MinimaxStrategy implements Strategy {
 		initialPlayer = board.currentPlayer;
 
 		Intersection bestMove = null;
-		double bestScore = score(board.currentPlayer, board);
+		double bestScore = score(board);
 
 		for (Intersection intersection : board.getMoves()) {
 			Board possiblePosition = board.makeMove(intersection.x, intersection.y);
@@ -38,23 +35,35 @@ public class MinimaxStrategy implements Strategy {
 
 	private double scoreByDepth(Board board, int depth) {
 		if (depth == 0) {
-			return score(initialPlayer, board);
+			return score(board);
 		} else {
-			List<Double> scores = board.getMoves().stream().map(move -> scoreByDepth(board.makeMove(move.x, move.y), depth - 1)).collect(Collectors.toList());
-			if (scores.isEmpty()) {
-				return score(initialPlayer, board);
-			} else if (board.currentPlayer != initialPlayer) { // a move has been made
-				return scores.stream().max((d1, d2) -> Double.compare(d1, d2)).get();
-			} else {
-				return scores.stream().min((d1, d2) -> Double.compare(d1, d2)).get();
+			boolean max = board.currentPlayer == initialPlayer;
+
+			double bestScore = score(board);
+
+			for (Intersection move : board.getMoves()) {
+
+				double score = scoreByDepth(board.makeMove(move.x, move.y), depth - 1);
+
+				if (max) {
+					if (score > bestScore) {
+						score = bestScore;
+					}
+				} else {
+					if (score > bestScore) {
+						score = bestScore;
+					}
+				}
 			}
+
+			return bestScore;
 		}
 	}
 
-	private double score(int player, Board board) {
+	private double score(Board board) {
 		double score = 0;
 		for (Analyzer analyzer : analyzers) {
-			score += analyzer.analyze(player, board);
+			score += analyzer.analyze(initialPlayer, board);
 		}
 		return score;
 	}
