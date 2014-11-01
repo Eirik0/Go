@@ -4,12 +4,12 @@ import game.Board;
 import game.Intersection;
 
 public class MinimaxStrategy implements Strategy {
-	private final Analyzer[] analyzers;
+	private final Analyzer analyzer;
 
 	private int initialPlayer;
 
-	public MinimaxStrategy(Analyzer... analyzers) {
-		this.analyzers = analyzers;
+	public MinimaxStrategy(Analyzer analyzer) {
+		this.analyzer = analyzer;
 	}
 
 	@Override
@@ -61,10 +61,6 @@ public class MinimaxStrategy implements Strategy {
 	}
 
 	private double score(Board board) {
-		double score = 0;
-		for (Analyzer analyzer : analyzers) {
-			score += analyzer.analyze(initialPlayer, board);
-		}
-		return score;
+		return analyzer.analyze(initialPlayer, board);
 	}
 }
