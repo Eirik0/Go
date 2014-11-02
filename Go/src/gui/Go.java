@@ -35,7 +35,7 @@ public class Go {
 	public static final Integer MAXIMUM_BOARD_SIZE = 19;
 	public static final Integer DEFAULT_HANDICAP = 0;
 
-	public static final Player[] POSSIBLE_PLAYERS = Players.getPlayers();
+	private static final Player[] POSSIBLE_PLAYERS = Players.getPlayers();
 
 	public static void main(String[] args) {
 		GameController gameController = new GameController();

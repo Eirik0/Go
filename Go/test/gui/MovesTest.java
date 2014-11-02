@@ -235,7 +235,7 @@ public class MovesTest {
 		assertEquals(moveSetup.move3b, moveSetup.move4b.getRoot());
 	}
 
-	public class MoveSetup {
+	public static class MoveSetup {
 		PlayerMove move1 = new PlayerMove(0, 1, 0);
 		PlayerMove move2 = new PlayerMove(0, 2, 0);
 		PlayerMove move3 = new PlayerMove(0, 3, 0);

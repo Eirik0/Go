@@ -103,7 +103,7 @@ public final class MonteCarloStrategy implements Strategy {
 				sb.append('\t');
 			}
 			
-			sb.append(String.format("%d / %d / %d\n", wins, ties, losses));
+			sb.append(String.format("%d / %d / %d%n", wins, ties, losses));
 			
 			for(GameTreeNode child : this.children) {
 				child.toStringInner(indent + 1, sb);
