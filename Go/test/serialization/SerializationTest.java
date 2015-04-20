@@ -2,6 +2,8 @@ package serialization;
 
 import static org.junit.Assert.*;
 
+import java.lang.Math;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -19,7 +21,7 @@ import serialization.GameState.Intersection;
 
 public class SerializationTest {
 
-	List<GameState.Placement.Builder> possiblePlacements;
+	List<GameState.Placement.Builder> possiblePlacements = new ArrayList<>();
 	
 	@Before
 	public void setUp() throws Exception {
@@ -49,7 +51,7 @@ public class SerializationTest {
 		Moment expectedMoment = null;
 		while(possiblePlacements.size() > 0) {
 			
-			int randomInt = r.nextInt() % possiblePlacements.size();
+			int randomInt = Math.abs(r.nextInt()) % possiblePlacements.size();
 			Color c = expectedMomentBuilder.getToMove() == Color.BLACK ? Color.WHITE : Color.BLACK;
 			Placement p = possiblePlacements.get(randomInt).setPlayer(c).build();
 			expectedMomentBuilder.addBoardState(p);

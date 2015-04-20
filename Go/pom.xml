@@ -24,13 +24,32 @@
           <target>1.8</target>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>1.1</version>
+        <executions>
+          <execution>
+            <id>add-sources</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>src-gen</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
   <dependencies>
   	<dependency>
   		<groupId>com.google.protobuf</groupId>
   		<artifactId>protobuf-java</artifactId>
-  		<version>2.4.1</version>
+  		<version>2.5.0</version>
   	</dependency>
   	<dependency>
   		<groupId>junit</groupId>

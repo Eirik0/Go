@@ -13,7 +13,14 @@ message Placement {
 	required Intersection place = 1;
 	required Color player = 2;
 }
+message Group {
+	required Color player = 1;
+	repeated Intersection stones = 2;
+	repeated Intersection liberties = 3;
+}
 message Moment {
 	required Color toMove = 1;
-	repeated Placement boardState = 2;
+	repeated Group playerAsset = 2;
+	repeated Group playerCaptures = 3;
+	repeated Placement moves = 4;
 }
