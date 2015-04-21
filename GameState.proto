@@ -12,6 +12,7 @@ message Intersection {
 message Placement {
 	required Intersection place = 1;
 	required Color player = 2;
+	required bool captured = 3;
 }
 message Group {
 	required Color player = 1;

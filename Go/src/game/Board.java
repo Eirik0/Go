@@ -8,11 +8,19 @@ import serialization.GameState.Color;
 public class Board {
 
 	int boardSize;
+	int moveIndex;
 	private GameState.Moment serializationCache;
+
+	private Color toMove;
 	private List<Group> groups;
+	private List<Group> captures;
+	private List<Placement> history;
 
 	public Board(int size) {
 		boardSize = size;
+		moveIndex = 0;
+		toMove = Color.BLACK;
+
 		serializationCache.toBuilder().setToMove(Color.BLACK);
 	}
 
@@ -38,15 +46,38 @@ public class Board {
 	}
 
 	public boolean isRepeated(int x, int y) {
-		return false;
+		Point searchPoint = new Point(x, y);
+		if(history.size() < 7) {
+			return false;
+		} else {
+			Placement relevantHistory = history.get(history.size() - 2); // the only way a board state can be repeated is through ko recapture (2 moves back)
+			return relevantHistory.getPlace().equals(searchPoint) && relevantHistory.getPlayer() == toMove && relevantHistory.isCaptured();
+		}
 	}
 
-	public boolean canPlayAt(int x, int y) {
+	public boolean isSuicide(int x, int y) {
+		Point hypotheticalPoint = new Point(x, y);
+		Set<Point> consumedLiberties = new HashSet<>();
+		for(Group group : groups) {
+			if(group.getColor().equals(toMove)) {
+				if(group.getLiberties().size() == 1) {
+					consumedLiberties.addAll(group.getAdjacentPoints(hypotheticalPoint));
+				}
+			} else {
+				consumedLiberties.addAll(group.getAdjacentPoints(hypotheticalPoint));
+			}
+		}
+		return consumedLiberties.containsAll(hypotheticalPoint.getAdjacent());
+	}
+
+	public boolean isValidMove(int x, int y) {
 		if (x >= 0 || x < boardSize || y >= 0 || y < boardSize) {
 			return false;
 		} else if (hasStoneAt(x, y)) {
 			return false;
 		} else if (isRepeated(x, y)) {
+			return false;
+		} else if (isSuicide(x, y)) {
 			return false;
 		} else {
 			return true;
@@ -54,9 +85,11 @@ public class Board {
 	}
 
 	public void makeMove(int x, int y) {
-		if(!canPlayAt(x, y)) {
+		if(!isValidMove(x, y)) {
 			throw new RuntimeException("invalid move");
 		}
+		Point movePlace = new Point(x, y);
+
 		GameState.Color nextPlayer = serializationCache.getToMove().equals(Color.BLACK) ? Color.WHITE : Color.BLACK;
 	}
 
@@ -67,24 +100,6 @@ public class Board {
 				this.serializationCache.toBuilder()
 				.setToMove(GameState.Color.valueOf(currentPlayer))
 				.build();
-	}
-
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		for (int y = 0; y < boardSize; ++y) {
-			for (int x = 0; x < boardSize; ++x) {
-				String player = " ";
-				if (intersections[x][y] == PLAYER_1) {
-					player = "X";
-				} else if (intersections[x][y] == PLAYER_2) {
-					player = "O";
-				}
-				sb.append(player + " ");
-			}
-			sb.append("\n");
-		}
-		return sb.toString();
 	}
 
 	public GameState.Moment toMoment() {
