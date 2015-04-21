@@ -1,6 +1,7 @@
 package game;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import serialization.GameState;
 import serialization.GameState.Color;
@@ -11,6 +12,8 @@ public class Board {
 	int moveIndex;
 	private GameState.Moment serializationCache;
 
+	private boolean cacheDirty;
+	private boolean gameOver;
 	private Color toMove;
 	private List<Group> groups;
 	private List<Group> captures;
@@ -20,6 +23,8 @@ public class Board {
 		boardSize = size;
 		moveIndex = 0;
 		toMove = Color.BLACK;
+		cacheDirty = false;
+		gameOver = false;
 
 		serializationCache.toBuilder().setToMove(Color.BLACK);
 	}
@@ -28,11 +33,37 @@ public class Board {
 		return boardSize;
 	}
 
-	public GameState.Color getCurrentPlayer() {
+	public Color getCurrentPlayer() {
 		return serializationCache.getToMove();
 	}
 
 	private void addPointToGroups(final Point p) {
+
+		List<Group> adjacentFriendlyGroups = new ArrayList<>();
+		List<Point> potentialLiberties = p.getAdjacent();
+
+		for (int i = 0; i < groups.size(); i++) {
+			Group group = groups.get(i);
+			if(group.isAdjacent(p)) {
+				group.removeLiberty(p);
+				potentialLiberties.removeAll(group.getAdjacentPoints(p));
+				if(group.getColor().equals(toMove)) {
+					adjacentFriendlyGroups.add(group);
+				} else if(group.getLiberties().size() == 0) {
+					captures.add(group);
+					groups.remove(i);
+				}
+			}
+		}
+
+		// join all adjacent groups into new group and add to groups
+		Group superGroup = new Group(toMove);
+		superGroup.add(p, potentialLiberties);
+		for(Group group : adjacentFriendlyGroups) {
+			superGroup.merge(group);
+		}
+		groups.add(superGroup);
+
 	}
 
 	public boolean hasStoneAt(int x, int y) {
@@ -85,34 +116,44 @@ public class Board {
 	}
 
 	public void makeMove(int x, int y) {
-		if(!isValidMove(x, y)) {
+
+		if (!isValidMove(x, y)) {
 			throw new RuntimeException("invalid move");
 		}
-		Point movePlace = new Point(x, y);
 
-		GameState.Color nextPlayer = serializationCache.getToMove().equals(Color.BLACK) ? Color.WHITE : Color.BLACK;
+		cacheDirty = true;
+
+		Point movePlace = new Point(x, y);
+		history.add(new Placement(movePlace, toMove, false));
+		addPointToGroups(movePlace);
+		toMove = toMove.equals(Color.BLACK) ? Color.WHITE : Color.BLACK;
+
 	}
 
 	public void passTurn() {
-		lastMove = null;
-		currentPlayer = BoardUtilities.getOpponent(currentPlayer);
-		this.serializationCache =
-				this.serializationCache.toBuilder()
-				.setToMove(GameState.Color.valueOf(currentPlayer))
-				.build();
+		Point movePlace = new Point(-1,-1);
+		if(history.get(history.size()-1).equals(movePlace)) {
+
+		}
 	}
 
 	public GameState.Moment toMoment() {
+		if(cacheDirty) {
+			this.serializationCache =
+					GameState.Moment.newBuilder()
+							.setToMove(toMove)
+							.addAllMoves(history.stream().map(p -> { return p.toPlacement(); })
+									.collect(Collectors.toList()))
+							.addAllPlayerAsset(groups.stream().map(g -> { return g.toGroup(); })
+									.collect(Collectors.toList()))
+							.addAllPlayerCaptures(captures.stream().map(c -> { return c.toGroup(); })
+									.collect(Collectors.toList()))
+							.build();
+			cacheDirty = false;
+		}
 		return this.serializationCache;
 	}
-	public void placeStone(final GameState.Placement placement) {
-		if(placement.getPlayer().getNumber() < 1 ||
-				placement.getPlayer().getNumber() > 2) {
-			throw new RuntimeException("invalid player");
-		}
-		makeMove(placement.getPlace().getX(), placement.getPlace().getY());
-		this.currentPlayer = placement.getPlayer().getNumber();
-	}
+
 	public void fromMoment(final GameState.Moment moment) {
 		for(GameState.Placement p : moment.getBoardStateList()) {
 			placeStone(p);

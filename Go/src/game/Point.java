@@ -1,5 +1,7 @@
 package game;
 
+import serialization.GameState;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -42,5 +44,12 @@ public class Point {
         }
         Point p = (Point) obj;
         return p.getX() == x && p.getY() == y;
+    }
+
+    public GameState.Intersection toIntersection() {
+        return GameState.Intersection.newBuilder()
+                .setX(x)
+                .setY(y)
+                .build();
     }
 }

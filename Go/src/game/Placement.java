@@ -1,5 +1,6 @@
 package game;
 
+import serialization.GameState;
 import serialization.GameState.Color;
 
 /**
@@ -22,5 +23,12 @@ public class Placement {
     }
     public boolean isCaptured() {
         return captured;
+    }
+    public GameState.Placement toPlacement() {
+        return GameState.Placement.newBuilder()
+                .setCaptured(captured)
+                .setPlace(place.toIntersection())
+                .setPlayer(player)
+                .build();
     }
 }
