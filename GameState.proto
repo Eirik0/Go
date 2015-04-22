@@ -10,9 +10,8 @@ message Intersection {
 	required int32 Y = 2;
 }
 message Placement {
-	required Intersection place = 1;
-	required Color player = 2;
-	required bool captured = 3;
+	required Color player = 1;
+	required Intersection place = 2;
 }
 message Group {
 	required Color player = 1;
@@ -20,8 +19,9 @@ message Group {
 	repeated Intersection liberties = 3;
 }
 message Moment {
-	required Color toMove = 1;
-	repeated Group playerAsset = 2;
-	repeated Group playerCaptures = 3;
-	repeated Placement moves = 4;
+	required bool gameOver = 1;
+	required Color toMove = 2;
+	repeated Group playerAsset = 3;
+	repeated Group playerCaptures = 4;
+	repeated Placement moves = 5;
 }

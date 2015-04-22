@@ -19,7 +19,12 @@ public class Board {
 	private List<Group> captures;
 	private List<Placement> history;
 
+	public static final int DEFAULT_SIZE = 19;
+	public Board() {
+		this(DEFAULT_SIZE);
+	}
 	public Board(int size) {
+
 		boardSize = size;
 		moveIndex = 0;
 		toMove = Color.BLACK;
@@ -82,7 +87,7 @@ public class Board {
 			return false;
 		} else {
 			Placement relevantHistory = history.get(history.size() - 2); // the only way a board state can be repeated is through ko recapture (2 moves back)
-			return relevantHistory.getPlace().equals(searchPoint) && relevantHistory.getPlayer() == toMove && relevantHistory.isCaptured();
+			return relevantHistory.getPlace().equals(searchPoint) && relevantHistory.getPlayer() == toMove;
 		}
 	}
 
@@ -102,7 +107,10 @@ public class Board {
 	}
 
 	public boolean isValidMove(int x, int y) {
-		if (x >= 0 || x < boardSize || y >= 0 || y < boardSize) {
+
+		if(x == -1 && y == -1) {
+			return true;
+		} else if (x < 0 || x >= boardSize || y < 0 || y >= boardSize) {
 			return false;
 		} else if (hasStoneAt(x, y)) {
 			return false;
@@ -124,17 +132,18 @@ public class Board {
 		cacheDirty = true;
 
 		Point movePlace = new Point(x, y);
-		history.add(new Placement(movePlace, toMove, false));
+		history.add(new Placement(movePlace, toMove));
 		addPointToGroups(movePlace);
 		toMove = toMove.equals(Color.BLACK) ? Color.WHITE : Color.BLACK;
 
 	}
 
 	public void passTurn() {
-		Point movePlace = new Point(-1,-1);
-		if(history.get(history.size()-1).equals(movePlace)) {
-
+		Placement p = new Placement(toMove);
+		if(history.get(history.size()-1).equals(p.getPlace())) {
+			gameOver = true;
 		}
+		makeMove(p.getPlace().getX(), p.getPlace().getY());
 	}
 
 	public GameState.Moment toMoment() {
@@ -155,8 +164,8 @@ public class Board {
 	}
 
 	public void fromMoment(final GameState.Moment moment) {
-		for(GameState.Placement p : moment.getBoardStateList()) {
-			placeStone(p);
+		for(GameState.Placement p : moment.getMovesList()) {
+			makeMove(p.getPlace().getX(), p.getPlace().getY());
 		}
 	}
 }
