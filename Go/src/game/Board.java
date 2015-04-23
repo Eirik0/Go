@@ -31,7 +31,7 @@ public class Board {
 		cacheDirty = false;
 		gameOver = false;
 
-		serializationCache.toBuilder().setToMove(Color.BLACK);
+		serializationCache = GameState.Moment.newBuilder().setToMove(Color.BLACK).build();
 	}
 
 	public int getBoardSize() {
@@ -136,6 +136,8 @@ public class Board {
 		addPointToGroups(movePlace);
 		toMove = toMove.equals(Color.BLACK) ? Color.WHITE : Color.BLACK;
 
+		refreshCache();
+
 	}
 
 	public void passTurn() {
@@ -146,19 +148,24 @@ public class Board {
 		makeMove(p.getPlace().getX(), p.getPlace().getY());
 	}
 
+	private void refreshCache() {
+		this.serializationCache =
+				GameState.Moment.newBuilder()
+						.setGameOver(gameOver)
+						.setToMove(toMove)
+						.addAllMoves(history.stream().map(p -> { return p.toPlacement(); })
+								.collect(Collectors.toList()))
+						.addAllPlayerAsset(groups.stream().map(g -> { return g.toGroup(); })
+								.collect(Collectors.toList()))
+						.addAllPlayerCaptures(captures.stream().map(c -> { return c.toGroup(); })
+								.collect(Collectors.toList()))
+						.build();
+		cacheDirty = false;
+	}
+
 	public GameState.Moment toMoment() {
 		if(cacheDirty) {
-			this.serializationCache =
-					GameState.Moment.newBuilder()
-							.setToMove(toMove)
-							.addAllMoves(history.stream().map(p -> { return p.toPlacement(); })
-									.collect(Collectors.toList()))
-							.addAllPlayerAsset(groups.stream().map(g -> { return g.toGroup(); })
-									.collect(Collectors.toList()))
-							.addAllPlayerCaptures(captures.stream().map(c -> { return c.toGroup(); })
-									.collect(Collectors.toList()))
-							.build();
-			cacheDirty = false;
+			refreshCache();
 		}
 		return this.serializationCache;
 	}
