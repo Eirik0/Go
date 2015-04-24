@@ -14,17 +14,23 @@ import serialization.GameState.Color;
  */
 public class Group {
 
-    private Set<Point> points;
-    private Set<Point> liberties;
-    Color color;
+    protected Set<Point> points;
+    protected Set<Point> liberties;
+    protected Color color;
 
     public Group(final Color c) {
         this(c, new HashSet<>(), new HashSet<>());
+    }
+    public Group(final Group g) {
+        this(g.getColor(), g.getPoints(), g.getLiberties());
     }
     public Group(final Color c, final Set<Point> pts, final Set<Point> libs) {
         color = c;
         points = pts;
         liberties = libs;
+    }
+    public Set<Point> getPoints() {
+        return points;
     }
     public Color getColor() {
         return color;
@@ -82,10 +88,14 @@ public class Group {
         return GameState.Group.newBuilder()
                 .setPlayer(color)
                 .addAllStones(points.stream()
-                        .map(p -> { return p.toIntersection(); })
+                        .map(p -> {
+                            return p.toIntersection();
+                        })
                         .collect(Collectors.toList()))
                 .addAllLiberties(liberties.stream()
-                        .map(l -> { return l.toIntersection(); })
+                        .map(l -> {
+                            return l.toIntersection();
+                        })
                         .collect(Collectors.toList()))
                 .build();
     }

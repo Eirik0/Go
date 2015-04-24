@@ -1,58 +1,101 @@
 package gui;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.*;
-import javax.swing.border.EtchedBorder;
 
 import game.Board;
 
-public class Go {
+public class Go extends JFrame {
+
 	private static final String TITLE = "Go";
 
 	public static final int DEFAULT_WIDTH = 800;
 	public static final int DEFAULT_HEIGHT = 800;
 
-	public static Board controller;
+	class BoardViewPanel extends JPanel {
+
+		private Board controller;
+
+		public BoardViewPanel(final Board c) {
+			super(new BorderLayout());
+			controller = c;
+		}
+
+		public BoardViewPanel() {
+			this(new Board());
+		}
+
+		@Override
+		public void paintComponent(final Graphics g) {
+			super.paintComponent(g);
+
+			int xPadding = getWidth() / 10;
+			int yPadding = getHeight() / 10;
+			int xIncrement = (getWidth() - 2*xPadding) / controller.getBoardSize();
+			int yIncrement = (getHeight() - 2*yPadding) / controller.getBoardSize();
+			for(int i = 0; i < controller.getBoardSize(); i++) {
+				g.drawLine(xPadding, yPadding + i*yIncrement, getWidth() - xPadding, yPadding + i*yIncrement);
+				g.drawLine(xPadding + i*xIncrement, yPadding, xPadding + i*xIncrement, getHeight() - yPadding);
+			}
+
+		}
+	}
+
+	private Board controller;
+	private JButton quitButton;
+	private JButton startButton;
+	private JPanel buttonPanel;
+	private BoardViewPanel gridPanel;
+
+	public Go() {
+
+		super(TITLE);
+		Container cp = getContentPane();
+
+		cp.setLayout(new BoxLayout(cp, BoxLayout.Y_AXIS));
+
+		controller = new Board();
+		gridPanel = new BoardViewPanel(controller);
+		gridPanel.setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
+
+		cp.add(gridPanel);
+
+		buttonPanel = new JPanel(new BorderLayout());
+		buttonPanel.add(quitButton = new JButton("Quit"), BorderLayout.EAST);
+		buttonPanel.add(startButton = new JButton("Start"), BorderLayout.WEST);
+		cp.add(buttonPanel);
+
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		pack();
+
+		quitButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+				dispose();
+				System.exit(0);
+			}
+		});
+		startButton.addActionListener(a -> startGame());
+
+	}
+
+	public void startGame() {
+
+	}
 
 	public static void main(String[] args) {
 
-		JFrame mainFrame = new JFrame();
-		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		mainFrame.setTitle(TITLE);
-		mainFrame.setLayout(new BorderLayout());
+		final Go gui = new Go();
+		EventQueue.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				gui.setVisible(true);
+			}
+		});
 
-		mainFrame.add(createTopPanel(), BorderLayout.NORTH);
-
-		mainFrame.pack();
-		mainFrame.setVisible(true);
 	}
 
-	private static JPanel createTopPanel() {
-
-		JButton passButton = new JButton("Start Game");
-		passButton.setFocusable(false);
-		passButton.addActionListener(e -> startGame());
-
-		JPanel passPanel = new JPanel(new FlowLayout(FlowLayout.TRAILING));
-		passPanel.add(passButton);
-		passPanel.add(Box.createHorizontalStrut(20));
-
-		JPanel topPanel = new JPanel(new BorderLayout());
-		topPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		topPanel.add(passPanel, BorderLayout.EAST);
-
-		return topPanel;
-	}
-
-	private static void startGame() {
-		controller = new Board();
-	}
-
-	private static <T> JComboBox<T> createComboBox(T[] values, T selectedItem) {
-		JComboBox<T> comboBox = new JComboBox<>(values);
-		comboBox.setSelectedItem(selectedItem);
-		comboBox.setFocusable(false);
-		return comboBox;
-	}
 }

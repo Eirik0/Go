@@ -18,10 +18,14 @@ message Group {
 	repeated Intersection stones = 2;
 	repeated Intersection liberties = 3;
 }
+message Capture {
+	required int32 moveIndex = 1;
+	required Group capturedGroup = 2;
+}
 message Moment {
 	required bool gameOver = 1;
 	required Color toMove = 2;
 	repeated Group playerAsset = 3;
-	repeated Group playerCaptures = 4;
+	repeated Capture playerCaptures = 4;
 	repeated Placement moves = 5;
 }

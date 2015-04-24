@@ -16,7 +16,7 @@ public class Board {
 	private boolean gameOver;
 	private Color toMove;
 	private List<Group> groups;
-	private List<Group> captures;
+	private List<CapturedGroup> captures;
 	private List<Placement> history;
 
 	public static final int DEFAULT_SIZE = 19;
@@ -25,13 +25,19 @@ public class Board {
 	}
 	public Board(int size) {
 
+		groups = new ArrayList<>();
+		captures = new ArrayList<>();
+		history = new ArrayList<>();
+
 		boardSize = size;
 		moveIndex = 0;
 		toMove = Color.BLACK;
 		cacheDirty = false;
 		gameOver = false;
 
-		serializationCache = GameState.Moment.newBuilder().setToMove(Color.BLACK).build();
+		serializationCache = GameState.Moment.newBuilder()
+				.setToMove(Color.BLACK)
+				.setGameOver(gameOver).build();
 	}
 
 	public int getBoardSize() {
@@ -55,7 +61,7 @@ public class Board {
 				if(group.getColor().equals(toMove)) {
 					adjacentFriendlyGroups.add(group);
 				} else if(group.getLiberties().size() == 0) {
-					captures.add(group);
+					captures.add(new CapturedGroup(group, moveIndex));
 					groups.remove(i);
 				}
 			}
@@ -71,8 +77,11 @@ public class Board {
 
 	}
 
-	public boolean hasStoneAt(int x, int y) {
-		Point p = new Point(x, y);
+	public boolean isGameOver() {
+		return gameOver;
+	}
+
+	public boolean hasStoneAt(final Point p) {
 		for(Group group : groups) {
 			if(group.contains(p)) {
 				return true;
@@ -81,42 +90,44 @@ public class Board {
 		return false;
 	}
 
-	public boolean isRepeated(int x, int y) {
-		Point searchPoint = new Point(x, y);
-		if(history.size() < 7) {
+	public boolean isRepeated(final Point p) {
+		if(captures.size() == 0) {
 			return false;
 		} else {
-			Placement relevantHistory = history.get(history.size() - 2); // the only way a board state can be repeated is through ko recapture (2 moves back)
-			return relevantHistory.getPlace().equals(searchPoint) && relevantHistory.getPlayer() == toMove;
+			CapturedGroup lastCapture = captures.get(captures.size()-1);
+			if(lastCapture.getPoints().size() == 1) {
+				return lastCapture.getPoints().contains(p) && lastCapture.getMoveIndex() == moveIndex - 1;
+			} else {
+				return false;
+			}
 		}
 	}
 
-	public boolean isSuicide(int x, int y) {
-		Point hypotheticalPoint = new Point(x, y);
+	public boolean isSuicide(final Point p) {
 		Set<Point> consumedLiberties = new HashSet<>();
 		for(Group group : groups) {
 			if(group.getColor().equals(toMove)) {
 				if(group.getLiberties().size() == 1) {
-					consumedLiberties.addAll(group.getAdjacentPoints(hypotheticalPoint));
+					consumedLiberties.addAll(group.getAdjacentPoints(p));
 				}
-			} else {
-				consumedLiberties.addAll(group.getAdjacentPoints(hypotheticalPoint));
+			} else if(group.getLiberties().size() > 1) {
+				consumedLiberties.addAll(group.getAdjacentPoints(p));
 			}
 		}
-		return consumedLiberties.containsAll(hypotheticalPoint.getAdjacent());
+		return consumedLiberties.containsAll(p.getAdjacent());
 	}
 
-	public boolean isValidMove(int x, int y) {
+	public boolean isValidMove(final Point p) {
 
-		if(x == -1 && y == -1) {
+		if(p.getX() == -1 && p.getY() == -1) {
 			return true;
-		} else if (x < 0 || x >= boardSize || y < 0 || y >= boardSize) {
+		} else if (p.getX() < 0 || p.getY() >= boardSize || p.getX() < 0 || p.getY() >= boardSize) {
 			return false;
-		} else if (hasStoneAt(x, y)) {
+		} else if (hasStoneAt(p)) {
 			return false;
-		} else if (isRepeated(x, y)) {
+		} else if (isRepeated(p)) {
 			return false;
-		} else if (isSuicide(x, y)) {
+		} else if (isSuicide(p)) {
 			return false;
 		} else {
 			return true;
@@ -125,27 +136,30 @@ public class Board {
 
 	public void makeMove(int x, int y) {
 
-		if (!isValidMove(x, y)) {
+		Point movePlace = new Point(x, y);
+		if (!isValidMove(movePlace)) {
 			throw new RuntimeException("invalid move");
 		}
 
 		cacheDirty = true;
 
-		Point movePlace = new Point(x, y);
 		history.add(new Placement(movePlace, toMove));
-		addPointToGroups(movePlace);
+		if(movePlace.getX() >= 0 && movePlace.getY() >= 0) {
+			addPointToGroups(movePlace);
+		}
 		toMove = toMove.equals(Color.BLACK) ? Color.WHITE : Color.BLACK;
+		moveIndex++;
 
 		refreshCache();
 
 	}
 
 	public void passTurn() {
-		Placement p = new Placement(toMove);
-		if(history.get(history.size()-1).equals(p.getPlace())) {
+		Point p = new Point();
+		if(history.size() > 0 && history.get(history.size()-1).getPlace().equals(p)) {
 			gameOver = true;
 		}
-		makeMove(p.getPlace().getX(), p.getPlace().getY());
+		makeMove(p.getX(), p.getY());
 	}
 
 	private void refreshCache() {
@@ -157,7 +171,7 @@ public class Board {
 								.collect(Collectors.toList()))
 						.addAllPlayerAsset(groups.stream().map(g -> { return g.toGroup(); })
 								.collect(Collectors.toList()))
-						.addAllPlayerCaptures(captures.stream().map(c -> { return c.toGroup(); })
+						.addAllPlayerCaptures(captures.stream().map(c -> { return c.toCapture(); })
 								.collect(Collectors.toList()))
 						.build();
 		cacheDirty = false;
@@ -175,4 +189,20 @@ public class Board {
 			makeMove(p.getPlace().getX(), p.getPlace().getY());
 		}
 	}
+	public List<Placement> getHistory() {
+		return history;
+	}
+
+	public List<Group> getGroups() {
+		return groups;
+	}
+
+	public List<CapturedGroup> getCaptures() {
+		return captures;
+	}
+
+	public Color getToMove() {
+		return toMove;
+	}
+
 }

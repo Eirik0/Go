@@ -13,9 +13,14 @@ public class Point {
     private int x;
     private int y;
 
+    public Point() {
+        this.x = -1;
+        this.y = -1;
+    }
+
     public Point(int x, int y) {
-        x = x;
-        y = y;
+        this.x = x;
+        this.y = y;
     }
 
     public int getX() {
@@ -36,6 +41,7 @@ public class Point {
         return adjacent;
     }
 
+    @Override
     public boolean equals(Object obj) {
         if (obj == this) {
             return true;
@@ -44,6 +50,11 @@ public class Point {
         }
         Point p = (Point) obj;
         return p.getX() == x && p.getY() == y;
+    }
+
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(x - y);
     }
 
     public GameState.Intersection toIntersection() {

@@ -2368,6 +2368,615 @@ public final class GameState {
     }
   }
 
+  public interface CaptureOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:serialization.Capture)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required int32 moveIndex = 1;</code>
+     */
+    boolean hasMoveIndex();
+    /**
+     * <code>required int32 moveIndex = 1;</code>
+     */
+    int getMoveIndex();
+
+    /**
+     * <code>required .serialization.Group capturedGroup = 2;</code>
+     */
+    boolean hasCapturedGroup();
+    /**
+     * <code>required .serialization.Group capturedGroup = 2;</code>
+     */
+    serialization.GameState.Group getCapturedGroup();
+    /**
+     * <code>required .serialization.Group capturedGroup = 2;</code>
+     */
+    serialization.GameState.GroupOrBuilder getCapturedGroupOrBuilder();
+  }
+  /**
+   * Protobuf type {@code serialization.Capture}
+   */
+  public  static final class Capture extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:serialization.Capture)
+      CaptureOrBuilder {
+    // Use Capture.newBuilder() to construct.
+    private Capture(com.google.protobuf.GeneratedMessage.Builder builder) {
+      super(builder);
+    }
+    private Capture() {
+      moveIndex_ = 0;
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private Capture(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry) {
+      this();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              moveIndex_ = input.readInt32();
+              break;
+            }
+            case 18: {
+              serialization.GameState.Group.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000002) == 0x00000002)) {
+                subBuilder = capturedGroup_.toBuilder();
+              }
+              capturedGroup_ = input.readMessage(serialization.GameState.Group.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(capturedGroup_);
+                capturedGroup_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000002;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw new RuntimeException(e.setUnfinishedMessage(this));
+      } catch (java.io.IOException e) {
+        throw new RuntimeException(
+            new com.google.protobuf.InvalidProtocolBufferException(
+                e.getMessage()).setUnfinishedMessage(this));
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return serialization.GameState.internal_static_serialization_Capture_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return serialization.GameState.internal_static_serialization_Capture_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              serialization.GameState.Capture.class, serialization.GameState.Capture.Builder.class);
+    }
+
+    public static final com.google.protobuf.Parser<Capture> PARSER =
+        new com.google.protobuf.AbstractParser<Capture>() {
+      public Capture parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        try {
+          return new Capture(input, extensionRegistry);
+        } catch (RuntimeException e) {
+          if (e.getCause() instanceof
+              com.google.protobuf.InvalidProtocolBufferException) {
+            throw (com.google.protobuf.InvalidProtocolBufferException)
+                e.getCause();
+          }
+          throw e;
+        }
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<Capture> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int MOVEINDEX_FIELD_NUMBER = 1;
+    private int moveIndex_;
+    /**
+     * <code>required int32 moveIndex = 1;</code>
+     */
+    public boolean hasMoveIndex() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required int32 moveIndex = 1;</code>
+     */
+    public int getMoveIndex() {
+      return moveIndex_;
+    }
+
+    public static final int CAPTUREDGROUP_FIELD_NUMBER = 2;
+    private serialization.GameState.Group capturedGroup_;
+    /**
+     * <code>required .serialization.Group capturedGroup = 2;</code>
+     */
+    public boolean hasCapturedGroup() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required .serialization.Group capturedGroup = 2;</code>
+     */
+    public serialization.GameState.Group getCapturedGroup() {
+      return capturedGroup_ == null ? serialization.GameState.Group.getDefaultInstance() : capturedGroup_;
+    }
+    /**
+     * <code>required .serialization.Group capturedGroup = 2;</code>
+     */
+    public serialization.GameState.GroupOrBuilder getCapturedGroupOrBuilder() {
+      return capturedGroup_ == null ? serialization.GameState.Group.getDefaultInstance() : capturedGroup_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasMoveIndex()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasCapturedGroup()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!getCapturedGroup().isInitialized()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeInt32(1, moveIndex_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeMessage(2, getCapturedGroup());
+      }
+      unknownFields.writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(1, moveIndex_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, getCapturedGroup());
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    public static serialization.GameState.Capture parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static serialization.GameState.Capture parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static serialization.GameState.Capture parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static serialization.GameState.Capture parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static serialization.GameState.Capture parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static serialization.GameState.Capture parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static serialization.GameState.Capture parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static serialization.GameState.Capture parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static serialization.GameState.Capture parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static serialization.GameState.Capture parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return defaultInstance.toBuilder();
+    }
+    public static Builder newBuilder(serialization.GameState.Capture prototype) {
+      return defaultInstance.toBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() {
+      return this == defaultInstance
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code serialization.Capture}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:serialization.Capture)
+        serialization.GameState.CaptureOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return serialization.GameState.internal_static_serialization_Capture_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return serialization.GameState.internal_static_serialization_Capture_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                serialization.GameState.Capture.class, serialization.GameState.Capture.Builder.class);
+      }
+
+      // Construct using serialization.GameState.Capture.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getCapturedGroupFieldBuilder();
+        }
+      }
+      public Builder clear() {
+        super.clear();
+        moveIndex_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        if (capturedGroupBuilder_ == null) {
+          capturedGroup_ = null;
+        } else {
+          capturedGroupBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return serialization.GameState.internal_static_serialization_Capture_descriptor;
+      }
+
+      public serialization.GameState.Capture getDefaultInstanceForType() {
+        return serialization.GameState.Capture.getDefaultInstance();
+      }
+
+      public serialization.GameState.Capture build() {
+        serialization.GameState.Capture result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public serialization.GameState.Capture buildPartial() {
+        serialization.GameState.Capture result = new serialization.GameState.Capture(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.moveIndex_ = moveIndex_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        if (capturedGroupBuilder_ == null) {
+          result.capturedGroup_ = capturedGroup_;
+        } else {
+          result.capturedGroup_ = capturedGroupBuilder_.build();
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof serialization.GameState.Capture) {
+          return mergeFrom((serialization.GameState.Capture)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(serialization.GameState.Capture other) {
+        if (other == serialization.GameState.Capture.getDefaultInstance()) return this;
+        if (other.hasMoveIndex()) {
+          setMoveIndex(other.getMoveIndex());
+        }
+        if (other.hasCapturedGroup()) {
+          mergeCapturedGroup(other.getCapturedGroup());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasMoveIndex()) {
+          
+          return false;
+        }
+        if (!hasCapturedGroup()) {
+          
+          return false;
+        }
+        if (!getCapturedGroup().isInitialized()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        serialization.GameState.Capture parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (serialization.GameState.Capture) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private int moveIndex_ ;
+      /**
+       * <code>required int32 moveIndex = 1;</code>
+       */
+      public boolean hasMoveIndex() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required int32 moveIndex = 1;</code>
+       */
+      public int getMoveIndex() {
+        return moveIndex_;
+      }
+      /**
+       * <code>required int32 moveIndex = 1;</code>
+       */
+      public Builder setMoveIndex(int value) {
+        bitField0_ |= 0x00000001;
+        moveIndex_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int32 moveIndex = 1;</code>
+       */
+      public Builder clearMoveIndex() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        moveIndex_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private serialization.GameState.Group capturedGroup_ = null;
+      private com.google.protobuf.SingleFieldBuilder<
+          serialization.GameState.Group, serialization.GameState.Group.Builder, serialization.GameState.GroupOrBuilder> capturedGroupBuilder_;
+      /**
+       * <code>required .serialization.Group capturedGroup = 2;</code>
+       */
+      public boolean hasCapturedGroup() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required .serialization.Group capturedGroup = 2;</code>
+       */
+      public serialization.GameState.Group getCapturedGroup() {
+        if (capturedGroupBuilder_ == null) {
+          return capturedGroup_ == null ? serialization.GameState.Group.getDefaultInstance() : capturedGroup_;
+        } else {
+          return capturedGroupBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>required .serialization.Group capturedGroup = 2;</code>
+       */
+      public Builder setCapturedGroup(serialization.GameState.Group value) {
+        if (capturedGroupBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          capturedGroup_ = value;
+          onChanged();
+        } else {
+          capturedGroupBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      /**
+       * <code>required .serialization.Group capturedGroup = 2;</code>
+       */
+      public Builder setCapturedGroup(
+          serialization.GameState.Group.Builder builderForValue) {
+        if (capturedGroupBuilder_ == null) {
+          capturedGroup_ = builderForValue.build();
+          onChanged();
+        } else {
+          capturedGroupBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      /**
+       * <code>required .serialization.Group capturedGroup = 2;</code>
+       */
+      public Builder mergeCapturedGroup(serialization.GameState.Group value) {
+        if (capturedGroupBuilder_ == null) {
+          if (((bitField0_ & 0x00000002) == 0x00000002) &&
+              capturedGroup_ != null &&
+              capturedGroup_ != serialization.GameState.Group.getDefaultInstance()) {
+            capturedGroup_ =
+              serialization.GameState.Group.newBuilder(capturedGroup_).mergeFrom(value).buildPartial();
+          } else {
+            capturedGroup_ = value;
+          }
+          onChanged();
+        } else {
+          capturedGroupBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      /**
+       * <code>required .serialization.Group capturedGroup = 2;</code>
+       */
+      public Builder clearCapturedGroup() {
+        if (capturedGroupBuilder_ == null) {
+          capturedGroup_ = null;
+          onChanged();
+        } else {
+          capturedGroupBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+      /**
+       * <code>required .serialization.Group capturedGroup = 2;</code>
+       */
+      public serialization.GameState.Group.Builder getCapturedGroupBuilder() {
+        bitField0_ |= 0x00000002;
+        onChanged();
+        return getCapturedGroupFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>required .serialization.Group capturedGroup = 2;</code>
+       */
+      public serialization.GameState.GroupOrBuilder getCapturedGroupOrBuilder() {
+        if (capturedGroupBuilder_ != null) {
+          return capturedGroupBuilder_.getMessageOrBuilder();
+        } else {
+          return capturedGroup_ == null ?
+              serialization.GameState.Group.getDefaultInstance() : capturedGroup_;
+        }
+      }
+      /**
+       * <code>required .serialization.Group capturedGroup = 2;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          serialization.GameState.Group, serialization.GameState.Group.Builder, serialization.GameState.GroupOrBuilder> 
+          getCapturedGroupFieldBuilder() {
+        if (capturedGroupBuilder_ == null) {
+          capturedGroupBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              serialization.GameState.Group, serialization.GameState.Group.Builder, serialization.GameState.GroupOrBuilder>(
+                  getCapturedGroup(),
+                  getParentForChildren(),
+                  isClean());
+          capturedGroup_ = null;
+        }
+        return capturedGroupBuilder_;
+      }
+
+      // @@protoc_insertion_point(builder_scope:serialization.Capture)
+    }
+
+    // @@protoc_insertion_point(class_scope:serialization.Capture)
+    private static final serialization.GameState.Capture defaultInstance;
+    static {
+      defaultInstance = new serialization.GameState.Capture();
+    }
+
+    public static serialization.GameState.Capture getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public serialization.GameState.Capture getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    static {
+    }
+  }
+
   public interface MomentOrBuilder extends
       // @@protoc_insertion_point(interface_extends:serialization.Moment)
       com.google.protobuf.MessageOrBuilder {
@@ -2415,27 +3024,27 @@ public final class GameState {
         int index);
 
     /**
-     * <code>repeated .serialization.Group playerCaptures = 4;</code>
+     * <code>repeated .serialization.Capture playerCaptures = 4;</code>
      */
-    java.util.List<serialization.GameState.Group> 
+    java.util.List<serialization.GameState.Capture> 
         getPlayerCapturesList();
     /**
-     * <code>repeated .serialization.Group playerCaptures = 4;</code>
+     * <code>repeated .serialization.Capture playerCaptures = 4;</code>
      */
-    serialization.GameState.Group getPlayerCaptures(int index);
+    serialization.GameState.Capture getPlayerCaptures(int index);
     /**
-     * <code>repeated .serialization.Group playerCaptures = 4;</code>
+     * <code>repeated .serialization.Capture playerCaptures = 4;</code>
      */
     int getPlayerCapturesCount();
     /**
-     * <code>repeated .serialization.Group playerCaptures = 4;</code>
+     * <code>repeated .serialization.Capture playerCaptures = 4;</code>
      */
-    java.util.List<? extends serialization.GameState.GroupOrBuilder> 
+    java.util.List<? extends serialization.GameState.CaptureOrBuilder> 
         getPlayerCapturesOrBuilderList();
     /**
-     * <code>repeated .serialization.Group playerCaptures = 4;</code>
+     * <code>repeated .serialization.Capture playerCaptures = 4;</code>
      */
-    serialization.GameState.GroupOrBuilder getPlayerCapturesOrBuilder(
+    serialization.GameState.CaptureOrBuilder getPlayerCapturesOrBuilder(
         int index);
 
     /**
@@ -2534,10 +3143,10 @@ public final class GameState {
             }
             case 34: {
               if (!((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
-                playerCaptures_ = new java.util.ArrayList<serialization.GameState.Group>();
+                playerCaptures_ = new java.util.ArrayList<serialization.GameState.Capture>();
                 mutable_bitField0_ |= 0x00000008;
               }
-              playerCaptures_.add(input.readMessage(serialization.GameState.Group.PARSER, extensionRegistry));
+              playerCaptures_.add(input.readMessage(serialization.GameState.Capture.PARSER, extensionRegistry));
               break;
             }
             case 42: {
@@ -2674,36 +3283,36 @@ public final class GameState {
     }
 
     public static final int PLAYERCAPTURES_FIELD_NUMBER = 4;
-    private java.util.List<serialization.GameState.Group> playerCaptures_;
+    private java.util.List<serialization.GameState.Capture> playerCaptures_;
     /**
-     * <code>repeated .serialization.Group playerCaptures = 4;</code>
+     * <code>repeated .serialization.Capture playerCaptures = 4;</code>
      */
-    public java.util.List<serialization.GameState.Group> getPlayerCapturesList() {
+    public java.util.List<serialization.GameState.Capture> getPlayerCapturesList() {
       return playerCaptures_;
     }
     /**
-     * <code>repeated .serialization.Group playerCaptures = 4;</code>
+     * <code>repeated .serialization.Capture playerCaptures = 4;</code>
      */
-    public java.util.List<? extends serialization.GameState.GroupOrBuilder> 
+    public java.util.List<? extends serialization.GameState.CaptureOrBuilder> 
         getPlayerCapturesOrBuilderList() {
       return playerCaptures_;
     }
     /**
-     * <code>repeated .serialization.Group playerCaptures = 4;</code>
+     * <code>repeated .serialization.Capture playerCaptures = 4;</code>
      */
     public int getPlayerCapturesCount() {
       return playerCaptures_.size();
     }
     /**
-     * <code>repeated .serialization.Group playerCaptures = 4;</code>
+     * <code>repeated .serialization.Capture playerCaptures = 4;</code>
      */
-    public serialization.GameState.Group getPlayerCaptures(int index) {
+    public serialization.GameState.Capture getPlayerCaptures(int index) {
       return playerCaptures_.get(index);
     }
     /**
-     * <code>repeated .serialization.Group playerCaptures = 4;</code>
+     * <code>repeated .serialization.Capture playerCaptures = 4;</code>
      */
-    public serialization.GameState.GroupOrBuilder getPlayerCapturesOrBuilder(
+    public serialization.GameState.CaptureOrBuilder getPlayerCapturesOrBuilder(
         int index) {
       return playerCaptures_.get(index);
     }
@@ -3483,22 +4092,22 @@ public final class GameState {
         return playerAssetBuilder_;
       }
 
-      private java.util.List<serialization.GameState.Group> playerCaptures_ =
+      private java.util.List<serialization.GameState.Capture> playerCaptures_ =
         java.util.Collections.emptyList();
       private void ensurePlayerCapturesIsMutable() {
         if (!((bitField0_ & 0x00000008) == 0x00000008)) {
-          playerCaptures_ = new java.util.ArrayList<serialization.GameState.Group>(playerCaptures_);
+          playerCaptures_ = new java.util.ArrayList<serialization.GameState.Capture>(playerCaptures_);
           bitField0_ |= 0x00000008;
          }
       }
 
       private com.google.protobuf.RepeatedFieldBuilder<
-          serialization.GameState.Group, serialization.GameState.Group.Builder, serialization.GameState.GroupOrBuilder> playerCapturesBuilder_;
+          serialization.GameState.Capture, serialization.GameState.Capture.Builder, serialization.GameState.CaptureOrBuilder> playerCapturesBuilder_;
 
       /**
-       * <code>repeated .serialization.Group playerCaptures = 4;</code>
+       * <code>repeated .serialization.Capture playerCaptures = 4;</code>
        */
-      public java.util.List<serialization.GameState.Group> getPlayerCapturesList() {
+      public java.util.List<serialization.GameState.Capture> getPlayerCapturesList() {
         if (playerCapturesBuilder_ == null) {
           return java.util.Collections.unmodifiableList(playerCaptures_);
         } else {
@@ -3506,7 +4115,7 @@ public final class GameState {
         }
       }
       /**
-       * <code>repeated .serialization.Group playerCaptures = 4;</code>
+       * <code>repeated .serialization.Capture playerCaptures = 4;</code>
        */
       public int getPlayerCapturesCount() {
         if (playerCapturesBuilder_ == null) {
@@ -3516,9 +4125,9 @@ public final class GameState {
         }
       }
       /**
-       * <code>repeated .serialization.Group playerCaptures = 4;</code>
+       * <code>repeated .serialization.Capture playerCaptures = 4;</code>
        */
-      public serialization.GameState.Group getPlayerCaptures(int index) {
+      public serialization.GameState.Capture getPlayerCaptures(int index) {
         if (playerCapturesBuilder_ == null) {
           return playerCaptures_.get(index);
         } else {
@@ -3526,10 +4135,10 @@ public final class GameState {
         }
       }
       /**
-       * <code>repeated .serialization.Group playerCaptures = 4;</code>
+       * <code>repeated .serialization.Capture playerCaptures = 4;</code>
        */
       public Builder setPlayerCaptures(
-          int index, serialization.GameState.Group value) {
+          int index, serialization.GameState.Capture value) {
         if (playerCapturesBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -3543,10 +4152,10 @@ public final class GameState {
         return this;
       }
       /**
-       * <code>repeated .serialization.Group playerCaptures = 4;</code>
+       * <code>repeated .serialization.Capture playerCaptures = 4;</code>
        */
       public Builder setPlayerCaptures(
-          int index, serialization.GameState.Group.Builder builderForValue) {
+          int index, serialization.GameState.Capture.Builder builderForValue) {
         if (playerCapturesBuilder_ == null) {
           ensurePlayerCapturesIsMutable();
           playerCaptures_.set(index, builderForValue.build());
@@ -3557,9 +4166,9 @@ public final class GameState {
         return this;
       }
       /**
-       * <code>repeated .serialization.Group playerCaptures = 4;</code>
+       * <code>repeated .serialization.Capture playerCaptures = 4;</code>
        */
-      public Builder addPlayerCaptures(serialization.GameState.Group value) {
+      public Builder addPlayerCaptures(serialization.GameState.Capture value) {
         if (playerCapturesBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -3573,10 +4182,10 @@ public final class GameState {
         return this;
       }
       /**
-       * <code>repeated .serialization.Group playerCaptures = 4;</code>
+       * <code>repeated .serialization.Capture playerCaptures = 4;</code>
        */
       public Builder addPlayerCaptures(
-          int index, serialization.GameState.Group value) {
+          int index, serialization.GameState.Capture value) {
         if (playerCapturesBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -3590,10 +4199,10 @@ public final class GameState {
         return this;
       }
       /**
-       * <code>repeated .serialization.Group playerCaptures = 4;</code>
+       * <code>repeated .serialization.Capture playerCaptures = 4;</code>
        */
       public Builder addPlayerCaptures(
-          serialization.GameState.Group.Builder builderForValue) {
+          serialization.GameState.Capture.Builder builderForValue) {
         if (playerCapturesBuilder_ == null) {
           ensurePlayerCapturesIsMutable();
           playerCaptures_.add(builderForValue.build());
@@ -3604,10 +4213,10 @@ public final class GameState {
         return this;
       }
       /**
-       * <code>repeated .serialization.Group playerCaptures = 4;</code>
+       * <code>repeated .serialization.Capture playerCaptures = 4;</code>
        */
       public Builder addPlayerCaptures(
-          int index, serialization.GameState.Group.Builder builderForValue) {
+          int index, serialization.GameState.Capture.Builder builderForValue) {
         if (playerCapturesBuilder_ == null) {
           ensurePlayerCapturesIsMutable();
           playerCaptures_.add(index, builderForValue.build());
@@ -3618,10 +4227,10 @@ public final class GameState {
         return this;
       }
       /**
-       * <code>repeated .serialization.Group playerCaptures = 4;</code>
+       * <code>repeated .serialization.Capture playerCaptures = 4;</code>
        */
       public Builder addAllPlayerCaptures(
-          java.lang.Iterable<? extends serialization.GameState.Group> values) {
+          java.lang.Iterable<? extends serialization.GameState.Capture> values) {
         if (playerCapturesBuilder_ == null) {
           ensurePlayerCapturesIsMutable();
           com.google.protobuf.AbstractMessageLite.Builder.addAll(
@@ -3633,7 +4242,7 @@ public final class GameState {
         return this;
       }
       /**
-       * <code>repeated .serialization.Group playerCaptures = 4;</code>
+       * <code>repeated .serialization.Capture playerCaptures = 4;</code>
        */
       public Builder clearPlayerCaptures() {
         if (playerCapturesBuilder_ == null) {
@@ -3646,7 +4255,7 @@ public final class GameState {
         return this;
       }
       /**
-       * <code>repeated .serialization.Group playerCaptures = 4;</code>
+       * <code>repeated .serialization.Capture playerCaptures = 4;</code>
        */
       public Builder removePlayerCaptures(int index) {
         if (playerCapturesBuilder_ == null) {
@@ -3659,16 +4268,16 @@ public final class GameState {
         return this;
       }
       /**
-       * <code>repeated .serialization.Group playerCaptures = 4;</code>
+       * <code>repeated .serialization.Capture playerCaptures = 4;</code>
        */
-      public serialization.GameState.Group.Builder getPlayerCapturesBuilder(
+      public serialization.GameState.Capture.Builder getPlayerCapturesBuilder(
           int index) {
         return getPlayerCapturesFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .serialization.Group playerCaptures = 4;</code>
+       * <code>repeated .serialization.Capture playerCaptures = 4;</code>
        */
-      public serialization.GameState.GroupOrBuilder getPlayerCapturesOrBuilder(
+      public serialization.GameState.CaptureOrBuilder getPlayerCapturesOrBuilder(
           int index) {
         if (playerCapturesBuilder_ == null) {
           return playerCaptures_.get(index);  } else {
@@ -3676,9 +4285,9 @@ public final class GameState {
         }
       }
       /**
-       * <code>repeated .serialization.Group playerCaptures = 4;</code>
+       * <code>repeated .serialization.Capture playerCaptures = 4;</code>
        */
-      public java.util.List<? extends serialization.GameState.GroupOrBuilder> 
+      public java.util.List<? extends serialization.GameState.CaptureOrBuilder> 
            getPlayerCapturesOrBuilderList() {
         if (playerCapturesBuilder_ != null) {
           return playerCapturesBuilder_.getMessageOrBuilderList();
@@ -3687,33 +4296,33 @@ public final class GameState {
         }
       }
       /**
-       * <code>repeated .serialization.Group playerCaptures = 4;</code>
+       * <code>repeated .serialization.Capture playerCaptures = 4;</code>
        */
-      public serialization.GameState.Group.Builder addPlayerCapturesBuilder() {
+      public serialization.GameState.Capture.Builder addPlayerCapturesBuilder() {
         return getPlayerCapturesFieldBuilder().addBuilder(
-            serialization.GameState.Group.getDefaultInstance());
+            serialization.GameState.Capture.getDefaultInstance());
       }
       /**
-       * <code>repeated .serialization.Group playerCaptures = 4;</code>
+       * <code>repeated .serialization.Capture playerCaptures = 4;</code>
        */
-      public serialization.GameState.Group.Builder addPlayerCapturesBuilder(
+      public serialization.GameState.Capture.Builder addPlayerCapturesBuilder(
           int index) {
         return getPlayerCapturesFieldBuilder().addBuilder(
-            index, serialization.GameState.Group.getDefaultInstance());
+            index, serialization.GameState.Capture.getDefaultInstance());
       }
       /**
-       * <code>repeated .serialization.Group playerCaptures = 4;</code>
+       * <code>repeated .serialization.Capture playerCaptures = 4;</code>
        */
-      public java.util.List<serialization.GameState.Group.Builder> 
+      public java.util.List<serialization.GameState.Capture.Builder> 
            getPlayerCapturesBuilderList() {
         return getPlayerCapturesFieldBuilder().getBuilderList();
       }
       private com.google.protobuf.RepeatedFieldBuilder<
-          serialization.GameState.Group, serialization.GameState.Group.Builder, serialization.GameState.GroupOrBuilder> 
+          serialization.GameState.Capture, serialization.GameState.Capture.Builder, serialization.GameState.CaptureOrBuilder> 
           getPlayerCapturesFieldBuilder() {
         if (playerCapturesBuilder_ == null) {
           playerCapturesBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
-              serialization.GameState.Group, serialization.GameState.Group.Builder, serialization.GameState.GroupOrBuilder>(
+              serialization.GameState.Capture, serialization.GameState.Capture.Builder, serialization.GameState.CaptureOrBuilder>(
                   playerCaptures_,
                   ((bitField0_ & 0x00000008) == 0x00000008),
                   getParentForChildren(),
@@ -4000,6 +4609,11 @@ public final class GameState {
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_serialization_Group_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_serialization_Capture_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_serialization_Capture_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_serialization_Moment_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -4020,13 +4634,15 @@ public final class GameState {
       "ction\"\212\001\n\005Group\022$\n\006player\030\001 \002(\0162\024.serial" +
       "ization.Color\022+\n\006stones\030\002 \003(\0132\033.serializ" +
       "ation.Intersection\022.\n\tliberties\030\003 \003(\0132\033." +
-      "serialization.Intersection\"\302\001\n\006Moment\022\020\n" +
-      "\010gameOver\030\001 \002(\010\022$\n\006toMove\030\002 \002(\0162\024.serial" +
-      "ization.Color\022)\n\013playerAsset\030\003 \003(\0132\024.ser",
-      "ialization.Group\022,\n\016playerCaptures\030\004 \003(\013" +
-      "2\024.serialization.Group\022\'\n\005moves\030\005 \003(\0132\030." +
-      "serialization.Placement*(\n\005Color\022\t\n\005EMPT" +
-      "Y\020\000\022\t\n\005BLACK\020\001\022\t\n\005WHITE\020\002"
+      "serialization.Intersection\"I\n\007Capture\022\021\n" +
+      "\tmoveIndex\030\001 \002(\005\022+\n\rcapturedGroup\030\002 \002(\0132" +
+      "\024.serialization.Group\"\304\001\n\006Moment\022\020\n\010game",
+      "Over\030\001 \002(\010\022$\n\006toMove\030\002 \002(\0162\024.serializati" +
+      "on.Color\022)\n\013playerAsset\030\003 \003(\0132\024.serializ" +
+      "ation.Group\022.\n\016playerCaptures\030\004 \003(\0132\026.se" +
+      "rialization.Capture\022\'\n\005moves\030\005 \003(\0132\030.ser" +
+      "ialization.Placement*(\n\005Color\022\t\n\005EMPTY\020\000" +
+      "\022\t\n\005BLACK\020\001\022\t\n\005WHITE\020\002"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -4058,8 +4674,14 @@ public final class GameState {
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_serialization_Group_descriptor,
         new java.lang.String[] { "Player", "Stones", "Liberties", });
-    internal_static_serialization_Moment_descriptor =
+    internal_static_serialization_Capture_descriptor =
       getDescriptor().getMessageTypes().get(3);
+    internal_static_serialization_Capture_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_serialization_Capture_descriptor,
+        new java.lang.String[] { "MoveIndex", "CapturedGroup", });
+    internal_static_serialization_Moment_descriptor =
+      getDescriptor().getMessageTypes().get(4);
     internal_static_serialization_Moment_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_serialization_Moment_descriptor,
