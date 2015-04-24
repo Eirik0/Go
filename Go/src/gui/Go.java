@@ -34,11 +34,11 @@ public class Go extends JFrame {
 
 			int xPadding = getWidth() / 10;
 			int yPadding = getHeight() / 10;
-			int xIncrement = (getWidth() - 2*xPadding) / controller.getBoardSize();
-			int yIncrement = (getHeight() - 2*yPadding) / controller.getBoardSize();
+			int xIncrement = (getWidth() - 2*xPadding) / (controller.getBoardSize()-1);
+			int yIncrement = (getHeight() - 2*yPadding) / (controller.getBoardSize()-1);
 			for(int i = 0; i < controller.getBoardSize(); i++) {
-				g.drawLine(xPadding, yPadding + i*yIncrement, getWidth() - xPadding, yPadding + i*yIncrement);
-				g.drawLine(xPadding + i*xIncrement, yPadding, xPadding + i*xIncrement, getHeight() - yPadding);
+				g.drawLine(xPadding, yPadding + i*yIncrement, xIncrement*(controller.getBoardSize()-1) + xPadding, yPadding + i*yIncrement);
+				g.drawLine(xPadding + i*xIncrement, yPadding, xPadding + i*xIncrement, yIncrement*(controller.getBoardSize()-1)+yPadding);
 			}
 
 		}
