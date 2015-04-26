@@ -16,70 +16,72 @@ public class Group {
 
     protected Set<Point> points;
     protected Set<Point> liberties;
+    protected Set<Point> adjacent;
     protected Color color;
 
     public Group(final Color c) {
         this(c, new HashSet<>(), new HashSet<>());
     }
+
     public Group(final Group g) {
         this(g.getColor(), g.getPoints(), g.getLiberties());
     }
+
     public Group(final Color c, final Set<Point> pts, final Set<Point> libs) {
         color = c;
         points = pts;
         liberties = libs;
+        adjacent = new HashSet<>();
+        points.forEach(p -> adjacent.addAll(p.getAdjacent().stream().filter(q -> !points.contains(q)).collect(Collectors.toList())));
     }
+
     public Set<Point> getPoints() {
         return points;
     }
+
     public Color getColor() {
         return color;
     }
+
     public void add(final Point p, final List<Point> l) {
         points.add(p);
         liberties.addAll(l);
     }
-    public void merge(final Group other) {
+
+    public Group merge(final Group other) {
         if(color.equals(other.color)) {
             points.addAll(other.points);
             liberties.addAll(other.liberties);
             liberties.removeAll(points);
+            other.adjacent.removeAll(points);
+            adjacent.removeAll(other.points);
+            adjacent.addAll(other.adjacent);
         } else {
-            throw new RuntimeException("invalid group merge");
+            liberties.removeAll(other.getPoints());
+            other.liberties.removeAll(points);
         }
+        return this;
     }
-    public boolean contains(final Point p) {
-        return points.contains(p);
+
+    public boolean contains(final Point p) { return points.contains(p); }
+
+    public Set<Point> getLiberties() { return liberties; }
+    public Set<Point> getAdjacent() { return adjacent; }
+
+    public boolean hasLiberty(final Point p) { return liberties.contains(p); }
+    public boolean isAdjacent(final Point p) { return adjacent.contains(p); }
+
+    public void regainLiberties(final Set<Point> libs) {
+        liberties.addAll(libs.stream().filter(l -> adjacent.contains(l)).collect(Collectors.toList()));
     }
-    public Set<Point> getLiberties() {
-        return liberties;
+
+    public boolean isAdjacent(final Group other) {
+        return adjacent.stream().anyMatch(p -> other.contains(p));
     }
-    public boolean hasLiberty(final Point p) {
-        return liberties.contains(p);
-    }
-    public void removeLiberty(final Point p) { liberties.remove(p); }
-    public boolean isAdjacent(final Point p) {
-        if(contains(p)) {
-            return false;
-        }
-        for(Point adjacentPoint: p.getAdjacent()) {
-            if(points.contains(adjacentPoint)) {
-                return true;
-            }
-        }
-        return false;
-    }
+
     public List<Point> getAdjacentPoints(final Point p) {
-        if(contains(p)) {
-            return new ArrayList<>();
-        }
-        ArrayList<Point> returnValue = new ArrayList<>();
-        for(Point adjacentPoint: p.getAdjacent()) {
-            if(contains(adjacentPoint)) {
-                returnValue.add(adjacentPoint);
-            }
-        }
-        return returnValue;
+        Set<Point> adjPoints = new HashSet<>(p.getAdjacent());
+        return points.stream().filter(q -> adjPoints.contains(q)).collect(Collectors.toList());
     }
     public boolean equals(final Group other) {
         return points.containsAll(other.points) && other.points.containsAll(points);

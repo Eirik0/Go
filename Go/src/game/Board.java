@@ -20,6 +20,7 @@ public class Board {
 	private List<Placement> history;
 
 	public static final int DEFAULT_SIZE = 19;
+	public static final Point PASS_POINT = new Point(-1,-1);
 	public Board() {
 		this(DEFAULT_SIZE);
 	}
@@ -50,30 +51,21 @@ public class Board {
 
 	private void addPointToGroups(final Point p) {
 
-		List<Group> adjacentFriendlyGroups = new ArrayList<>();
-		List<Point> potentialLiberties = p.getAdjacent();
+		final Group seedGroup = new Group(toMove, new HashSet<>(Arrays.asList(p)), new HashSet<>(p.getAdjacent()));
+		final List<Group> adjacentFriendlyGroups = groups.stream().filter(g -> g.isAdjacent(p) && g.getColor().equals(toMove)).collect(Collectors.toList());
+		final List<Group> adjacentOpposingGroups = groups.stream().filter(g -> g.isAdjacent(p) && !g.getColor().equals(toMove)).collect(Collectors.toList());
+		final Group superGroup = adjacentFriendlyGroups.stream().reduce(seedGroup, (a, b) -> a.merge(b));
 
-		for (int i = 0; i < groups.size(); i++) {
-			Group group = groups.get(i);
-			if(group.isAdjacent(p)) {
-				group.removeLiberty(p);
-				potentialLiberties.removeAll(group.getAdjacentPoints(p));
-				if(group.getColor().equals(toMove)) {
-					adjacentFriendlyGroups.add(group);
-				} else if(group.getLiberties().size() == 0) {
-					captures.add(new CapturedGroup(group, moveIndex));
-					groups.remove(i);
-				}
-			}
-		}
-
-		// join all adjacent groups into new group and add to groups
-		Group superGroup = new Group(toMove);
-		superGroup.add(p, potentialLiberties);
-		for(Group group : adjacentFriendlyGroups) {
-			superGroup.merge(group);
-		}
+		groups = groups.stream().filter(g -> !g.isAdjacent(p)).collect(Collectors.toList());
 		groups.add(superGroup);
+
+		groups.forEach(a -> adjacentOpposingGroups.forEach(b -> a.merge(b)));
+
+		final List<Group> capturedGroups = adjacentOpposingGroups.stream().filter(g -> g.getLiberties().size() == 0).collect(Collectors.toList());
+		capturedGroups.forEach(a -> groups.stream().filter(b -> b.isAdjacent(a)).forEach(c -> c.regainLiberties(a.getAdjacent())));
+
+		captures.addAll(capturedGroups.stream().map(g -> new CapturedGroup(g, moveIndex)).collect(Collectors.toList()));
+		groups.addAll(adjacentOpposingGroups.stream().filter(g -> g.getLiberties().size() > 0).collect(Collectors.toList()));
 
 	}
 
@@ -130,36 +122,60 @@ public class Board {
 		} else if (isSuicide(p)) {
 			return false;
 		} else {
-			return true;
+			return !isGameOver();
 		}
+	}
+
+	public List<Point> getValidMoves() {
+
+		List<Point> returnValue = new ArrayList<>();
+		for(int i = 0; i < getBoardSize(); i++) {
+			for(int j = 0; j < getBoardSize(); j++) {
+				Point testPoint = new Point(i, j);
+				if(isValidMove(testPoint)) {
+					returnValue.add(testPoint);
+				}
+			}
+		}
+		return returnValue;
+
 	}
 
 	public void makeMove(int x, int y) {
 
-		Point movePlace = new Point(x, y);
+		makeMove(new Point(x, y));
+
+	}
+
+	public void makeMove(final Point movePlace) {
+
 		if (!isValidMove(movePlace)) {
 			throw new RuntimeException("invalid move");
 		}
 
 		cacheDirty = true;
 
+		if(history.size() > 0 && history.get(history.size()-1).getPlace().equals(PASS_POINT)) {
+			gameOver = true;
+		}
+
 		history.add(new Placement(movePlace, toMove));
-		if(movePlace.getX() >= 0 && movePlace.getY() >= 0) {
+
+		if(!movePlace.equals(PASS_POINT)) {
 			addPointToGroups(movePlace);
 		}
-		toMove = toMove.equals(Color.BLACK) ? Color.WHITE : Color.BLACK;
-		moveIndex++;
+
+		if(!isGameOver()) {
+			toMove = toMove.equals(Color.BLACK) ? Color.WHITE : Color.BLACK;
+			moveIndex++;
+		}
 
 		refreshCache();
 
 	}
 
 	public void passTurn() {
-		Point p = new Point();
-		if(history.size() > 0 && history.get(history.size()-1).getPlace().equals(p)) {
-			gameOver = true;
-		}
-		makeMove(p.getX(), p.getY());
+		makeMove(PASS_POINT);
 	}
 
 	private void refreshCache() {
