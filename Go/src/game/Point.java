@@ -56,6 +56,9 @@ public class Point {
         return Integer.hashCode(x - y);
     }
 
+    @Override
+    public String toString() { return "(" + Integer.toString(x) + ", " + Integer.toString(y) + ")"; }
+
     public GameState.Intersection toIntersection() {
         return GameState.Intersection.newBuilder()
                 .setX(x)

@@ -21,8 +21,8 @@ public class Go extends JFrame {
 
 	private static final String TITLE = "Go";
 
-	public static final int DEFAULT_WIDTH = 800;
-	public static final int DEFAULT_HEIGHT = 800;
+	public static final int DEFAULT_WIDTH = 200;
+	public static final int DEFAULT_HEIGHT = 200;
 
 	private IAgent agent;
 
@@ -76,6 +76,7 @@ public class Go extends JFrame {
 	private Board controller;
 	private JButton quitButton;
 	private JButton startButton;
+	private JButton nextMoveButton;
 	private JPanel buttonPanel;
 	private BoardViewPanel gridPanel;
 
@@ -95,6 +96,7 @@ public class Go extends JFrame {
 		buttonPanel = new JPanel(new BorderLayout());
 		buttonPanel.add(quitButton = new JButton("Quit"), BorderLayout.EAST);
 		buttonPanel.add(startButton = new JButton("Start"), BorderLayout.WEST);
+		buttonPanel.add(nextMoveButton = new JButton("Next Move"), BorderLayout.CENTER);
 		cp.add(buttonPanel);
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -108,29 +110,26 @@ public class Go extends JFrame {
 			}
 		});
 		startButton.addActionListener(a -> startGame());
+		nextMoveButton.addActionListener(a -> nextMove());
 
 	}
 
 	public void startGame() {
-		if (controller.isGameOver()) {
+		if(controller.isGameOver()) {
 			controller = new Board();
 			gridPanel.setController(controller);
 			gridPanel.repaint();
-		}
-		while (!controller.isGameOver()) {
-			try {
+		} else {
+			while(!controller.isGameOver()) {
 				controller.makeMove(agent.getNextMove(controller));
-			} catch (final RuntimeException e) {
-				continue;
+				gridPanel.repaint();
 			}
-			gridPanel.repaint(100);
-			try {
-				Thread.sleep(100);
-			} catch (final InterruptedException e) {
-				continue;
-			}
-			gridPanel.update(gridPanel.getGraphics());
 		}
+	}
+
+	public void nextMove() {
+		controller.makeMove(agent.getNextMove(controller));
+		gridPanel.repaint();
 	}
 
 	@Autowired

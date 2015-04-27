@@ -13,8 +13,8 @@ import java.util.stream.Collectors;
 public class CapturedGroup extends Group {
     private int moveIndex;
 
-    public CapturedGroup(final Color c, final Set<Point> pts, final Set<Point> libs, int i) {
-        super(c, pts, libs);
+    public CapturedGroup(final Color c, final Set<Point> pts, int i) {
+        super(c, pts);
         moveIndex = i;
     }
     public CapturedGroup(final Group g, int i) {

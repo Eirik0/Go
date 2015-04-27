@@ -16,7 +16,6 @@ message Placement {
 message Group {
 	required Color player = 1;
 	repeated Intersection stones = 2;
-	repeated Intersection liberties = 3;
 }
 message Capture {
 	required int32 moveIndex = 1;

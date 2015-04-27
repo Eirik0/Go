@@ -1246,30 +1246,6 @@ public final class GameState {
      */
     serialization.GameState.IntersectionOrBuilder getStonesOrBuilder(
         int index);
-
-    /**
-     * <code>repeated .serialization.Intersection liberties = 3;</code>
-     */
-    java.util.List<serialization.GameState.Intersection> 
-        getLibertiesList();
-    /**
-     * <code>repeated .serialization.Intersection liberties = 3;</code>
-     */
-    serialization.GameState.Intersection getLiberties(int index);
-    /**
-     * <code>repeated .serialization.Intersection liberties = 3;</code>
-     */
-    int getLibertiesCount();
-    /**
-     * <code>repeated .serialization.Intersection liberties = 3;</code>
-     */
-    java.util.List<? extends serialization.GameState.IntersectionOrBuilder> 
-        getLibertiesOrBuilderList();
-    /**
-     * <code>repeated .serialization.Intersection liberties = 3;</code>
-     */
-    serialization.GameState.IntersectionOrBuilder getLibertiesOrBuilder(
-        int index);
   }
   /**
    * Protobuf type {@code serialization.Group}
@@ -1285,7 +1261,6 @@ public final class GameState {
     private Group() {
       player_ = 0;
       stones_ = java.util.Collections.emptyList();
-      liberties_ = java.util.Collections.emptyList();
     }
 
     @java.lang.Override
@@ -1334,14 +1309,6 @@ public final class GameState {
               stones_.add(input.readMessage(serialization.GameState.Intersection.PARSER, extensionRegistry));
               break;
             }
-            case 26: {
-              if (!((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
-                liberties_ = new java.util.ArrayList<serialization.GameState.Intersection>();
-                mutable_bitField0_ |= 0x00000004;
-              }
-              liberties_.add(input.readMessage(serialization.GameState.Intersection.PARSER, extensionRegistry));
-              break;
-            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -1353,9 +1320,6 @@ public final class GameState {
       } finally {
         if (((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
           stones_ = java.util.Collections.unmodifiableList(stones_);
-        }
-        if (((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
-          liberties_ = java.util.Collections.unmodifiableList(liberties_);
         }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
@@ -1449,41 +1413,6 @@ public final class GameState {
       return stones_.get(index);
     }
 
-    public static final int LIBERTIES_FIELD_NUMBER = 3;
-    private java.util.List<serialization.GameState.Intersection> liberties_;
-    /**
-     * <code>repeated .serialization.Intersection liberties = 3;</code>
-     */
-    public java.util.List<serialization.GameState.Intersection> getLibertiesList() {
-      return liberties_;
-    }
-    /**
-     * <code>repeated .serialization.Intersection liberties = 3;</code>
-     */
-    public java.util.List<? extends serialization.GameState.IntersectionOrBuilder> 
-        getLibertiesOrBuilderList() {
-      return liberties_;
-    }
-    /**
-     * <code>repeated .serialization.Intersection liberties = 3;</code>
-     */
-    public int getLibertiesCount() {
-      return liberties_.size();
-    }
-    /**
-     * <code>repeated .serialization.Intersection liberties = 3;</code>
-     */
-    public serialization.GameState.Intersection getLiberties(int index) {
-      return liberties_.get(index);
-    }
-    /**
-     * <code>repeated .serialization.Intersection liberties = 3;</code>
-     */
-    public serialization.GameState.IntersectionOrBuilder getLibertiesOrBuilder(
-        int index) {
-      return liberties_.get(index);
-    }
-
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -1500,12 +1429,6 @@ public final class GameState {
           return false;
         }
       }
-      for (int i = 0; i < getLibertiesCount(); i++) {
-        if (!getLiberties(i).isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -1517,9 +1440,6 @@ public final class GameState {
       }
       for (int i = 0; i < stones_.size(); i++) {
         output.writeMessage(2, stones_.get(i));
-      }
-      for (int i = 0; i < liberties_.size(); i++) {
-        output.writeMessage(3, liberties_.get(i));
       }
       unknownFields.writeTo(output);
     }
@@ -1537,10 +1457,6 @@ public final class GameState {
       for (int i = 0; i < stones_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(2, stones_.get(i));
-      }
-      for (int i = 0; i < liberties_.size(); i++) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(3, liberties_.get(i));
       }
       size += unknownFields.getSerializedSize();
       memoizedSerializedSize = size;
@@ -1651,7 +1567,6 @@ public final class GameState {
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
           getStonesFieldBuilder();
-          getLibertiesFieldBuilder();
         }
       }
       public Builder clear() {
@@ -1663,12 +1578,6 @@ public final class GameState {
           bitField0_ = (bitField0_ & ~0x00000002);
         } else {
           stonesBuilder_.clear();
-        }
-        if (libertiesBuilder_ == null) {
-          liberties_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000004);
-        } else {
-          libertiesBuilder_.clear();
         }
         return this;
       }
@@ -1706,15 +1615,6 @@ public final class GameState {
           result.stones_ = stones_;
         } else {
           result.stones_ = stonesBuilder_.build();
-        }
-        if (libertiesBuilder_ == null) {
-          if (((bitField0_ & 0x00000004) == 0x00000004)) {
-            liberties_ = java.util.Collections.unmodifiableList(liberties_);
-            bitField0_ = (bitField0_ & ~0x00000004);
-          }
-          result.liberties_ = liberties_;
-        } else {
-          result.liberties_ = libertiesBuilder_.build();
         }
         result.bitField0_ = to_bitField0_;
         onBuilt();
@@ -1761,32 +1661,6 @@ public final class GameState {
             }
           }
         }
-        if (libertiesBuilder_ == null) {
-          if (!other.liberties_.isEmpty()) {
-            if (liberties_.isEmpty()) {
-              liberties_ = other.liberties_;
-              bitField0_ = (bitField0_ & ~0x00000004);
-            } else {
-              ensureLibertiesIsMutable();
-              liberties_.addAll(other.liberties_);
-            }
-            onChanged();
-          }
-        } else {
-          if (!other.liberties_.isEmpty()) {
-            if (libertiesBuilder_.isEmpty()) {
-              libertiesBuilder_.dispose();
-              libertiesBuilder_ = null;
-              liberties_ = other.liberties_;
-              bitField0_ = (bitField0_ & ~0x00000004);
-              libertiesBuilder_ = 
-                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
-                   getLibertiesFieldBuilder() : null;
-            } else {
-              libertiesBuilder_.addAllMessages(other.liberties_);
-            }
-          }
-        }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
@@ -1799,12 +1673,6 @@ public final class GameState {
         }
         for (int i = 0; i < getStonesCount(); i++) {
           if (!getStones(i).isInitialized()) {
-            
-            return false;
-          }
-        }
-        for (int i = 0; i < getLibertiesCount(); i++) {
-          if (!getLiberties(i).isInitialized()) {
             
             return false;
           }
@@ -2105,246 +1973,6 @@ public final class GameState {
           stones_ = null;
         }
         return stonesBuilder_;
-      }
-
-      private java.util.List<serialization.GameState.Intersection> liberties_ =
-        java.util.Collections.emptyList();
-      private void ensureLibertiesIsMutable() {
-        if (!((bitField0_ & 0x00000004) == 0x00000004)) {
-          liberties_ = new java.util.ArrayList<serialization.GameState.Intersection>(liberties_);
-          bitField0_ |= 0x00000004;
-         }
-      }
-
-      private com.google.protobuf.RepeatedFieldBuilder<
-          serialization.GameState.Intersection, serialization.GameState.Intersection.Builder, serialization.GameState.IntersectionOrBuilder> libertiesBuilder_;
-
-      /**
-       * <code>repeated .serialization.Intersection liberties = 3;</code>
-       */
-      public java.util.List<serialization.GameState.Intersection> getLibertiesList() {
-        if (libertiesBuilder_ == null) {
-          return java.util.Collections.unmodifiableList(liberties_);
-        } else {
-          return libertiesBuilder_.getMessageList();
-        }
-      }
-      /**
-       * <code>repeated .serialization.Intersection liberties = 3;</code>
-       */
-      public int getLibertiesCount() {
-        if (libertiesBuilder_ == null) {
-          return liberties_.size();
-        } else {
-          return libertiesBuilder_.getCount();
-        }
-      }
-      /**
-       * <code>repeated .serialization.Intersection liberties = 3;</code>
-       */
-      public serialization.GameState.Intersection getLiberties(int index) {
-        if (libertiesBuilder_ == null) {
-          return liberties_.get(index);
-        } else {
-          return libertiesBuilder_.getMessage(index);
-        }
-      }
-      /**
-       * <code>repeated .serialization.Intersection liberties = 3;</code>
-       */
-      public Builder setLiberties(
-          int index, serialization.GameState.Intersection value) {
-        if (libertiesBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureLibertiesIsMutable();
-          liberties_.set(index, value);
-          onChanged();
-        } else {
-          libertiesBuilder_.setMessage(index, value);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .serialization.Intersection liberties = 3;</code>
-       */
-      public Builder setLiberties(
-          int index, serialization.GameState.Intersection.Builder builderForValue) {
-        if (libertiesBuilder_ == null) {
-          ensureLibertiesIsMutable();
-          liberties_.set(index, builderForValue.build());
-          onChanged();
-        } else {
-          libertiesBuilder_.setMessage(index, builderForValue.build());
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .serialization.Intersection liberties = 3;</code>
-       */
-      public Builder addLiberties(serialization.GameState.Intersection value) {
-        if (libertiesBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureLibertiesIsMutable();
-          liberties_.add(value);
-          onChanged();
-        } else {
-          libertiesBuilder_.addMessage(value);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .serialization.Intersection liberties = 3;</code>
-       */
-      public Builder addLiberties(
-          int index, serialization.GameState.Intersection value) {
-        if (libertiesBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureLibertiesIsMutable();
-          liberties_.add(index, value);
-          onChanged();
-        } else {
-          libertiesBuilder_.addMessage(index, value);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .serialization.Intersection liberties = 3;</code>
-       */
-      public Builder addLiberties(
-          serialization.GameState.Intersection.Builder builderForValue) {
-        if (libertiesBuilder_ == null) {
-          ensureLibertiesIsMutable();
-          liberties_.add(builderForValue.build());
-          onChanged();
-        } else {
-          libertiesBuilder_.addMessage(builderForValue.build());
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .serialization.Intersection liberties = 3;</code>
-       */
-      public Builder addLiberties(
-          int index, serialization.GameState.Intersection.Builder builderForValue) {
-        if (libertiesBuilder_ == null) {
-          ensureLibertiesIsMutable();
-          liberties_.add(index, builderForValue.build());
-          onChanged();
-        } else {
-          libertiesBuilder_.addMessage(index, builderForValue.build());
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .serialization.Intersection liberties = 3;</code>
-       */
-      public Builder addAllLiberties(
-          java.lang.Iterable<? extends serialization.GameState.Intersection> values) {
-        if (libertiesBuilder_ == null) {
-          ensureLibertiesIsMutable();
-          com.google.protobuf.AbstractMessageLite.Builder.addAll(
-              values, liberties_);
-          onChanged();
-        } else {
-          libertiesBuilder_.addAllMessages(values);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .serialization.Intersection liberties = 3;</code>
-       */
-      public Builder clearLiberties() {
-        if (libertiesBuilder_ == null) {
-          liberties_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000004);
-          onChanged();
-        } else {
-          libertiesBuilder_.clear();
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .serialization.Intersection liberties = 3;</code>
-       */
-      public Builder removeLiberties(int index) {
-        if (libertiesBuilder_ == null) {
-          ensureLibertiesIsMutable();
-          liberties_.remove(index);
-          onChanged();
-        } else {
-          libertiesBuilder_.remove(index);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .serialization.Intersection liberties = 3;</code>
-       */
-      public serialization.GameState.Intersection.Builder getLibertiesBuilder(
-          int index) {
-        return getLibertiesFieldBuilder().getBuilder(index);
-      }
-      /**
-       * <code>repeated .serialization.Intersection liberties = 3;</code>
-       */
-      public serialization.GameState.IntersectionOrBuilder getLibertiesOrBuilder(
-          int index) {
-        if (libertiesBuilder_ == null) {
-          return liberties_.get(index);  } else {
-          return libertiesBuilder_.getMessageOrBuilder(index);
-        }
-      }
-      /**
-       * <code>repeated .serialization.Intersection liberties = 3;</code>
-       */
-      public java.util.List<? extends serialization.GameState.IntersectionOrBuilder> 
-           getLibertiesOrBuilderList() {
-        if (libertiesBuilder_ != null) {
-          return libertiesBuilder_.getMessageOrBuilderList();
-        } else {
-          return java.util.Collections.unmodifiableList(liberties_);
-        }
-      }
-      /**
-       * <code>repeated .serialization.Intersection liberties = 3;</code>
-       */
-      public serialization.GameState.Intersection.Builder addLibertiesBuilder() {
-        return getLibertiesFieldBuilder().addBuilder(
-            serialization.GameState.Intersection.getDefaultInstance());
-      }
-      /**
-       * <code>repeated .serialization.Intersection liberties = 3;</code>
-       */
-      public serialization.GameState.Intersection.Builder addLibertiesBuilder(
-          int index) {
-        return getLibertiesFieldBuilder().addBuilder(
-            index, serialization.GameState.Intersection.getDefaultInstance());
-      }
-      /**
-       * <code>repeated .serialization.Intersection liberties = 3;</code>
-       */
-      public java.util.List<serialization.GameState.Intersection.Builder> 
-           getLibertiesBuilderList() {
-        return getLibertiesFieldBuilder().getBuilderList();
-      }
-      private com.google.protobuf.RepeatedFieldBuilder<
-          serialization.GameState.Intersection, serialization.GameState.Intersection.Builder, serialization.GameState.IntersectionOrBuilder> 
-          getLibertiesFieldBuilder() {
-        if (libertiesBuilder_ == null) {
-          libertiesBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
-              serialization.GameState.Intersection, serialization.GameState.Intersection.Builder, serialization.GameState.IntersectionOrBuilder>(
-                  liberties_,
-                  ((bitField0_ & 0x00000004) == 0x00000004),
-                  getParentForChildren(),
-                  isClean());
-          liberties_ = null;
-        }
-        return libertiesBuilder_;
       }
 
       // @@protoc_insertion_point(builder_scope:serialization.Group)
@@ -4631,18 +4259,17 @@ public final class GameState {
       "rsection\022\t\n\001X\030\001 \002(\005\022\t\n\001Y\030\002 \002(\005\"]\n\tPlacem" +
       "ent\022$\n\006player\030\001 \002(\0162\024.serialization.Colo" +
       "r\022*\n\005place\030\002 \002(\0132\033.serialization.Interse" +
-      "ction\"\212\001\n\005Group\022$\n\006player\030\001 \002(\0162\024.serial" +
-      "ization.Color\022+\n\006stones\030\002 \003(\0132\033.serializ" +
-      "ation.Intersection\022.\n\tliberties\030\003 \003(\0132\033." +
-      "serialization.Intersection\"I\n\007Capture\022\021\n" +
-      "\tmoveIndex\030\001 \002(\005\022+\n\rcapturedGroup\030\002 \002(\0132" +
-      "\024.serialization.Group\"\304\001\n\006Moment\022\020\n\010game",
-      "Over\030\001 \002(\010\022$\n\006toMove\030\002 \002(\0162\024.serializati" +
-      "on.Color\022)\n\013playerAsset\030\003 \003(\0132\024.serializ" +
-      "ation.Group\022.\n\016playerCaptures\030\004 \003(\0132\026.se" +
-      "rialization.Capture\022\'\n\005moves\030\005 \003(\0132\030.ser" +
-      "ialization.Placement*(\n\005Color\022\t\n\005EMPTY\020\000" +
-      "\022\t\n\005BLACK\020\001\022\t\n\005WHITE\020\002"
+      "ction\"Z\n\005Group\022$\n\006player\030\001 \002(\0162\024.seriali" +
+      "zation.Color\022+\n\006stones\030\002 \003(\0132\033.serializa" +
+      "tion.Intersection\"I\n\007Capture\022\021\n\tmoveInde" +
+      "x\030\001 \002(\005\022+\n\rcapturedGroup\030\002 \002(\0132\024.seriali" +
+      "zation.Group\"\304\001\n\006Moment\022\020\n\010gameOver\030\001 \002(" +
+      "\010\022$\n\006toMove\030\002 \002(\0162\024.serialization.Color\022",
+      ")\n\013playerAsset\030\003 \003(\0132\024.serialization.Gro" +
+      "up\022.\n\016playerCaptures\030\004 \003(\0132\026.serializati" +
+      "on.Capture\022\'\n\005moves\030\005 \003(\0132\030.serializatio" +
+      "n.Placement*(\n\005Color\022\t\n\005EMPTY\020\000\022\t\n\005BLACK" +
+      "\020\001\022\t\n\005WHITE\020\002"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -4673,7 +4300,7 @@ public final class GameState {
     internal_static_serialization_Group_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_serialization_Group_descriptor,
-        new java.lang.String[] { "Player", "Stones", "Liberties", });
+        new java.lang.String[] { "Player", "Stones", });
     internal_static_serialization_Capture_descriptor =
       getDescriptor().getMessageTypes().get(3);
     internal_static_serialization_Capture_fieldAccessorTable = new

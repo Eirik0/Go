@@ -2,6 +2,7 @@ package game;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import serialization.GameState;
 import serialization.GameState.Color;
@@ -51,21 +52,19 @@ public class Board {
 
 	private void addPointToGroups(final Point p) {
 
-		final Group seedGroup = new Group(toMove, new HashSet<>(Arrays.asList(p)), new HashSet<>(p.getAdjacent()));
+		final Group seedGroup = new Group(toMove, new HashSet<>(Arrays.asList(p)));
 		final List<Group> adjacentFriendlyGroups = groups.stream().filter(g -> g.isAdjacent(p) && g.getColor().equals(toMove)).collect(Collectors.toList());
 		final List<Group> adjacentOpposingGroups = groups.stream().filter(g -> g.isAdjacent(p) && !g.getColor().equals(toMove)).collect(Collectors.toList());
-		final Group superGroup = adjacentFriendlyGroups.stream().reduce(seedGroup, (a, b) -> a.merge(b));
 
 		groups = groups.stream().filter(g -> !g.isAdjacent(p)).collect(Collectors.toList());
+
+		final Group superGroup = adjacentFriendlyGroups.stream().reduce(seedGroup, (a, b) -> a.merge(b));
 		groups.add(superGroup);
 
-		groups.forEach(a -> adjacentOpposingGroups.forEach(b -> a.merge(b)));
-
-		final List<Group> capturedGroups = adjacentOpposingGroups.stream().filter(g -> g.getLiberties().size() == 0).collect(Collectors.toList());
-		capturedGroups.forEach(a -> groups.stream().filter(b -> b.isAdjacent(a)).forEach(c -> c.regainLiberties(a.getAdjacent())));
+		final List<Group> capturedGroups = adjacentOpposingGroups.stream().filter(g -> getLiberties(g).size() == 0).collect(Collectors.toList());
 
 		captures.addAll(capturedGroups.stream().map(g -> new CapturedGroup(g, moveIndex)).collect(Collectors.toList()));
-		groups.addAll(adjacentOpposingGroups.stream().filter(g -> g.getLiberties().size() > 0).collect(Collectors.toList()));
+		groups.addAll(adjacentOpposingGroups.stream().filter(g -> getLiberties(g).size() > 0).collect(Collectors.toList()));
 
 	}
 
@@ -95,18 +94,47 @@ public class Board {
 		}
 	}
 
+	public Set<Point> getLiberties(final Group g) {
+
+		List<Group> adjacent = groups.stream().filter(eg -> g.isAdjacent(eg)).collect(Collectors.toList());
+		Set<Point> liberties = g.getAdjacent();
+
+		adjacent.forEach(a -> liberties.removeAll(a.getAdjacent()));
+
+		return liberties;
+
+	}
+
 	public boolean isSuicide(final Point p) {
-		Set<Point> consumedLiberties = new HashSet<>();
-		for(Group group : groups) {
-			if(group.getColor().equals(toMove)) {
-				if(group.getLiberties().size() == 1) {
-					consumedLiberties.addAll(group.getAdjacentPoints(p));
-				}
-			} else if(group.getLiberties().size() > 1) {
-				consumedLiberties.addAll(group.getAdjacentPoints(p));
-			}
+
+		List<Group> adjacent = groups.stream().filter(g -> g.isAdjacent(p)).collect(Collectors.toList());
+		List<Group> adjacentEnemy = adjacent.stream().filter(g -> !g.getColor().equals(toMove)).collect(Collectors.toList());
+		List<Group> adjacentFriendly = adjacent.stream().filter(g -> g.getColor().equals(toMove)).collect(Collectors.toList());
+
+		List<Group> atariEnemy = adjacentEnemy.stream().filter((g) -> {
+			Set<Point> liberties = getLiberties(g);
+			return liberties.size() == 1 && liberties.contains(p);
+		}).collect(Collectors.toList());
+		if(atariEnemy.size() > 0) {
+			return false;
 		}
-		return consumedLiberties.containsAll(p.getAdjacent());
+
+		List<Point> consumedLibs = adjacent.stream().map(a -> a.getAdjacentPoints(p)).distinct().reduce(new ArrayList<>(), (s, t) -> {
+			s.addAll(t);
+			return s;
+		});
+		List<Point> libs = p.getAdjacent();
+		libs.removeAll(consumedLibs);
+
+		Set<Point> adjacentFriendlyLiberties = adjacentFriendly.stream().map(g -> getLiberties(g)).reduce(new HashSet<>(), (s, t) -> {
+			s.addAll(t);
+			return s;
+		});
+		adjacentFriendlyLiberties.remove(p);
+		libs.addAll(adjacentFriendlyLiberties);
+
+		return libs.isEmpty();
+
 	}
 
 	public boolean isValidMove(final Point p) {
@@ -155,15 +183,13 @@ public class Board {
 
 		cacheDirty = true;
 
-		if(history.size() > 0 && history.get(history.size()-1).getPlace().equals(PASS_POINT)) {
+		if(!movePlace.equals(PASS_POINT)) {
+			addPointToGroups(movePlace);
+		} else if(history.size() > 0 && history.get(history.size()-1).getPlace().equals(PASS_POINT)) {
 			gameOver = true;
 		}
 
 		history.add(new Placement(movePlace, toMove));
-
-		if(!movePlace.equals(PASS_POINT)) {
-			addPointToGroups(movePlace);
-		}
 
 		if(!isGameOver()) {
 			toMove = toMove.equals(Color.BLACK) ? Color.WHITE : Color.BLACK;
