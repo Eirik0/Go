@@ -60,7 +60,26 @@ public class RandomAgent implements IAgent {
                         Math.abs(p.getY() - refPoint.getY()) < 5;
             }
         } else if (enclosedSides.size() == 2) {
-            return false;
+            Optional<Point> northOrSouth = enclosedSides.stream().filter(rp -> rp.getX() != p.getX()).findAny();
+            Optional<Point> eastOrWest = enclosedSides.stream().filter(rp -> rp.getY() != p.getY()).findAny();
+            if(northOrSouth.isPresent() && eastOrWest.isPresent()) {
+                boolean hEnclosed = false;
+                if(northPoint.isPresent()) {
+                    hEnclosed = group.getPoints().stream().filter(gp -> gp.getX() == 18).findAny().isPresent();
+                } else {
+                    hEnclosed = group.getPoints().stream().filter(gp -> gp.getY() == 0).findAny().isPresent();
+                }
+
+                boolean vEnclosed = false;
+                if(eastPoint.isPresent()) {
+                    vEnclosed = group.getPoints().stream().filter(gp -> gp.getX() == 0).findAny().isPresent();
+                } else {
+                    vEnclosed = group.getPoints().stream().filter(gp -> gp.getX() == 18).findAny().isPresent();
+                }
+                return hEnclosed && vEnclosed;
+            } else {
+                return false;
+            }
         } else if (enclosedSides.size() == 3) {
             return false;
         } else {
