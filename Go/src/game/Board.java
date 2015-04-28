@@ -97,9 +97,9 @@ public class Board {
 	public Set<Point> getLiberties(final Group g) {
 
 		List<Group> adjacent = groups.stream().filter(eg -> g.isAdjacent(eg)).collect(Collectors.toList());
-		Set<Point> liberties = g.getAdjacent();
+		Set<Point> liberties = new HashSet<>(g.getAdjacent());
 
-		adjacent.forEach(a -> liberties.removeAll(a.getAdjacent()));
+		adjacent.forEach(a -> liberties.removeAll(a.getPoints()));
 
 		return liberties;
 

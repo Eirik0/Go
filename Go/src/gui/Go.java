@@ -21,8 +21,8 @@ public class Go extends JFrame {
 
 	private static final String TITLE = "Go";
 
-	public static final int DEFAULT_WIDTH = 200;
-	public static final int DEFAULT_HEIGHT = 200;
+	public static final int DEFAULT_WIDTH = 800;
+	public static final int DEFAULT_HEIGHT = 800;
 
 	private IAgent agent;
 
