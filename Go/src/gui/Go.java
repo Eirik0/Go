@@ -3,18 +3,17 @@ package gui;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Random;
 
 import javax.swing.*;
 
 import agent.IAgent;
-import config.RandomAgentConfiguration;
+import config.AlmostRandomAgentConfiguration;
 import game.Board;
 import game.Group;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.stereotype.*;
 import org.springframework.stereotype.Component;
+import serialization.GameState;
 
 @Component
 public class Go extends JFrame {
@@ -26,7 +25,7 @@ public class Go extends JFrame {
 
 	private IAgent agent;
 
-	class BoardViewPanel extends JPanel {
+	public static class BoardViewPanel extends JPanel {
 
 		private Board controller;
 
@@ -42,6 +41,7 @@ public class Go extends JFrame {
 
 		@Override
 		public void paintComponent(final Graphics g) {
+
 			super.paintComponent(g);
 			Graphics2D g2d = (Graphics2D) g;
 			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -66,11 +66,13 @@ public class Go extends JFrame {
 							yStoneSize);
 				}
 			}
+
 		}
 
 		public void setController(final Board controller) {
 			this.controller = controller;
 		}
+
 	}
 
 	private Board controller;
@@ -78,6 +80,9 @@ public class Go extends JFrame {
 	private JButton startButton;
 	private JButton nextMoveButton;
 	private JPanel buttonPanel;
+	private JPanel infoPanel;
+	private JLabel blackInfo;
+	private JLabel whiteInfo;
 	private BoardViewPanel gridPanel;
 
 	public Go() {
@@ -90,8 +95,14 @@ public class Go extends JFrame {
 		controller = new Board();
 		gridPanel = new BoardViewPanel(controller);
 		gridPanel.setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
-
 		cp.add(gridPanel);
+
+		blackInfo = new JLabel(getInfo(GameState.Color.BLACK));
+		whiteInfo = new JLabel(getInfo(GameState.Color.WHITE));
+		infoPanel = new JPanel(new BorderLayout());
+		infoPanel.add(blackInfo, BorderLayout.WEST);
+		infoPanel.add(whiteInfo, BorderLayout.EAST);
+		cp.add(infoPanel);
 
 		buttonPanel = new JPanel(new BorderLayout());
 		buttonPanel.add(quitButton = new JButton("Quit"), BorderLayout.EAST);
@@ -114,6 +125,13 @@ public class Go extends JFrame {
 
 	}
 
+	public String getInfo(final GameState.Color c) {
+		return c.toString() + " captures: " + Integer.toString(controller.getCaptures().stream()
+				.filter(g -> !g.getColor().equals(c))
+				.map(g -> g.getPoints().size())
+				.reduce(0, (a,b) -> a+b));
+	}
+
 	public void startGame() {
 		if(controller.isGameOver()) {
 			controller = new Board();
@@ -121,15 +139,18 @@ public class Go extends JFrame {
 			gridPanel.repaint();
 		} else {
 			while(!controller.isGameOver()) {
-				controller.makeMove(agent.getNextMove(controller));
-				gridPanel.repaint();
+				nextMove();
 			}
 		}
 	}
 
 	public void nextMove() {
 		controller.makeMove(agent.getNextMove(controller));
+		blackInfo.setText(getInfo(GameState.Color.BLACK));
+		whiteInfo.setText(getInfo(GameState.Color.WHITE));
+		infoPanel.repaint();
 		gridPanel.repaint();
+
 	}
 
 	@Autowired
@@ -139,7 +160,7 @@ public class Go extends JFrame {
 
 	public static void main(String[] args) {
 
-		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(RandomAgentConfiguration.class);
+		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(AlmostRandomAgentConfiguration.class);
 		final Go gui = ctx.getBean(Go.class);
 
 		EventQueue.invokeLater(new Runnable() {

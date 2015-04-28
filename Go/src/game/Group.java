@@ -1,9 +1,6 @@
 package game;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import serialization.GameState;
@@ -67,6 +64,26 @@ public class Group {
     public List<Point> getAdjacentPoints(final Point p) {
         Set<Point> adjPoints = new HashSet<>(p.getAdjacent());
         return points.stream().filter(q -> adjPoints.contains(q)).collect(Collectors.toList());
+    }
+
+    public Set<Point> getEnclosedPoints() {
+
+        final Set<Point> enclosedPoints = new HashSet<>();
+        final Map<Integer, List<Point>> groupedPoints = points.stream().collect(Collectors.groupingBy(Point::getX));
+
+        for(Integer i: groupedPoints.keySet()) {
+
+            List<Point> groupI = groupedPoints.get(i);
+            // these won't have a group if they're empty, so we don't have to check
+            Point maxPoint = groupI.stream().max((p1, p2) -> Integer.compare(p1.getY(), p2.getY())).get();
+            Point minPoint = groupI.stream().min((p1, p2) -> Integer.compare(p1.getY(), p2.getY())).get();
+
+            // TODO - finish this
+
+        }
+
+        return enclosedPoints;
+
     }
 
     public boolean equals(final Group other) {
