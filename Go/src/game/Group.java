@@ -1,7 +1,9 @@
 package game;
 
 import java.util.*;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import serialization.GameState;
 import serialization.GameState.Color;
@@ -14,6 +16,58 @@ public class Group {
     protected Set<Point> points;
     protected Set<Point> adjacent;
     protected Color color;
+
+    public static final Set<Point> ALL_POINTS;
+
+    public static class PointExplorer implements Supplier<Point> {
+
+        final Set<Point> supply = new HashSet<>();
+        final Set<Point> supplied = new HashSet<>();
+
+        public PointExplorer(final Point start, final Set<Point> exclude) {
+
+            final Set<Point> frontier = new HashSet<>(Arrays.asList(start));
+            frontier.removeAll(exclude);
+
+            while(!frontier.isEmpty()) {
+                Set<Point> newFrontier = new HashSet<>();
+                for(Point p: frontier) {
+                    newFrontier.addAll(p.getAdjacent().stream()
+                            .filter(pt -> !exclude.contains(pt) && !supply.contains(pt))
+                            .collect(Collectors.toSet()));
+                }
+                supply.addAll(frontier);
+                frontier.clear();
+                frontier.addAll(newFrontier);
+            }
+
+        }
+
+        public PointExplorer() {
+            this(new Point(0, 0), new HashSet<>());
+        }
+
+        public int getLimit() {
+            return supply.size() - supplied.size();
+        }
+
+        @Override
+        public Point get() {
+            Optional<Point> possiblePoint = supply.stream().filter(pt -> supplied.contains(pt)).findAny();
+            if(possiblePoint.isPresent()) {
+                Point p = possiblePoint.get();
+                supplied.add(p);
+                return p;
+            } else {
+                return null;
+            }
+        }
+    }
+
+    static {
+        PointExplorer pGen = new PointExplorer();
+        ALL_POINTS = Stream.generate(pGen).limit(pGen.getLimit()).collect(Collectors.toSet());
+    }
 
     public Group(final Group g) {
         this(g.getColor(), g.getPoints());
@@ -69,16 +123,23 @@ public class Group {
     public Set<Point> getEnclosedPoints() {
 
         final Set<Point> enclosedPoints = new HashSet<>();
-        final Map<Integer, List<Point>> groupedPoints = points.stream().collect(Collectors.groupingBy(Point::getX));
+        final Set<Point> unexploredPoints = new HashSet<>(adjacent);
 
-        for(Integer i: groupedPoints.keySet()) {
+        while(!unexploredPoints.isEmpty()) {
 
-            List<Point> groupI = groupedPoints.get(i);
-            // these won't have a group if they're empty, so we don't have to check
-            Point maxPoint = groupI.stream().max((p1, p2) -> Integer.compare(p1.getY(), p2.getY())).get();
-            Point minPoint = groupI.stream().min((p1, p2) -> Integer.compare(p1.getY(), p2.getY())).get();
+            // unexploredPoints is not empty, so no need to check isPresent
+            Point p = unexploredPoints.stream().findAny().get();
 
-            // TODO - finish this
+            PointExplorer pGen = new PointExplorer(p, points);
+            Set<Point> reachablePoints =
+                    Stream.generate(pGen)
+                            .filter(pt -> unexploredPoints.contains(pt))
+                            .limit(pGen.getLimit())
+                            .collect(Collectors.toSet());
+
+            // TODO: decide if reachable points are enclosed
+
+            unexploredPoints.removeAll(reachablePoints);
 
         }
 
