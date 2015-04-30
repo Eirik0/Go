@@ -1,6 +1,7 @@
 package game;
 
 import java.util.*;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -17,15 +18,77 @@ public class Board {
 	private boolean gameOver;
 	private Color toMove;
 	private List<Group> groups;
+
 	private List<CapturedGroup> captures;
 	private List<Placement> history;
 
 	public static final int DEFAULT_SIZE = 19;
 	public static final Point PASS_POINT = new Point(-1,-1);
+
+	private Set<Point> ALL_POINTS;
+	private Point NE_CORNER;
+	private Point NW_CORNER;
+	private Point SE_CORNER;
+	private Point SW_CORNER;
+
+	public static class PointExplorer implements Supplier<Point> {
+
+		final Set<Point> supply = new HashSet<>();
+		final Set<Point> supplied = new HashSet<>();
+
+		public PointExplorer(final Point start, final Set<Point> exclude) {
+
+			final Set<Point> frontier = new HashSet<>(Arrays.asList(start));
+			frontier.removeAll(exclude);
+
+			while(!frontier.isEmpty()) {
+				Set<Point> newFrontier = new HashSet<>();
+				for(Point p: frontier) {
+					newFrontier.addAll(p.getAdjacent().stream()
+							.filter(pt -> !exclude.contains(pt) && !supply.contains(pt))
+							.collect(Collectors.toSet()));
+				}
+				supply.addAll(frontier);
+				frontier.clear();
+				frontier.addAll(newFrontier);
+			}
+
+		}
+
+		public PointExplorer() {
+			this(new Point(0, 0), new HashSet<>());
+		}
+
+		public int getLimit() {
+			return supply.size() - supplied.size();
+		}
+
+		@Override
+		public Point get() {
+			Optional<Point> possiblePoint = supply.stream().filter(pt -> supplied.contains(pt)).findAny();
+			if(possiblePoint.isPresent()) {
+				Point p = possiblePoint.get();
+				supplied.add(p);
+				return p;
+			} else {
+				return null;
+			}
+		}
+	}
+
+
+
 	public Board() {
 		this(DEFAULT_SIZE);
 	}
 	public Board(int size) {
+
+		PointExplorer pGen = new PointExplorer();
+		ALL_POINTS = Stream.generate(pGen).limit(pGen.getLimit()).collect(Collectors.toSet());
+		NE_CORNER = ALL_POINTS.stream().filter(p -> p.getY() == 0).max((a, b) -> -Integer.compare(a.getY(), b.getY())).get();
+		NW_CORNER = ALL_POINTS.stream().filter(p -> p.getY() == 0).max((a, b) -> Integer.compare(a.getY(), b.getY())).get();
+		SE_CORNER = ALL_POINTS.stream().filter(p -> p.getY() == size-1).max((a, b) -> -Integer.compare(a.getY(), b.getY())).get();
+		SW_CORNER = ALL_POINTS.stream().filter(p -> p.getY() == size-1).max((a, b) -> Integer.compare(a.getY(), b.getY())).get();
 
 		groups = new ArrayList<>();
 		captures = new ArrayList<>();
@@ -231,6 +294,34 @@ public class Board {
 			makeMove(p.getPlace().getX(), p.getPlace().getY());
 		}
 	}
+
+	public Set<Point> getEnclosedPoints(final Group group) {
+
+		final Set<Point> enclosedPoints = new HashSet<>();
+		final Set<Point> unexploredPoints = new HashSet<>(group.getAdjacent());
+
+		while(!unexploredPoints.isEmpty()) {
+
+			// unexploredPoints is not empty, so no need to check isPresent
+			Point p = unexploredPoints.stream().findAny().get();
+
+			PointExplorer pGen = new PointExplorer(p, group.getPoints());
+			Set<Point> reachablePoints =
+					Stream.generate(pGen)
+							.filter(pt -> unexploredPoints.contains(pt))
+							.limit(pGen.getLimit())
+							.collect(Collectors.toSet());
+
+
+
+			unexploredPoints.removeAll(reachablePoints);
+
+		}
+
+		return enclosedPoints;
+
+	}
+
 	public List<Placement> getHistory() {
 		return history;
 	}
