@@ -147,7 +147,6 @@ public class Go extends JFrame {
 		public void mouseClicked(MouseEvent e) {
 			if(mousePosition != null && controller.isValidMove(mousePosition)) {
 				controller.makeMove(mousePosition);
-				getParent().
 				repaint(500);
 			}
 		}
