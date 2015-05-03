@@ -10,10 +10,21 @@ message Intersection {
 	required int32 Y = 2;
 }
 message Placement {
-	required Intersection place = 1;
-	required Color player = 2;
+	required Color player = 1;
+	required Intersection place = 2;
+}
+message Group {
+	required Color player = 1;
+	repeated Intersection stones = 2;
+}
+message Capture {
+	required int32 moveIndex = 1;
+	required Group capturedGroup = 2;
 }
 message Moment {
-	required Color toMove = 1;
-	repeated Placement boardState = 2;
+	required bool gameOver = 1;
+	required Color toMove = 2;
+	repeated Group playerAsset = 3;
+	repeated Capture playerCaptures = 4;
+	repeated Placement moves = 5;
 }

@@ -8,20 +8,43 @@ public final class GameState {
   public static void registerAllExtensions(
       com.google.protobuf.ExtensionRegistry registry) {
   }
+  /**
+   * Protobuf enum {@code serialization.Color}
+   */
   public enum Color
       implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <code>EMPTY = 0;</code>
+     */
     EMPTY(0, 0),
+    /**
+     * <code>BLACK = 1;</code>
+     */
     BLACK(1, 1),
+    /**
+     * <code>WHITE = 2;</code>
+     */
     WHITE(2, 2),
     ;
-    
+
+    /**
+     * <code>EMPTY = 0;</code>
+     */
     public static final int EMPTY_VALUE = 0;
+    /**
+     * <code>BLACK = 1;</code>
+     */
     public static final int BLACK_VALUE = 1;
+    /**
+     * <code>WHITE = 2;</code>
+     */
     public static final int WHITE_VALUE = 2;
-    
-    
-    public final int getNumber() { return value; }
-    
+
+
+    public final int getNumber() {
+      return value;
+    }
+
     public static Color valueOf(int value) {
       switch (value) {
         case 0: return EMPTY;
@@ -30,7 +53,7 @@ public final class GameState {
         default: return null;
       }
     }
-    
+
     public static com.google.protobuf.Internal.EnumLiteMap<Color>
         internalGetValueMap() {
       return internalValueMap;
@@ -42,7 +65,7 @@ public final class GameState {
               return Color.valueOf(number);
             }
           };
-    
+
     public final com.google.protobuf.Descriptors.EnumValueDescriptor
         getValueDescriptor() {
       return getDescriptor().getValues().get(index);
@@ -55,11 +78,9 @@ public final class GameState {
         getDescriptor() {
       return serialization.GameState.getDescriptor().getEnumTypes().get(0);
     }
-    
-    private static final Color[] VALUES = {
-      EMPTY, BLACK, WHITE, 
-    };
-    
+
+    private static final Color[] VALUES = values();
+
     public static Color valueOf(
         com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
       if (desc.getType() != getDescriptor()) {
@@ -68,87 +89,179 @@ public final class GameState {
       }
       return VALUES[desc.getIndex()];
     }
-    
+
     private final int index;
     private final int value;
-    
+
     private Color(int index, int value) {
       this.index = index;
       this.value = value;
     }
-    
+
     // @@protoc_insertion_point(enum_scope:serialization.Color)
   }
-  
-  public interface IntersectionOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
-    
-    // required int32 X = 1;
+
+  public interface IntersectionOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:serialization.Intersection)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required int32 X = 1;</code>
+     */
     boolean hasX();
+    /**
+     * <code>required int32 X = 1;</code>
+     */
     int getX();
-    
-    // required int32 Y = 2;
+
+    /**
+     * <code>required int32 Y = 2;</code>
+     */
     boolean hasY();
+    /**
+     * <code>required int32 Y = 2;</code>
+     */
     int getY();
   }
-  public static final class Intersection extends
-      com.google.protobuf.GeneratedMessage
-      implements IntersectionOrBuilder {
+  /**
+   * Protobuf type {@code serialization.Intersection}
+   */
+  public  static final class Intersection extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:serialization.Intersection)
+      IntersectionOrBuilder {
     // Use Intersection.newBuilder() to construct.
-    private Intersection(Builder builder) {
+    private Intersection(com.google.protobuf.GeneratedMessage.Builder builder) {
       super(builder);
     }
-    private Intersection(boolean noInit) {}
-    
-    private static final Intersection defaultInstance;
-    public static Intersection getDefaultInstance() {
-      return defaultInstance;
+    private Intersection() {
+      x_ = 0;
+      y_ = 0;
     }
-    
-    public Intersection getDefaultInstanceForType() {
-      return defaultInstance;
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
     }
-    
+    private Intersection(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry) {
+      this();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              x_ = input.readInt32();
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              y_ = input.readInt32();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw new RuntimeException(e.setUnfinishedMessage(this));
+      } catch (java.io.IOException e) {
+        throw new RuntimeException(
+            new com.google.protobuf.InvalidProtocolBufferException(
+                e.getMessage()).setUnfinishedMessage(this));
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return serialization.GameState.internal_static_serialization_Intersection_descriptor;
     }
-    
+
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return serialization.GameState.internal_static_serialization_Intersection_fieldAccessorTable;
+      return serialization.GameState.internal_static_serialization_Intersection_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              serialization.GameState.Intersection.class, serialization.GameState.Intersection.Builder.class);
     }
-    
+
+    public static final com.google.protobuf.Parser<Intersection> PARSER =
+        new com.google.protobuf.AbstractParser<Intersection>() {
+      public Intersection parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        try {
+          return new Intersection(input, extensionRegistry);
+        } catch (RuntimeException e) {
+          if (e.getCause() instanceof
+              com.google.protobuf.InvalidProtocolBufferException) {
+            throw (com.google.protobuf.InvalidProtocolBufferException)
+                e.getCause();
+          }
+          throw e;
+        }
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<Intersection> getParserForType() {
+      return PARSER;
+    }
+
     private int bitField0_;
-    // required int32 X = 1;
     public static final int X_FIELD_NUMBER = 1;
     private int x_;
+    /**
+     * <code>required int32 X = 1;</code>
+     */
     public boolean hasX() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
+    /**
+     * <code>required int32 X = 1;</code>
+     */
     public int getX() {
       return x_;
     }
-    
-    // required int32 Y = 2;
+
     public static final int Y_FIELD_NUMBER = 2;
     private int y_;
+    /**
+     * <code>required int32 Y = 2;</code>
+     */
     public boolean hasY() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
+    /**
+     * <code>required int32 Y = 2;</code>
+     */
     public int getY() {
       return y_;
     }
-    
-    private void initFields() {
-      x_ = 0;
-      y_ = 0;
-    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
-      
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
       if (!hasX()) {
         memoizedIsInitialized = 0;
         return false;
@@ -160,24 +273,23 @@ public final class GameState {
       memoizedIsInitialized = 1;
       return true;
     }
-    
+
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         output.writeInt32(1, x_);
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         output.writeInt32(2, y_);
       }
-      getUnknownFields().writeTo(output);
+      unknownFields.writeTo(output);
     }
-    
+
     private int memoizedSerializedSize = -1;
     public int getSerializedSize() {
       int size = memoizedSerializedSize;
       if (size != -1) return size;
-    
+
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
@@ -187,117 +299,109 @@ public final class GameState {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(2, y_);
       }
-      size += getUnknownFields().getSerializedSize();
+      size += unknownFields.getSerializedSize();
       memoizedSerializedSize = size;
       return size;
     }
-    
+
     private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    protected java.lang.Object writeReplace()
-        throws java.io.ObjectStreamException {
-      return super.writeReplace();
-    }
-    
     public static serialization.GameState.Intersection parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data).buildParsed();
+      return PARSER.parseFrom(data);
     }
     public static serialization.GameState.Intersection parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data, extensionRegistry)
-               .buildParsed();
+      return PARSER.parseFrom(data, extensionRegistry);
     }
     public static serialization.GameState.Intersection parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data).buildParsed();
+      return PARSER.parseFrom(data);
     }
     public static serialization.GameState.Intersection parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data, extensionRegistry)
-               .buildParsed();
+      return PARSER.parseFrom(data, extensionRegistry);
     }
     public static serialization.GameState.Intersection parseFrom(java.io.InputStream input)
         throws java.io.IOException {
-      return newBuilder().mergeFrom(input).buildParsed();
+      return PARSER.parseFrom(input);
     }
     public static serialization.GameState.Intersection parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      return newBuilder().mergeFrom(input, extensionRegistry)
-               .buildParsed();
+      return PARSER.parseFrom(input, extensionRegistry);
     }
     public static serialization.GameState.Intersection parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
-      Builder builder = newBuilder();
-      if (builder.mergeDelimitedFrom(input)) {
-        return builder.buildParsed();
-      } else {
-        return null;
-      }
+      return PARSER.parseDelimitedFrom(input);
     }
     public static serialization.GameState.Intersection parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      Builder builder = newBuilder();
-      if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
-        return builder.buildParsed();
-      } else {
-        return null;
-      }
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
     }
     public static serialization.GameState.Intersection parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
-      return newBuilder().mergeFrom(input).buildParsed();
+      return PARSER.parseFrom(input);
     }
     public static serialization.GameState.Intersection parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      return newBuilder().mergeFrom(input, extensionRegistry)
-               .buildParsed();
+      return PARSER.parseFrom(input, extensionRegistry);
     }
-    
-    public static Builder newBuilder() { return Builder.create(); }
+
     public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(serialization.GameState.Intersection prototype) {
-      return newBuilder().mergeFrom(prototype);
+    public static Builder newBuilder() {
+      return defaultInstance.toBuilder();
     }
-    public Builder toBuilder() { return newBuilder(this); }
-    
+    public static Builder newBuilder(serialization.GameState.Intersection prototype) {
+      return defaultInstance.toBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() {
+      return this == defaultInstance
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
     @java.lang.Override
     protected Builder newBuilderForType(
         com.google.protobuf.GeneratedMessage.BuilderParent parent) {
       Builder builder = new Builder(parent);
       return builder;
     }
+    /**
+     * Protobuf type {@code serialization.Intersection}
+     */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements serialization.GameState.IntersectionOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:serialization.Intersection)
+        serialization.GameState.IntersectionOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return serialization.GameState.internal_static_serialization_Intersection_descriptor;
       }
-      
+
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return serialization.GameState.internal_static_serialization_Intersection_fieldAccessorTable;
+        return serialization.GameState.internal_static_serialization_Intersection_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                serialization.GameState.Intersection.class, serialization.GameState.Intersection.Builder.class);
       }
-      
+
       // Construct using serialization.GameState.Intersection.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
-      
-      private Builder(BuilderParent parent) {
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
         super(parent);
         maybeForceBuilderInitialization();
       }
@@ -305,10 +409,6 @@ public final class GameState {
         if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
         }
       }
-      private static Builder create() {
-        return new Builder();
-      }
-      
       public Builder clear() {
         super.clear();
         x_ = 0;
@@ -317,20 +417,16 @@ public final class GameState {
         bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
-      
-      public Builder clone() {
-        return create().mergeFrom(buildPartial());
-      }
-      
+
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return serialization.GameState.Intersection.getDescriptor();
+        return serialization.GameState.internal_static_serialization_Intersection_descriptor;
       }
-      
+
       public serialization.GameState.Intersection getDefaultInstanceForType() {
         return serialization.GameState.Intersection.getDefaultInstance();
       }
-      
+
       public serialization.GameState.Intersection build() {
         serialization.GameState.Intersection result = buildPartial();
         if (!result.isInitialized()) {
@@ -338,17 +434,7 @@ public final class GameState {
         }
         return result;
       }
-      
-      private serialization.GameState.Intersection buildParsed()
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        serialization.GameState.Intersection result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(
-            result).asInvalidProtocolBufferException();
-        }
-        return result;
-      }
-      
+
       public serialization.GameState.Intersection buildPartial() {
         serialization.GameState.Intersection result = new serialization.GameState.Intersection(this);
         int from_bitField0_ = bitField0_;
@@ -365,7 +451,7 @@ public final class GameState {
         onBuilt();
         return result;
       }
-      
+
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof serialization.GameState.Intersection) {
           return mergeFrom((serialization.GameState.Intersection)other);
@@ -374,7 +460,7 @@ public final class GameState {
           return this;
         }
       }
-      
+
       public Builder mergeFrom(serialization.GameState.Intersection other) {
         if (other == serialization.GameState.Intersection.getDefaultInstance()) return this;
         if (other.hasX()) {
@@ -383,10 +469,11 @@ public final class GameState {
         if (other.hasY()) {
           setY(other.getY());
         }
-        this.mergeUnknownFields(other.getUnknownFields());
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
         return this;
       }
-      
+
       public final boolean isInitialized() {
         if (!hasX()) {
           
@@ -398,1006 +485,176 @@ public final class GameState {
         }
         return true;
       }
-      
+
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder(
-            this.getUnknownFields());
-        while (true) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              this.setUnknownFields(unknownFields.build());
-              onChanged();
-              return this;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                this.setUnknownFields(unknownFields.build());
-                onChanged();
-                return this;
-              }
-              break;
-            }
-            case 8: {
-              bitField0_ |= 0x00000001;
-              x_ = input.readInt32();
-              break;
-            }
-            case 16: {
-              bitField0_ |= 0x00000002;
-              y_ = input.readInt32();
-              break;
-            }
+        serialization.GameState.Intersection parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (serialization.GameState.Intersection) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
           }
         }
+        return this;
       }
-      
       private int bitField0_;
-      
-      // required int32 X = 1;
+
       private int x_ ;
+      /**
+       * <code>required int32 X = 1;</code>
+       */
       public boolean hasX() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
+      /**
+       * <code>required int32 X = 1;</code>
+       */
       public int getX() {
         return x_;
       }
+      /**
+       * <code>required int32 X = 1;</code>
+       */
       public Builder setX(int value) {
         bitField0_ |= 0x00000001;
         x_ = value;
         onChanged();
         return this;
       }
+      /**
+       * <code>required int32 X = 1;</code>
+       */
       public Builder clearX() {
         bitField0_ = (bitField0_ & ~0x00000001);
         x_ = 0;
         onChanged();
         return this;
       }
-      
-      // required int32 Y = 2;
+
       private int y_ ;
+      /**
+       * <code>required int32 Y = 2;</code>
+       */
       public boolean hasY() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
+      /**
+       * <code>required int32 Y = 2;</code>
+       */
       public int getY() {
         return y_;
       }
+      /**
+       * <code>required int32 Y = 2;</code>
+       */
       public Builder setY(int value) {
         bitField0_ |= 0x00000002;
         y_ = value;
         onChanged();
         return this;
       }
+      /**
+       * <code>required int32 Y = 2;</code>
+       */
       public Builder clearY() {
         bitField0_ = (bitField0_ & ~0x00000002);
         y_ = 0;
         onChanged();
         return this;
       }
-      
+
       // @@protoc_insertion_point(builder_scope:serialization.Intersection)
     }
-    
-    static {
-      defaultInstance = new Intersection(true);
-      defaultInstance.initFields();
-    }
-    
+
     // @@protoc_insertion_point(class_scope:serialization.Intersection)
-  }
-  
-  public interface PlacementOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
-    
-    // required .serialization.Intersection place = 1;
-    boolean hasPlace();
-    serialization.GameState.Intersection getPlace();
-    serialization.GameState.IntersectionOrBuilder getPlaceOrBuilder();
-    
-    // required .serialization.Color player = 2;
-    boolean hasPlayer();
-    serialization.GameState.Color getPlayer();
-  }
-  public static final class Placement extends
-      com.google.protobuf.GeneratedMessage
-      implements PlacementOrBuilder {
-    // Use Placement.newBuilder() to construct.
-    private Placement(Builder builder) {
-      super(builder);
-    }
-    private Placement(boolean noInit) {}
-    
-    private static final Placement defaultInstance;
-    public static Placement getDefaultInstance() {
-      return defaultInstance;
-    }
-    
-    public Placement getDefaultInstanceForType() {
-      return defaultInstance;
-    }
-    
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return serialization.GameState.internal_static_serialization_Placement_descriptor;
-    }
-    
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return serialization.GameState.internal_static_serialization_Placement_fieldAccessorTable;
-    }
-    
-    private int bitField0_;
-    // required .serialization.Intersection place = 1;
-    public static final int PLACE_FIELD_NUMBER = 1;
-    private serialization.GameState.Intersection place_;
-    public boolean hasPlace() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
-    public serialization.GameState.Intersection getPlace() {
-      return place_;
-    }
-    public serialization.GameState.IntersectionOrBuilder getPlaceOrBuilder() {
-      return place_;
-    }
-    
-    // required .serialization.Color player = 2;
-    public static final int PLAYER_FIELD_NUMBER = 2;
-    private serialization.GameState.Color player_;
-    public boolean hasPlayer() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
-    }
-    public serialization.GameState.Color getPlayer() {
-      return player_;
-    }
-    
-    private void initFields() {
-      place_ = serialization.GameState.Intersection.getDefaultInstance();
-      player_ = serialization.GameState.Color.EMPTY;
-    }
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
-      
-      if (!hasPlace()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasPlayer()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!getPlace().isInitialized()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      memoizedIsInitialized = 1;
-      return true;
-    }
-    
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      getSerializedSize();
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeMessage(1, place_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeEnum(2, player_.getNumber());
-      }
-      getUnknownFields().writeTo(output);
-    }
-    
-    private int memoizedSerializedSize = -1;
-    public int getSerializedSize() {
-      int size = memoizedSerializedSize;
-      if (size != -1) return size;
-    
-      size = 0;
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(1, place_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(2, player_.getNumber());
-      }
-      size += getUnknownFields().getSerializedSize();
-      memoizedSerializedSize = size;
-      return size;
-    }
-    
-    private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    protected java.lang.Object writeReplace()
-        throws java.io.ObjectStreamException {
-      return super.writeReplace();
-    }
-    
-    public static serialization.GameState.Placement parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data).buildParsed();
-    }
-    public static serialization.GameState.Placement parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data, extensionRegistry)
-               .buildParsed();
-    }
-    public static serialization.GameState.Placement parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data).buildParsed();
-    }
-    public static serialization.GameState.Placement parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data, extensionRegistry)
-               .buildParsed();
-    }
-    public static serialization.GameState.Placement parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input).buildParsed();
-    }
-    public static serialization.GameState.Placement parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input, extensionRegistry)
-               .buildParsed();
-    }
-    public static serialization.GameState.Placement parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      Builder builder = newBuilder();
-      if (builder.mergeDelimitedFrom(input)) {
-        return builder.buildParsed();
-      } else {
-        return null;
-      }
-    }
-    public static serialization.GameState.Placement parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      Builder builder = newBuilder();
-      if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
-        return builder.buildParsed();
-      } else {
-        return null;
-      }
-    }
-    public static serialization.GameState.Placement parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input).buildParsed();
-    }
-    public static serialization.GameState.Placement parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input, extensionRegistry)
-               .buildParsed();
-    }
-    
-    public static Builder newBuilder() { return Builder.create(); }
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(serialization.GameState.Placement prototype) {
-      return newBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() { return newBuilder(this); }
-    
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements serialization.GameState.PlacementOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return serialization.GameState.internal_static_serialization_Placement_descriptor;
-      }
-      
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return serialization.GameState.internal_static_serialization_Placement_fieldAccessorTable;
-      }
-      
-      // Construct using serialization.GameState.Placement.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-      
-      private Builder(BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-          getPlaceFieldBuilder();
-        }
-      }
-      private static Builder create() {
-        return new Builder();
-      }
-      
-      public Builder clear() {
-        super.clear();
-        if (placeBuilder_ == null) {
-          place_ = serialization.GameState.Intersection.getDefaultInstance();
-        } else {
-          placeBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000001);
-        player_ = serialization.GameState.Color.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00000002);
-        return this;
-      }
-      
-      public Builder clone() {
-        return create().mergeFrom(buildPartial());
-      }
-      
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return serialization.GameState.Placement.getDescriptor();
-      }
-      
-      public serialization.GameState.Placement getDefaultInstanceForType() {
-        return serialization.GameState.Placement.getDefaultInstance();
-      }
-      
-      public serialization.GameState.Placement build() {
-        serialization.GameState.Placement result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-      
-      private serialization.GameState.Placement buildParsed()
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        serialization.GameState.Placement result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(
-            result).asInvalidProtocolBufferException();
-        }
-        return result;
-      }
-      
-      public serialization.GameState.Placement buildPartial() {
-        serialization.GameState.Placement result = new serialization.GameState.Placement(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        if (placeBuilder_ == null) {
-          result.place_ = place_;
-        } else {
-          result.place_ = placeBuilder_.build();
-        }
-        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.player_ = player_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
-      
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof serialization.GameState.Placement) {
-          return mergeFrom((serialization.GameState.Placement)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-      
-      public Builder mergeFrom(serialization.GameState.Placement other) {
-        if (other == serialization.GameState.Placement.getDefaultInstance()) return this;
-        if (other.hasPlace()) {
-          mergePlace(other.getPlace());
-        }
-        if (other.hasPlayer()) {
-          setPlayer(other.getPlayer());
-        }
-        this.mergeUnknownFields(other.getUnknownFields());
-        return this;
-      }
-      
-      public final boolean isInitialized() {
-        if (!hasPlace()) {
-          
-          return false;
-        }
-        if (!hasPlayer()) {
-          
-          return false;
-        }
-        if (!getPlace().isInitialized()) {
-          
-          return false;
-        }
-        return true;
-      }
-      
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder(
-            this.getUnknownFields());
-        while (true) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              this.setUnknownFields(unknownFields.build());
-              onChanged();
-              return this;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                this.setUnknownFields(unknownFields.build());
-                onChanged();
-                return this;
-              }
-              break;
-            }
-            case 10: {
-              serialization.GameState.Intersection.Builder subBuilder = serialization.GameState.Intersection.newBuilder();
-              if (hasPlace()) {
-                subBuilder.mergeFrom(getPlace());
-              }
-              input.readMessage(subBuilder, extensionRegistry);
-              setPlace(subBuilder.buildPartial());
-              break;
-            }
-            case 16: {
-              int rawValue = input.readEnum();
-              serialization.GameState.Color value = serialization.GameState.Color.valueOf(rawValue);
-              if (value == null) {
-                unknownFields.mergeVarintField(2, rawValue);
-              } else {
-                bitField0_ |= 0x00000002;
-                player_ = value;
-              }
-              break;
-            }
-          }
-        }
-      }
-      
-      private int bitField0_;
-      
-      // required .serialization.Intersection place = 1;
-      private serialization.GameState.Intersection place_ = serialization.GameState.Intersection.getDefaultInstance();
-      private com.google.protobuf.SingleFieldBuilder<
-          serialization.GameState.Intersection, serialization.GameState.Intersection.Builder, serialization.GameState.IntersectionOrBuilder> placeBuilder_;
-      public boolean hasPlace() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      public serialization.GameState.Intersection getPlace() {
-        if (placeBuilder_ == null) {
-          return place_;
-        } else {
-          return placeBuilder_.getMessage();
-        }
-      }
-      public Builder setPlace(serialization.GameState.Intersection value) {
-        if (placeBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          place_ = value;
-          onChanged();
-        } else {
-          placeBuilder_.setMessage(value);
-        }
-        bitField0_ |= 0x00000001;
-        return this;
-      }
-      public Builder setPlace(
-          serialization.GameState.Intersection.Builder builderForValue) {
-        if (placeBuilder_ == null) {
-          place_ = builderForValue.build();
-          onChanged();
-        } else {
-          placeBuilder_.setMessage(builderForValue.build());
-        }
-        bitField0_ |= 0x00000001;
-        return this;
-      }
-      public Builder mergePlace(serialization.GameState.Intersection value) {
-        if (placeBuilder_ == null) {
-          if (((bitField0_ & 0x00000001) == 0x00000001) &&
-              place_ != serialization.GameState.Intersection.getDefaultInstance()) {
-            place_ =
-              serialization.GameState.Intersection.newBuilder(place_).mergeFrom(value).buildPartial();
-          } else {
-            place_ = value;
-          }
-          onChanged();
-        } else {
-          placeBuilder_.mergeFrom(value);
-        }
-        bitField0_ |= 0x00000001;
-        return this;
-      }
-      public Builder clearPlace() {
-        if (placeBuilder_ == null) {
-          place_ = serialization.GameState.Intersection.getDefaultInstance();
-          onChanged();
-        } else {
-          placeBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000001);
-        return this;
-      }
-      public serialization.GameState.Intersection.Builder getPlaceBuilder() {
-        bitField0_ |= 0x00000001;
-        onChanged();
-        return getPlaceFieldBuilder().getBuilder();
-      }
-      public serialization.GameState.IntersectionOrBuilder getPlaceOrBuilder() {
-        if (placeBuilder_ != null) {
-          return placeBuilder_.getMessageOrBuilder();
-        } else {
-          return place_;
-        }
-      }
-      private com.google.protobuf.SingleFieldBuilder<
-          serialization.GameState.Intersection, serialization.GameState.Intersection.Builder, serialization.GameState.IntersectionOrBuilder> 
-          getPlaceFieldBuilder() {
-        if (placeBuilder_ == null) {
-          placeBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-              serialization.GameState.Intersection, serialization.GameState.Intersection.Builder, serialization.GameState.IntersectionOrBuilder>(
-                  place_,
-                  getParentForChildren(),
-                  isClean());
-          place_ = null;
-        }
-        return placeBuilder_;
-      }
-      
-      // required .serialization.Color player = 2;
-      private serialization.GameState.Color player_ = serialization.GameState.Color.EMPTY;
-      public boolean hasPlayer() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
-      }
-      public serialization.GameState.Color getPlayer() {
-        return player_;
-      }
-      public Builder setPlayer(serialization.GameState.Color value) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        bitField0_ |= 0x00000002;
-        player_ = value;
-        onChanged();
-        return this;
-      }
-      public Builder clearPlayer() {
-        bitField0_ = (bitField0_ & ~0x00000002);
-        player_ = serialization.GameState.Color.EMPTY;
-        onChanged();
-        return this;
-      }
-      
-      // @@protoc_insertion_point(builder_scope:serialization.Placement)
-    }
-    
+    private static final serialization.GameState.Intersection defaultInstance;
     static {
-      defaultInstance = new Placement(true);
-      defaultInstance.initFields();
+      defaultInstance = new serialization.GameState.Intersection();
     }
-    
-    // @@protoc_insertion_point(class_scope:serialization.Placement)
+
+    public static serialization.GameState.Intersection getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public serialization.GameState.Intersection getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    static {
+    }
   }
-  
-  public interface MomentOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
-    
-    // required .serialization.Color toMove = 1;
-    boolean hasToMove();
-    serialization.GameState.Color getToMove();
-    
-    // repeated .serialization.Placement boardState = 2;
-    java.util.List<serialization.GameState.Placement> 
-        getBoardStateList();
-    serialization.GameState.Placement getBoardState(int index);
-    int getBoardStateCount();
-    java.util.List<? extends serialization.GameState.PlacementOrBuilder> 
-        getBoardStateOrBuilderList();
-    serialization.GameState.PlacementOrBuilder getBoardStateOrBuilder(
-        int index);
+
+  public interface PlacementOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:serialization.Placement)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required .serialization.Color player = 1;</code>
+     */
+    boolean hasPlayer();
+    /**
+     * <code>required .serialization.Color player = 1;</code>
+     */
+    serialization.GameState.Color getPlayer();
+
+    /**
+     * <code>required .serialization.Intersection place = 2;</code>
+     */
+    boolean hasPlace();
+    /**
+     * <code>required .serialization.Intersection place = 2;</code>
+     */
+    serialization.GameState.Intersection getPlace();
+    /**
+     * <code>required .serialization.Intersection place = 2;</code>
+     */
+    serialization.GameState.IntersectionOrBuilder getPlaceOrBuilder();
   }
-  public static final class Moment extends
-      com.google.protobuf.GeneratedMessage
-      implements MomentOrBuilder {
-    // Use Moment.newBuilder() to construct.
-    private Moment(Builder builder) {
+  /**
+   * Protobuf type {@code serialization.Placement}
+   */
+  public  static final class Placement extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:serialization.Placement)
+      PlacementOrBuilder {
+    // Use Placement.newBuilder() to construct.
+    private Placement(com.google.protobuf.GeneratedMessage.Builder builder) {
       super(builder);
     }
-    private Moment(boolean noInit) {}
-    
-    private static final Moment defaultInstance;
-    public static Moment getDefaultInstance() {
-      return defaultInstance;
+    private Placement() {
+      player_ = 0;
     }
-    
-    public Moment getDefaultInstanceForType() {
-      return defaultInstance;
-    }
-    
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return serialization.GameState.internal_static_serialization_Moment_descriptor;
-    }
-    
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return serialization.GameState.internal_static_serialization_Moment_fieldAccessorTable;
-    }
-    
-    private int bitField0_;
-    // required .serialization.Color toMove = 1;
-    public static final int TOMOVE_FIELD_NUMBER = 1;
-    private serialization.GameState.Color toMove_;
-    public boolean hasToMove() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
-    public serialization.GameState.Color getToMove() {
-      return toMove_;
-    }
-    
-    // repeated .serialization.Placement boardState = 2;
-    public static final int BOARDSTATE_FIELD_NUMBER = 2;
-    private java.util.List<serialization.GameState.Placement> boardState_;
-    public java.util.List<serialization.GameState.Placement> getBoardStateList() {
-      return boardState_;
-    }
-    public java.util.List<? extends serialization.GameState.PlacementOrBuilder> 
-        getBoardStateOrBuilderList() {
-      return boardState_;
-    }
-    public int getBoardStateCount() {
-      return boardState_.size();
-    }
-    public serialization.GameState.Placement getBoardState(int index) {
-      return boardState_.get(index);
-    }
-    public serialization.GameState.PlacementOrBuilder getBoardStateOrBuilder(
-        int index) {
-      return boardState_.get(index);
-    }
-    
-    private void initFields() {
-      toMove_ = serialization.GameState.Color.EMPTY;
-      boardState_ = java.util.Collections.emptyList();
-    }
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
-      
-      if (!hasToMove()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      for (int i = 0; i < getBoardStateCount(); i++) {
-        if (!getBoardState(i).isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
-      memoizedIsInitialized = 1;
-      return true;
-    }
-    
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      getSerializedSize();
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeEnum(1, toMove_.getNumber());
-      }
-      for (int i = 0; i < boardState_.size(); i++) {
-        output.writeMessage(2, boardState_.get(i));
-      }
-      getUnknownFields().writeTo(output);
-    }
-    
-    private int memoizedSerializedSize = -1;
-    public int getSerializedSize() {
-      int size = memoizedSerializedSize;
-      if (size != -1) return size;
-    
-      size = 0;
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(1, toMove_.getNumber());
-      }
-      for (int i = 0; i < boardState_.size(); i++) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(2, boardState_.get(i));
-      }
-      size += getUnknownFields().getSerializedSize();
-      memoizedSerializedSize = size;
-      return size;
-    }
-    
-    private static final long serialVersionUID = 0L;
+
     @java.lang.Override
-    protected java.lang.Object writeReplace()
-        throws java.io.ObjectStreamException {
-      return super.writeReplace();
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
     }
-    
-    public static serialization.GameState.Moment parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data).buildParsed();
-    }
-    public static serialization.GameState.Moment parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data, extensionRegistry)
-               .buildParsed();
-    }
-    public static serialization.GameState.Moment parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data).buildParsed();
-    }
-    public static serialization.GameState.Moment parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data, extensionRegistry)
-               .buildParsed();
-    }
-    public static serialization.GameState.Moment parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input).buildParsed();
-    }
-    public static serialization.GameState.Moment parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input, extensionRegistry)
-               .buildParsed();
-    }
-    public static serialization.GameState.Moment parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      Builder builder = newBuilder();
-      if (builder.mergeDelimitedFrom(input)) {
-        return builder.buildParsed();
-      } else {
-        return null;
-      }
-    }
-    public static serialization.GameState.Moment parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      Builder builder = newBuilder();
-      if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
-        return builder.buildParsed();
-      } else {
-        return null;
-      }
-    }
-    public static serialization.GameState.Moment parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input).buildParsed();
-    }
-    public static serialization.GameState.Moment parseFrom(
+    private Placement(
         com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input, extensionRegistry)
-               .buildParsed();
-    }
-    
-    public static Builder newBuilder() { return Builder.create(); }
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(serialization.GameState.Moment prototype) {
-      return newBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() { return newBuilder(this); }
-    
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements serialization.GameState.MomentOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return serialization.GameState.internal_static_serialization_Moment_descriptor;
-      }
-      
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return serialization.GameState.internal_static_serialization_Moment_fieldAccessorTable;
-      }
-      
-      // Construct using serialization.GameState.Moment.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-      
-      private Builder(BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-          getBoardStateFieldBuilder();
-        }
-      }
-      private static Builder create() {
-        return new Builder();
-      }
-      
-      public Builder clear() {
-        super.clear();
-        toMove_ = serialization.GameState.Color.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00000001);
-        if (boardStateBuilder_ == null) {
-          boardState_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000002);
-        } else {
-          boardStateBuilder_.clear();
-        }
-        return this;
-      }
-      
-      public Builder clone() {
-        return create().mergeFrom(buildPartial());
-      }
-      
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return serialization.GameState.Moment.getDescriptor();
-      }
-      
-      public serialization.GameState.Moment getDefaultInstanceForType() {
-        return serialization.GameState.Moment.getDefaultInstance();
-      }
-      
-      public serialization.GameState.Moment build() {
-        serialization.GameState.Moment result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-      
-      private serialization.GameState.Moment buildParsed()
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        serialization.GameState.Moment result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(
-            result).asInvalidProtocolBufferException();
-        }
-        return result;
-      }
-      
-      public serialization.GameState.Moment buildPartial() {
-        serialization.GameState.Moment result = new serialization.GameState.Moment(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.toMove_ = toMove_;
-        if (boardStateBuilder_ == null) {
-          if (((bitField0_ & 0x00000002) == 0x00000002)) {
-            boardState_ = java.util.Collections.unmodifiableList(boardState_);
-            bitField0_ = (bitField0_ & ~0x00000002);
-          }
-          result.boardState_ = boardState_;
-        } else {
-          result.boardState_ = boardStateBuilder_.build();
-        }
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
-      
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof serialization.GameState.Moment) {
-          return mergeFrom((serialization.GameState.Moment)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-      
-      public Builder mergeFrom(serialization.GameState.Moment other) {
-        if (other == serialization.GameState.Moment.getDefaultInstance()) return this;
-        if (other.hasToMove()) {
-          setToMove(other.getToMove());
-        }
-        if (boardStateBuilder_ == null) {
-          if (!other.boardState_.isEmpty()) {
-            if (boardState_.isEmpty()) {
-              boardState_ = other.boardState_;
-              bitField0_ = (bitField0_ & ~0x00000002);
-            } else {
-              ensureBoardStateIsMutable();
-              boardState_.addAll(other.boardState_);
-            }
-            onChanged();
-          }
-        } else {
-          if (!other.boardState_.isEmpty()) {
-            if (boardStateBuilder_.isEmpty()) {
-              boardStateBuilder_.dispose();
-              boardStateBuilder_ = null;
-              boardState_ = other.boardState_;
-              bitField0_ = (bitField0_ & ~0x00000002);
-              boardStateBuilder_ = 
-                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
-                   getBoardStateFieldBuilder() : null;
-            } else {
-              boardStateBuilder_.addAllMessages(other.boardState_);
-            }
-          }
-        }
-        this.mergeUnknownFields(other.getUnknownFields());
-        return this;
-      }
-      
-      public final boolean isInitialized() {
-        if (!hasToMove()) {
-          
-          return false;
-        }
-        for (int i = 0; i < getBoardStateCount(); i++) {
-          if (!getBoardState(i).isInitialized()) {
-            
-            return false;
-          }
-        }
-        return true;
-      }
-      
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder(
-            this.getUnknownFields());
-        while (true) {
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry) {
+      this();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
           int tag = input.readTag();
           switch (tag) {
             case 0:
-              this.setUnknownFields(unknownFields.build());
-              onChanged();
-              return this;
+              done = true;
+              break;
             default: {
               if (!parseUnknownField(input, unknownFields,
                                      extensionRegistry, tag)) {
-                this.setUnknownFields(unknownFields.build());
-                onChanged();
-                return this;
+                done = true;
               }
               break;
             }
@@ -1408,259 +665,3588 @@ public final class GameState {
                 unknownFields.mergeVarintField(1, rawValue);
               } else {
                 bitField0_ |= 0x00000001;
-                toMove_ = value;
+                player_ = rawValue;
               }
               break;
             }
             case 18: {
-              serialization.GameState.Placement.Builder subBuilder = serialization.GameState.Placement.newBuilder();
-              input.readMessage(subBuilder, extensionRegistry);
-              addBoardState(subBuilder.buildPartial());
+              serialization.GameState.Intersection.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000002) == 0x00000002)) {
+                subBuilder = place_.toBuilder();
+              }
+              place_ = input.readMessage(serialization.GameState.Intersection.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(place_);
+                place_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000002;
               break;
             }
           }
         }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw new RuntimeException(e.setUnfinishedMessage(this));
+      } catch (java.io.IOException e) {
+        throw new RuntimeException(
+            new com.google.protobuf.InvalidProtocolBufferException(
+                e.getMessage()).setUnfinishedMessage(this));
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
       }
-      
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return serialization.GameState.internal_static_serialization_Placement_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return serialization.GameState.internal_static_serialization_Placement_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              serialization.GameState.Placement.class, serialization.GameState.Placement.Builder.class);
+    }
+
+    public static final com.google.protobuf.Parser<Placement> PARSER =
+        new com.google.protobuf.AbstractParser<Placement>() {
+      public Placement parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        try {
+          return new Placement(input, extensionRegistry);
+        } catch (RuntimeException e) {
+          if (e.getCause() instanceof
+              com.google.protobuf.InvalidProtocolBufferException) {
+            throw (com.google.protobuf.InvalidProtocolBufferException)
+                e.getCause();
+          }
+          throw e;
+        }
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<Placement> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int PLAYER_FIELD_NUMBER = 1;
+    private int player_;
+    /**
+     * <code>required .serialization.Color player = 1;</code>
+     */
+    public boolean hasPlayer() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required .serialization.Color player = 1;</code>
+     */
+    public serialization.GameState.Color getPlayer() {
+      serialization.GameState.Color result = serialization.GameState.Color.valueOf(player_);
+      return result == null ? serialization.GameState.Color.EMPTY : result;
+    }
+
+    public static final int PLACE_FIELD_NUMBER = 2;
+    private serialization.GameState.Intersection place_;
+    /**
+     * <code>required .serialization.Intersection place = 2;</code>
+     */
+    public boolean hasPlace() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required .serialization.Intersection place = 2;</code>
+     */
+    public serialization.GameState.Intersection getPlace() {
+      return place_ == null ? serialization.GameState.Intersection.getDefaultInstance() : place_;
+    }
+    /**
+     * <code>required .serialization.Intersection place = 2;</code>
+     */
+    public serialization.GameState.IntersectionOrBuilder getPlaceOrBuilder() {
+      return place_ == null ? serialization.GameState.Intersection.getDefaultInstance() : place_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasPlayer()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasPlace()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!getPlace().isInitialized()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeEnum(1, player_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeMessage(2, getPlace());
+      }
+      unknownFields.writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(1, player_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, getPlace());
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    public static serialization.GameState.Placement parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static serialization.GameState.Placement parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static serialization.GameState.Placement parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static serialization.GameState.Placement parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static serialization.GameState.Placement parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static serialization.GameState.Placement parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static serialization.GameState.Placement parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static serialization.GameState.Placement parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static serialization.GameState.Placement parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static serialization.GameState.Placement parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return defaultInstance.toBuilder();
+    }
+    public static Builder newBuilder(serialization.GameState.Placement prototype) {
+      return defaultInstance.toBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() {
+      return this == defaultInstance
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code serialization.Placement}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:serialization.Placement)
+        serialization.GameState.PlacementOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return serialization.GameState.internal_static_serialization_Placement_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return serialization.GameState.internal_static_serialization_Placement_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                serialization.GameState.Placement.class, serialization.GameState.Placement.Builder.class);
+      }
+
+      // Construct using serialization.GameState.Placement.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getPlaceFieldBuilder();
+        }
+      }
+      public Builder clear() {
+        super.clear();
+        player_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        if (placeBuilder_ == null) {
+          place_ = null;
+        } else {
+          placeBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return serialization.GameState.internal_static_serialization_Placement_descriptor;
+      }
+
+      public serialization.GameState.Placement getDefaultInstanceForType() {
+        return serialization.GameState.Placement.getDefaultInstance();
+      }
+
+      public serialization.GameState.Placement build() {
+        serialization.GameState.Placement result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public serialization.GameState.Placement buildPartial() {
+        serialization.GameState.Placement result = new serialization.GameState.Placement(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.player_ = player_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        if (placeBuilder_ == null) {
+          result.place_ = place_;
+        } else {
+          result.place_ = placeBuilder_.build();
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof serialization.GameState.Placement) {
+          return mergeFrom((serialization.GameState.Placement)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(serialization.GameState.Placement other) {
+        if (other == serialization.GameState.Placement.getDefaultInstance()) return this;
+        if (other.hasPlayer()) {
+          setPlayer(other.getPlayer());
+        }
+        if (other.hasPlace()) {
+          mergePlace(other.getPlace());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasPlayer()) {
+          
+          return false;
+        }
+        if (!hasPlace()) {
+          
+          return false;
+        }
+        if (!getPlace().isInitialized()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        serialization.GameState.Placement parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (serialization.GameState.Placement) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
       private int bitField0_;
-      
-      // required .serialization.Color toMove = 1;
-      private serialization.GameState.Color toMove_ = serialization.GameState.Color.EMPTY;
-      public boolean hasToMove() {
+
+      private int player_ = 0;
+      /**
+       * <code>required .serialization.Color player = 1;</code>
+       */
+      public boolean hasPlayer() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
-      public serialization.GameState.Color getToMove() {
-        return toMove_;
+      /**
+       * <code>required .serialization.Color player = 1;</code>
+       */
+      public serialization.GameState.Color getPlayer() {
+        serialization.GameState.Color result = serialization.GameState.Color.valueOf(player_);
+        return result == null ? serialization.GameState.Color.EMPTY : result;
       }
-      public Builder setToMove(serialization.GameState.Color value) {
+      /**
+       * <code>required .serialization.Color player = 1;</code>
+       */
+      public Builder setPlayer(serialization.GameState.Color value) {
         if (value == null) {
           throw new NullPointerException();
         }
         bitField0_ |= 0x00000001;
-        toMove_ = value;
+        player_ = value.getNumber();
         onChanged();
         return this;
       }
-      public Builder clearToMove() {
+      /**
+       * <code>required .serialization.Color player = 1;</code>
+       */
+      public Builder clearPlayer() {
         bitField0_ = (bitField0_ & ~0x00000001);
-        toMove_ = serialization.GameState.Color.EMPTY;
+        player_ = 0;
         onChanged();
         return this;
       }
-      
-      // repeated .serialization.Placement boardState = 2;
-      private java.util.List<serialization.GameState.Placement> boardState_ =
+
+      private serialization.GameState.Intersection place_ = null;
+      private com.google.protobuf.SingleFieldBuilder<
+          serialization.GameState.Intersection, serialization.GameState.Intersection.Builder, serialization.GameState.IntersectionOrBuilder> placeBuilder_;
+      /**
+       * <code>required .serialization.Intersection place = 2;</code>
+       */
+      public boolean hasPlace() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required .serialization.Intersection place = 2;</code>
+       */
+      public serialization.GameState.Intersection getPlace() {
+        if (placeBuilder_ == null) {
+          return place_ == null ? serialization.GameState.Intersection.getDefaultInstance() : place_;
+        } else {
+          return placeBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>required .serialization.Intersection place = 2;</code>
+       */
+      public Builder setPlace(serialization.GameState.Intersection value) {
+        if (placeBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          place_ = value;
+          onChanged();
+        } else {
+          placeBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      /**
+       * <code>required .serialization.Intersection place = 2;</code>
+       */
+      public Builder setPlace(
+          serialization.GameState.Intersection.Builder builderForValue) {
+        if (placeBuilder_ == null) {
+          place_ = builderForValue.build();
+          onChanged();
+        } else {
+          placeBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      /**
+       * <code>required .serialization.Intersection place = 2;</code>
+       */
+      public Builder mergePlace(serialization.GameState.Intersection value) {
+        if (placeBuilder_ == null) {
+          if (((bitField0_ & 0x00000002) == 0x00000002) &&
+              place_ != null &&
+              place_ != serialization.GameState.Intersection.getDefaultInstance()) {
+            place_ =
+              serialization.GameState.Intersection.newBuilder(place_).mergeFrom(value).buildPartial();
+          } else {
+            place_ = value;
+          }
+          onChanged();
+        } else {
+          placeBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      /**
+       * <code>required .serialization.Intersection place = 2;</code>
+       */
+      public Builder clearPlace() {
+        if (placeBuilder_ == null) {
+          place_ = null;
+          onChanged();
+        } else {
+          placeBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+      /**
+       * <code>required .serialization.Intersection place = 2;</code>
+       */
+      public serialization.GameState.Intersection.Builder getPlaceBuilder() {
+        bitField0_ |= 0x00000002;
+        onChanged();
+        return getPlaceFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>required .serialization.Intersection place = 2;</code>
+       */
+      public serialization.GameState.IntersectionOrBuilder getPlaceOrBuilder() {
+        if (placeBuilder_ != null) {
+          return placeBuilder_.getMessageOrBuilder();
+        } else {
+          return place_ == null ?
+              serialization.GameState.Intersection.getDefaultInstance() : place_;
+        }
+      }
+      /**
+       * <code>required .serialization.Intersection place = 2;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          serialization.GameState.Intersection, serialization.GameState.Intersection.Builder, serialization.GameState.IntersectionOrBuilder> 
+          getPlaceFieldBuilder() {
+        if (placeBuilder_ == null) {
+          placeBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              serialization.GameState.Intersection, serialization.GameState.Intersection.Builder, serialization.GameState.IntersectionOrBuilder>(
+                  getPlace(),
+                  getParentForChildren(),
+                  isClean());
+          place_ = null;
+        }
+        return placeBuilder_;
+      }
+
+      // @@protoc_insertion_point(builder_scope:serialization.Placement)
+    }
+
+    // @@protoc_insertion_point(class_scope:serialization.Placement)
+    private static final serialization.GameState.Placement defaultInstance;
+    static {
+      defaultInstance = new serialization.GameState.Placement();
+    }
+
+    public static serialization.GameState.Placement getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public serialization.GameState.Placement getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    static {
+    }
+  }
+
+  public interface GroupOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:serialization.Group)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required .serialization.Color player = 1;</code>
+     */
+    boolean hasPlayer();
+    /**
+     * <code>required .serialization.Color player = 1;</code>
+     */
+    serialization.GameState.Color getPlayer();
+
+    /**
+     * <code>repeated .serialization.Intersection stones = 2;</code>
+     */
+    java.util.List<serialization.GameState.Intersection> 
+        getStonesList();
+    /**
+     * <code>repeated .serialization.Intersection stones = 2;</code>
+     */
+    serialization.GameState.Intersection getStones(int index);
+    /**
+     * <code>repeated .serialization.Intersection stones = 2;</code>
+     */
+    int getStonesCount();
+    /**
+     * <code>repeated .serialization.Intersection stones = 2;</code>
+     */
+    java.util.List<? extends serialization.GameState.IntersectionOrBuilder> 
+        getStonesOrBuilderList();
+    /**
+     * <code>repeated .serialization.Intersection stones = 2;</code>
+     */
+    serialization.GameState.IntersectionOrBuilder getStonesOrBuilder(
+        int index);
+  }
+  /**
+   * Protobuf type {@code serialization.Group}
+   */
+  public  static final class Group extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:serialization.Group)
+      GroupOrBuilder {
+    // Use Group.newBuilder() to construct.
+    private Group(com.google.protobuf.GeneratedMessage.Builder builder) {
+      super(builder);
+    }
+    private Group() {
+      player_ = 0;
+      stones_ = java.util.Collections.emptyList();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private Group(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry) {
+      this();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              int rawValue = input.readEnum();
+              serialization.GameState.Color value = serialization.GameState.Color.valueOf(rawValue);
+              if (value == null) {
+                unknownFields.mergeVarintField(1, rawValue);
+              } else {
+                bitField0_ |= 0x00000001;
+                player_ = rawValue;
+              }
+              break;
+            }
+            case 18: {
+              if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+                stones_ = new java.util.ArrayList<serialization.GameState.Intersection>();
+                mutable_bitField0_ |= 0x00000002;
+              }
+              stones_.add(input.readMessage(serialization.GameState.Intersection.PARSER, extensionRegistry));
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw new RuntimeException(e.setUnfinishedMessage(this));
+      } catch (java.io.IOException e) {
+        throw new RuntimeException(
+            new com.google.protobuf.InvalidProtocolBufferException(
+                e.getMessage()).setUnfinishedMessage(this));
+      } finally {
+        if (((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+          stones_ = java.util.Collections.unmodifiableList(stones_);
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return serialization.GameState.internal_static_serialization_Group_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return serialization.GameState.internal_static_serialization_Group_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              serialization.GameState.Group.class, serialization.GameState.Group.Builder.class);
+    }
+
+    public static final com.google.protobuf.Parser<Group> PARSER =
+        new com.google.protobuf.AbstractParser<Group>() {
+      public Group parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        try {
+          return new Group(input, extensionRegistry);
+        } catch (RuntimeException e) {
+          if (e.getCause() instanceof
+              com.google.protobuf.InvalidProtocolBufferException) {
+            throw (com.google.protobuf.InvalidProtocolBufferException)
+                e.getCause();
+          }
+          throw e;
+        }
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<Group> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int PLAYER_FIELD_NUMBER = 1;
+    private int player_;
+    /**
+     * <code>required .serialization.Color player = 1;</code>
+     */
+    public boolean hasPlayer() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required .serialization.Color player = 1;</code>
+     */
+    public serialization.GameState.Color getPlayer() {
+      serialization.GameState.Color result = serialization.GameState.Color.valueOf(player_);
+      return result == null ? serialization.GameState.Color.EMPTY : result;
+    }
+
+    public static final int STONES_FIELD_NUMBER = 2;
+    private java.util.List<serialization.GameState.Intersection> stones_;
+    /**
+     * <code>repeated .serialization.Intersection stones = 2;</code>
+     */
+    public java.util.List<serialization.GameState.Intersection> getStonesList() {
+      return stones_;
+    }
+    /**
+     * <code>repeated .serialization.Intersection stones = 2;</code>
+     */
+    public java.util.List<? extends serialization.GameState.IntersectionOrBuilder> 
+        getStonesOrBuilderList() {
+      return stones_;
+    }
+    /**
+     * <code>repeated .serialization.Intersection stones = 2;</code>
+     */
+    public int getStonesCount() {
+      return stones_.size();
+    }
+    /**
+     * <code>repeated .serialization.Intersection stones = 2;</code>
+     */
+    public serialization.GameState.Intersection getStones(int index) {
+      return stones_.get(index);
+    }
+    /**
+     * <code>repeated .serialization.Intersection stones = 2;</code>
+     */
+    public serialization.GameState.IntersectionOrBuilder getStonesOrBuilder(
+        int index) {
+      return stones_.get(index);
+    }
+
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasPlayer()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      for (int i = 0; i < getStonesCount(); i++) {
+        if (!getStones(i).isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeEnum(1, player_);
+      }
+      for (int i = 0; i < stones_.size(); i++) {
+        output.writeMessage(2, stones_.get(i));
+      }
+      unknownFields.writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(1, player_);
+      }
+      for (int i = 0; i < stones_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, stones_.get(i));
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    public static serialization.GameState.Group parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static serialization.GameState.Group parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static serialization.GameState.Group parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static serialization.GameState.Group parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static serialization.GameState.Group parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static serialization.GameState.Group parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static serialization.GameState.Group parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static serialization.GameState.Group parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static serialization.GameState.Group parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static serialization.GameState.Group parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return defaultInstance.toBuilder();
+    }
+    public static Builder newBuilder(serialization.GameState.Group prototype) {
+      return defaultInstance.toBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() {
+      return this == defaultInstance
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code serialization.Group}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:serialization.Group)
+        serialization.GameState.GroupOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return serialization.GameState.internal_static_serialization_Group_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return serialization.GameState.internal_static_serialization_Group_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                serialization.GameState.Group.class, serialization.GameState.Group.Builder.class);
+      }
+
+      // Construct using serialization.GameState.Group.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getStonesFieldBuilder();
+        }
+      }
+      public Builder clear() {
+        super.clear();
+        player_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        if (stonesBuilder_ == null) {
+          stones_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000002);
+        } else {
+          stonesBuilder_.clear();
+        }
+        return this;
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return serialization.GameState.internal_static_serialization_Group_descriptor;
+      }
+
+      public serialization.GameState.Group getDefaultInstanceForType() {
+        return serialization.GameState.Group.getDefaultInstance();
+      }
+
+      public serialization.GameState.Group build() {
+        serialization.GameState.Group result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public serialization.GameState.Group buildPartial() {
+        serialization.GameState.Group result = new serialization.GameState.Group(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.player_ = player_;
+        if (stonesBuilder_ == null) {
+          if (((bitField0_ & 0x00000002) == 0x00000002)) {
+            stones_ = java.util.Collections.unmodifiableList(stones_);
+            bitField0_ = (bitField0_ & ~0x00000002);
+          }
+          result.stones_ = stones_;
+        } else {
+          result.stones_ = stonesBuilder_.build();
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof serialization.GameState.Group) {
+          return mergeFrom((serialization.GameState.Group)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(serialization.GameState.Group other) {
+        if (other == serialization.GameState.Group.getDefaultInstance()) return this;
+        if (other.hasPlayer()) {
+          setPlayer(other.getPlayer());
+        }
+        if (stonesBuilder_ == null) {
+          if (!other.stones_.isEmpty()) {
+            if (stones_.isEmpty()) {
+              stones_ = other.stones_;
+              bitField0_ = (bitField0_ & ~0x00000002);
+            } else {
+              ensureStonesIsMutable();
+              stones_.addAll(other.stones_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.stones_.isEmpty()) {
+            if (stonesBuilder_.isEmpty()) {
+              stonesBuilder_.dispose();
+              stonesBuilder_ = null;
+              stones_ = other.stones_;
+              bitField0_ = (bitField0_ & ~0x00000002);
+              stonesBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getStonesFieldBuilder() : null;
+            } else {
+              stonesBuilder_.addAllMessages(other.stones_);
+            }
+          }
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasPlayer()) {
+          
+          return false;
+        }
+        for (int i = 0; i < getStonesCount(); i++) {
+          if (!getStones(i).isInitialized()) {
+            
+            return false;
+          }
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        serialization.GameState.Group parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (serialization.GameState.Group) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private int player_ = 0;
+      /**
+       * <code>required .serialization.Color player = 1;</code>
+       */
+      public boolean hasPlayer() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required .serialization.Color player = 1;</code>
+       */
+      public serialization.GameState.Color getPlayer() {
+        serialization.GameState.Color result = serialization.GameState.Color.valueOf(player_);
+        return result == null ? serialization.GameState.Color.EMPTY : result;
+      }
+      /**
+       * <code>required .serialization.Color player = 1;</code>
+       */
+      public Builder setPlayer(serialization.GameState.Color value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000001;
+        player_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required .serialization.Color player = 1;</code>
+       */
+      public Builder clearPlayer() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        player_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.util.List<serialization.GameState.Intersection> stones_ =
         java.util.Collections.emptyList();
-      private void ensureBoardStateIsMutable() {
+      private void ensureStonesIsMutable() {
         if (!((bitField0_ & 0x00000002) == 0x00000002)) {
-          boardState_ = new java.util.ArrayList<serialization.GameState.Placement>(boardState_);
+          stones_ = new java.util.ArrayList<serialization.GameState.Intersection>(stones_);
           bitField0_ |= 0x00000002;
          }
       }
-      
+
       private com.google.protobuf.RepeatedFieldBuilder<
-          serialization.GameState.Placement, serialization.GameState.Placement.Builder, serialization.GameState.PlacementOrBuilder> boardStateBuilder_;
-      
-      public java.util.List<serialization.GameState.Placement> getBoardStateList() {
-        if (boardStateBuilder_ == null) {
-          return java.util.Collections.unmodifiableList(boardState_);
+          serialization.GameState.Intersection, serialization.GameState.Intersection.Builder, serialization.GameState.IntersectionOrBuilder> stonesBuilder_;
+
+      /**
+       * <code>repeated .serialization.Intersection stones = 2;</code>
+       */
+      public java.util.List<serialization.GameState.Intersection> getStonesList() {
+        if (stonesBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(stones_);
         } else {
-          return boardStateBuilder_.getMessageList();
+          return stonesBuilder_.getMessageList();
         }
       }
-      public int getBoardStateCount() {
-        if (boardStateBuilder_ == null) {
-          return boardState_.size();
+      /**
+       * <code>repeated .serialization.Intersection stones = 2;</code>
+       */
+      public int getStonesCount() {
+        if (stonesBuilder_ == null) {
+          return stones_.size();
         } else {
-          return boardStateBuilder_.getCount();
+          return stonesBuilder_.getCount();
         }
       }
-      public serialization.GameState.Placement getBoardState(int index) {
-        if (boardStateBuilder_ == null) {
-          return boardState_.get(index);
+      /**
+       * <code>repeated .serialization.Intersection stones = 2;</code>
+       */
+      public serialization.GameState.Intersection getStones(int index) {
+        if (stonesBuilder_ == null) {
+          return stones_.get(index);
         } else {
-          return boardStateBuilder_.getMessage(index);
+          return stonesBuilder_.getMessage(index);
         }
       }
-      public Builder setBoardState(
-          int index, serialization.GameState.Placement value) {
-        if (boardStateBuilder_ == null) {
+      /**
+       * <code>repeated .serialization.Intersection stones = 2;</code>
+       */
+      public Builder setStones(
+          int index, serialization.GameState.Intersection value) {
+        if (stonesBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          ensureBoardStateIsMutable();
-          boardState_.set(index, value);
+          ensureStonesIsMutable();
+          stones_.set(index, value);
           onChanged();
         } else {
-          boardStateBuilder_.setMessage(index, value);
+          stonesBuilder_.setMessage(index, value);
         }
         return this;
       }
-      public Builder setBoardState(
-          int index, serialization.GameState.Placement.Builder builderForValue) {
-        if (boardStateBuilder_ == null) {
-          ensureBoardStateIsMutable();
-          boardState_.set(index, builderForValue.build());
+      /**
+       * <code>repeated .serialization.Intersection stones = 2;</code>
+       */
+      public Builder setStones(
+          int index, serialization.GameState.Intersection.Builder builderForValue) {
+        if (stonesBuilder_ == null) {
+          ensureStonesIsMutable();
+          stones_.set(index, builderForValue.build());
           onChanged();
         } else {
-          boardStateBuilder_.setMessage(index, builderForValue.build());
+          stonesBuilder_.setMessage(index, builderForValue.build());
         }
         return this;
       }
-      public Builder addBoardState(serialization.GameState.Placement value) {
-        if (boardStateBuilder_ == null) {
+      /**
+       * <code>repeated .serialization.Intersection stones = 2;</code>
+       */
+      public Builder addStones(serialization.GameState.Intersection value) {
+        if (stonesBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          ensureBoardStateIsMutable();
-          boardState_.add(value);
+          ensureStonesIsMutable();
+          stones_.add(value);
           onChanged();
         } else {
-          boardStateBuilder_.addMessage(value);
+          stonesBuilder_.addMessage(value);
         }
         return this;
       }
-      public Builder addBoardState(
-          int index, serialization.GameState.Placement value) {
-        if (boardStateBuilder_ == null) {
+      /**
+       * <code>repeated .serialization.Intersection stones = 2;</code>
+       */
+      public Builder addStones(
+          int index, serialization.GameState.Intersection value) {
+        if (stonesBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          ensureBoardStateIsMutable();
-          boardState_.add(index, value);
+          ensureStonesIsMutable();
+          stones_.add(index, value);
           onChanged();
         } else {
-          boardStateBuilder_.addMessage(index, value);
+          stonesBuilder_.addMessage(index, value);
         }
         return this;
       }
-      public Builder addBoardState(
-          serialization.GameState.Placement.Builder builderForValue) {
-        if (boardStateBuilder_ == null) {
-          ensureBoardStateIsMutable();
-          boardState_.add(builderForValue.build());
+      /**
+       * <code>repeated .serialization.Intersection stones = 2;</code>
+       */
+      public Builder addStones(
+          serialization.GameState.Intersection.Builder builderForValue) {
+        if (stonesBuilder_ == null) {
+          ensureStonesIsMutable();
+          stones_.add(builderForValue.build());
           onChanged();
         } else {
-          boardStateBuilder_.addMessage(builderForValue.build());
+          stonesBuilder_.addMessage(builderForValue.build());
         }
         return this;
       }
-      public Builder addBoardState(
-          int index, serialization.GameState.Placement.Builder builderForValue) {
-        if (boardStateBuilder_ == null) {
-          ensureBoardStateIsMutable();
-          boardState_.add(index, builderForValue.build());
+      /**
+       * <code>repeated .serialization.Intersection stones = 2;</code>
+       */
+      public Builder addStones(
+          int index, serialization.GameState.Intersection.Builder builderForValue) {
+        if (stonesBuilder_ == null) {
+          ensureStonesIsMutable();
+          stones_.add(index, builderForValue.build());
           onChanged();
         } else {
-          boardStateBuilder_.addMessage(index, builderForValue.build());
+          stonesBuilder_.addMessage(index, builderForValue.build());
         }
         return this;
       }
-      public Builder addAllBoardState(
-          java.lang.Iterable<? extends serialization.GameState.Placement> values) {
-        if (boardStateBuilder_ == null) {
-          ensureBoardStateIsMutable();
-          super.addAll(values, boardState_);
+      /**
+       * <code>repeated .serialization.Intersection stones = 2;</code>
+       */
+      public Builder addAllStones(
+          java.lang.Iterable<? extends serialization.GameState.Intersection> values) {
+        if (stonesBuilder_ == null) {
+          ensureStonesIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, stones_);
           onChanged();
         } else {
-          boardStateBuilder_.addAllMessages(values);
+          stonesBuilder_.addAllMessages(values);
         }
         return this;
       }
-      public Builder clearBoardState() {
-        if (boardStateBuilder_ == null) {
-          boardState_ = java.util.Collections.emptyList();
+      /**
+       * <code>repeated .serialization.Intersection stones = 2;</code>
+       */
+      public Builder clearStones() {
+        if (stonesBuilder_ == null) {
+          stones_ = java.util.Collections.emptyList();
           bitField0_ = (bitField0_ & ~0x00000002);
           onChanged();
         } else {
-          boardStateBuilder_.clear();
+          stonesBuilder_.clear();
         }
         return this;
       }
-      public Builder removeBoardState(int index) {
-        if (boardStateBuilder_ == null) {
-          ensureBoardStateIsMutable();
-          boardState_.remove(index);
+      /**
+       * <code>repeated .serialization.Intersection stones = 2;</code>
+       */
+      public Builder removeStones(int index) {
+        if (stonesBuilder_ == null) {
+          ensureStonesIsMutable();
+          stones_.remove(index);
           onChanged();
         } else {
-          boardStateBuilder_.remove(index);
+          stonesBuilder_.remove(index);
         }
         return this;
       }
-      public serialization.GameState.Placement.Builder getBoardStateBuilder(
+      /**
+       * <code>repeated .serialization.Intersection stones = 2;</code>
+       */
+      public serialization.GameState.Intersection.Builder getStonesBuilder(
           int index) {
-        return getBoardStateFieldBuilder().getBuilder(index);
+        return getStonesFieldBuilder().getBuilder(index);
       }
-      public serialization.GameState.PlacementOrBuilder getBoardStateOrBuilder(
+      /**
+       * <code>repeated .serialization.Intersection stones = 2;</code>
+       */
+      public serialization.GameState.IntersectionOrBuilder getStonesOrBuilder(
           int index) {
-        if (boardStateBuilder_ == null) {
-          return boardState_.get(index);  } else {
-          return boardStateBuilder_.getMessageOrBuilder(index);
+        if (stonesBuilder_ == null) {
+          return stones_.get(index);  } else {
+          return stonesBuilder_.getMessageOrBuilder(index);
         }
       }
-      public java.util.List<? extends serialization.GameState.PlacementOrBuilder> 
-           getBoardStateOrBuilderList() {
-        if (boardStateBuilder_ != null) {
-          return boardStateBuilder_.getMessageOrBuilderList();
+      /**
+       * <code>repeated .serialization.Intersection stones = 2;</code>
+       */
+      public java.util.List<? extends serialization.GameState.IntersectionOrBuilder> 
+           getStonesOrBuilderList() {
+        if (stonesBuilder_ != null) {
+          return stonesBuilder_.getMessageOrBuilderList();
         } else {
-          return java.util.Collections.unmodifiableList(boardState_);
+          return java.util.Collections.unmodifiableList(stones_);
         }
       }
-      public serialization.GameState.Placement.Builder addBoardStateBuilder() {
-        return getBoardStateFieldBuilder().addBuilder(
-            serialization.GameState.Placement.getDefaultInstance());
+      /**
+       * <code>repeated .serialization.Intersection stones = 2;</code>
+       */
+      public serialization.GameState.Intersection.Builder addStonesBuilder() {
+        return getStonesFieldBuilder().addBuilder(
+            serialization.GameState.Intersection.getDefaultInstance());
       }
-      public serialization.GameState.Placement.Builder addBoardStateBuilder(
+      /**
+       * <code>repeated .serialization.Intersection stones = 2;</code>
+       */
+      public serialization.GameState.Intersection.Builder addStonesBuilder(
           int index) {
-        return getBoardStateFieldBuilder().addBuilder(
-            index, serialization.GameState.Placement.getDefaultInstance());
+        return getStonesFieldBuilder().addBuilder(
+            index, serialization.GameState.Intersection.getDefaultInstance());
       }
-      public java.util.List<serialization.GameState.Placement.Builder> 
-           getBoardStateBuilderList() {
-        return getBoardStateFieldBuilder().getBuilderList();
+      /**
+       * <code>repeated .serialization.Intersection stones = 2;</code>
+       */
+      public java.util.List<serialization.GameState.Intersection.Builder> 
+           getStonesBuilderList() {
+        return getStonesFieldBuilder().getBuilderList();
       }
       private com.google.protobuf.RepeatedFieldBuilder<
-          serialization.GameState.Placement, serialization.GameState.Placement.Builder, serialization.GameState.PlacementOrBuilder> 
-          getBoardStateFieldBuilder() {
-        if (boardStateBuilder_ == null) {
-          boardStateBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
-              serialization.GameState.Placement, serialization.GameState.Placement.Builder, serialization.GameState.PlacementOrBuilder>(
-                  boardState_,
+          serialization.GameState.Intersection, serialization.GameState.Intersection.Builder, serialization.GameState.IntersectionOrBuilder> 
+          getStonesFieldBuilder() {
+        if (stonesBuilder_ == null) {
+          stonesBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              serialization.GameState.Intersection, serialization.GameState.Intersection.Builder, serialization.GameState.IntersectionOrBuilder>(
+                  stones_,
                   ((bitField0_ & 0x00000002) == 0x00000002),
                   getParentForChildren(),
                   isClean());
-          boardState_ = null;
+          stones_ = null;
         }
-        return boardStateBuilder_;
+        return stonesBuilder_;
       }
-      
+
+      // @@protoc_insertion_point(builder_scope:serialization.Group)
+    }
+
+    // @@protoc_insertion_point(class_scope:serialization.Group)
+    private static final serialization.GameState.Group defaultInstance;
+    static {
+      defaultInstance = new serialization.GameState.Group();
+    }
+
+    public static serialization.GameState.Group getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public serialization.GameState.Group getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    static {
+    }
+  }
+
+  public interface CaptureOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:serialization.Capture)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required int32 moveIndex = 1;</code>
+     */
+    boolean hasMoveIndex();
+    /**
+     * <code>required int32 moveIndex = 1;</code>
+     */
+    int getMoveIndex();
+
+    /**
+     * <code>required .serialization.Group capturedGroup = 2;</code>
+     */
+    boolean hasCapturedGroup();
+    /**
+     * <code>required .serialization.Group capturedGroup = 2;</code>
+     */
+    serialization.GameState.Group getCapturedGroup();
+    /**
+     * <code>required .serialization.Group capturedGroup = 2;</code>
+     */
+    serialization.GameState.GroupOrBuilder getCapturedGroupOrBuilder();
+  }
+  /**
+   * Protobuf type {@code serialization.Capture}
+   */
+  public  static final class Capture extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:serialization.Capture)
+      CaptureOrBuilder {
+    // Use Capture.newBuilder() to construct.
+    private Capture(com.google.protobuf.GeneratedMessage.Builder builder) {
+      super(builder);
+    }
+    private Capture() {
+      moveIndex_ = 0;
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private Capture(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry) {
+      this();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              moveIndex_ = input.readInt32();
+              break;
+            }
+            case 18: {
+              serialization.GameState.Group.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000002) == 0x00000002)) {
+                subBuilder = capturedGroup_.toBuilder();
+              }
+              capturedGroup_ = input.readMessage(serialization.GameState.Group.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(capturedGroup_);
+                capturedGroup_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000002;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw new RuntimeException(e.setUnfinishedMessage(this));
+      } catch (java.io.IOException e) {
+        throw new RuntimeException(
+            new com.google.protobuf.InvalidProtocolBufferException(
+                e.getMessage()).setUnfinishedMessage(this));
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return serialization.GameState.internal_static_serialization_Capture_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return serialization.GameState.internal_static_serialization_Capture_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              serialization.GameState.Capture.class, serialization.GameState.Capture.Builder.class);
+    }
+
+    public static final com.google.protobuf.Parser<Capture> PARSER =
+        new com.google.protobuf.AbstractParser<Capture>() {
+      public Capture parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        try {
+          return new Capture(input, extensionRegistry);
+        } catch (RuntimeException e) {
+          if (e.getCause() instanceof
+              com.google.protobuf.InvalidProtocolBufferException) {
+            throw (com.google.protobuf.InvalidProtocolBufferException)
+                e.getCause();
+          }
+          throw e;
+        }
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<Capture> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int MOVEINDEX_FIELD_NUMBER = 1;
+    private int moveIndex_;
+    /**
+     * <code>required int32 moveIndex = 1;</code>
+     */
+    public boolean hasMoveIndex() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required int32 moveIndex = 1;</code>
+     */
+    public int getMoveIndex() {
+      return moveIndex_;
+    }
+
+    public static final int CAPTUREDGROUP_FIELD_NUMBER = 2;
+    private serialization.GameState.Group capturedGroup_;
+    /**
+     * <code>required .serialization.Group capturedGroup = 2;</code>
+     */
+    public boolean hasCapturedGroup() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required .serialization.Group capturedGroup = 2;</code>
+     */
+    public serialization.GameState.Group getCapturedGroup() {
+      return capturedGroup_ == null ? serialization.GameState.Group.getDefaultInstance() : capturedGroup_;
+    }
+    /**
+     * <code>required .serialization.Group capturedGroup = 2;</code>
+     */
+    public serialization.GameState.GroupOrBuilder getCapturedGroupOrBuilder() {
+      return capturedGroup_ == null ? serialization.GameState.Group.getDefaultInstance() : capturedGroup_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasMoveIndex()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasCapturedGroup()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!getCapturedGroup().isInitialized()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeInt32(1, moveIndex_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeMessage(2, getCapturedGroup());
+      }
+      unknownFields.writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(1, moveIndex_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, getCapturedGroup());
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    public static serialization.GameState.Capture parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static serialization.GameState.Capture parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static serialization.GameState.Capture parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static serialization.GameState.Capture parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static serialization.GameState.Capture parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static serialization.GameState.Capture parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static serialization.GameState.Capture parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static serialization.GameState.Capture parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static serialization.GameState.Capture parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static serialization.GameState.Capture parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return defaultInstance.toBuilder();
+    }
+    public static Builder newBuilder(serialization.GameState.Capture prototype) {
+      return defaultInstance.toBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() {
+      return this == defaultInstance
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code serialization.Capture}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:serialization.Capture)
+        serialization.GameState.CaptureOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return serialization.GameState.internal_static_serialization_Capture_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return serialization.GameState.internal_static_serialization_Capture_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                serialization.GameState.Capture.class, serialization.GameState.Capture.Builder.class);
+      }
+
+      // Construct using serialization.GameState.Capture.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getCapturedGroupFieldBuilder();
+        }
+      }
+      public Builder clear() {
+        super.clear();
+        moveIndex_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        if (capturedGroupBuilder_ == null) {
+          capturedGroup_ = null;
+        } else {
+          capturedGroupBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return serialization.GameState.internal_static_serialization_Capture_descriptor;
+      }
+
+      public serialization.GameState.Capture getDefaultInstanceForType() {
+        return serialization.GameState.Capture.getDefaultInstance();
+      }
+
+      public serialization.GameState.Capture build() {
+        serialization.GameState.Capture result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public serialization.GameState.Capture buildPartial() {
+        serialization.GameState.Capture result = new serialization.GameState.Capture(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.moveIndex_ = moveIndex_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        if (capturedGroupBuilder_ == null) {
+          result.capturedGroup_ = capturedGroup_;
+        } else {
+          result.capturedGroup_ = capturedGroupBuilder_.build();
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof serialization.GameState.Capture) {
+          return mergeFrom((serialization.GameState.Capture)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(serialization.GameState.Capture other) {
+        if (other == serialization.GameState.Capture.getDefaultInstance()) return this;
+        if (other.hasMoveIndex()) {
+          setMoveIndex(other.getMoveIndex());
+        }
+        if (other.hasCapturedGroup()) {
+          mergeCapturedGroup(other.getCapturedGroup());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasMoveIndex()) {
+          
+          return false;
+        }
+        if (!hasCapturedGroup()) {
+          
+          return false;
+        }
+        if (!getCapturedGroup().isInitialized()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        serialization.GameState.Capture parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (serialization.GameState.Capture) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private int moveIndex_ ;
+      /**
+       * <code>required int32 moveIndex = 1;</code>
+       */
+      public boolean hasMoveIndex() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required int32 moveIndex = 1;</code>
+       */
+      public int getMoveIndex() {
+        return moveIndex_;
+      }
+      /**
+       * <code>required int32 moveIndex = 1;</code>
+       */
+      public Builder setMoveIndex(int value) {
+        bitField0_ |= 0x00000001;
+        moveIndex_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int32 moveIndex = 1;</code>
+       */
+      public Builder clearMoveIndex() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        moveIndex_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private serialization.GameState.Group capturedGroup_ = null;
+      private com.google.protobuf.SingleFieldBuilder<
+          serialization.GameState.Group, serialization.GameState.Group.Builder, serialization.GameState.GroupOrBuilder> capturedGroupBuilder_;
+      /**
+       * <code>required .serialization.Group capturedGroup = 2;</code>
+       */
+      public boolean hasCapturedGroup() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required .serialization.Group capturedGroup = 2;</code>
+       */
+      public serialization.GameState.Group getCapturedGroup() {
+        if (capturedGroupBuilder_ == null) {
+          return capturedGroup_ == null ? serialization.GameState.Group.getDefaultInstance() : capturedGroup_;
+        } else {
+          return capturedGroupBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>required .serialization.Group capturedGroup = 2;</code>
+       */
+      public Builder setCapturedGroup(serialization.GameState.Group value) {
+        if (capturedGroupBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          capturedGroup_ = value;
+          onChanged();
+        } else {
+          capturedGroupBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      /**
+       * <code>required .serialization.Group capturedGroup = 2;</code>
+       */
+      public Builder setCapturedGroup(
+          serialization.GameState.Group.Builder builderForValue) {
+        if (capturedGroupBuilder_ == null) {
+          capturedGroup_ = builderForValue.build();
+          onChanged();
+        } else {
+          capturedGroupBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      /**
+       * <code>required .serialization.Group capturedGroup = 2;</code>
+       */
+      public Builder mergeCapturedGroup(serialization.GameState.Group value) {
+        if (capturedGroupBuilder_ == null) {
+          if (((bitField0_ & 0x00000002) == 0x00000002) &&
+              capturedGroup_ != null &&
+              capturedGroup_ != serialization.GameState.Group.getDefaultInstance()) {
+            capturedGroup_ =
+              serialization.GameState.Group.newBuilder(capturedGroup_).mergeFrom(value).buildPartial();
+          } else {
+            capturedGroup_ = value;
+          }
+          onChanged();
+        } else {
+          capturedGroupBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      /**
+       * <code>required .serialization.Group capturedGroup = 2;</code>
+       */
+      public Builder clearCapturedGroup() {
+        if (capturedGroupBuilder_ == null) {
+          capturedGroup_ = null;
+          onChanged();
+        } else {
+          capturedGroupBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+      /**
+       * <code>required .serialization.Group capturedGroup = 2;</code>
+       */
+      public serialization.GameState.Group.Builder getCapturedGroupBuilder() {
+        bitField0_ |= 0x00000002;
+        onChanged();
+        return getCapturedGroupFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>required .serialization.Group capturedGroup = 2;</code>
+       */
+      public serialization.GameState.GroupOrBuilder getCapturedGroupOrBuilder() {
+        if (capturedGroupBuilder_ != null) {
+          return capturedGroupBuilder_.getMessageOrBuilder();
+        } else {
+          return capturedGroup_ == null ?
+              serialization.GameState.Group.getDefaultInstance() : capturedGroup_;
+        }
+      }
+      /**
+       * <code>required .serialization.Group capturedGroup = 2;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          serialization.GameState.Group, serialization.GameState.Group.Builder, serialization.GameState.GroupOrBuilder> 
+          getCapturedGroupFieldBuilder() {
+        if (capturedGroupBuilder_ == null) {
+          capturedGroupBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              serialization.GameState.Group, serialization.GameState.Group.Builder, serialization.GameState.GroupOrBuilder>(
+                  getCapturedGroup(),
+                  getParentForChildren(),
+                  isClean());
+          capturedGroup_ = null;
+        }
+        return capturedGroupBuilder_;
+      }
+
+      // @@protoc_insertion_point(builder_scope:serialization.Capture)
+    }
+
+    // @@protoc_insertion_point(class_scope:serialization.Capture)
+    private static final serialization.GameState.Capture defaultInstance;
+    static {
+      defaultInstance = new serialization.GameState.Capture();
+    }
+
+    public static serialization.GameState.Capture getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public serialization.GameState.Capture getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    static {
+    }
+  }
+
+  public interface MomentOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:serialization.Moment)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required bool gameOver = 1;</code>
+     */
+    boolean hasGameOver();
+    /**
+     * <code>required bool gameOver = 1;</code>
+     */
+    boolean getGameOver();
+
+    /**
+     * <code>required .serialization.Color toMove = 2;</code>
+     */
+    boolean hasToMove();
+    /**
+     * <code>required .serialization.Color toMove = 2;</code>
+     */
+    serialization.GameState.Color getToMove();
+
+    /**
+     * <code>repeated .serialization.Group playerAsset = 3;</code>
+     */
+    java.util.List<serialization.GameState.Group> 
+        getPlayerAssetList();
+    /**
+     * <code>repeated .serialization.Group playerAsset = 3;</code>
+     */
+    serialization.GameState.Group getPlayerAsset(int index);
+    /**
+     * <code>repeated .serialization.Group playerAsset = 3;</code>
+     */
+    int getPlayerAssetCount();
+    /**
+     * <code>repeated .serialization.Group playerAsset = 3;</code>
+     */
+    java.util.List<? extends serialization.GameState.GroupOrBuilder> 
+        getPlayerAssetOrBuilderList();
+    /**
+     * <code>repeated .serialization.Group playerAsset = 3;</code>
+     */
+    serialization.GameState.GroupOrBuilder getPlayerAssetOrBuilder(
+        int index);
+
+    /**
+     * <code>repeated .serialization.Capture playerCaptures = 4;</code>
+     */
+    java.util.List<serialization.GameState.Capture> 
+        getPlayerCapturesList();
+    /**
+     * <code>repeated .serialization.Capture playerCaptures = 4;</code>
+     */
+    serialization.GameState.Capture getPlayerCaptures(int index);
+    /**
+     * <code>repeated .serialization.Capture playerCaptures = 4;</code>
+     */
+    int getPlayerCapturesCount();
+    /**
+     * <code>repeated .serialization.Capture playerCaptures = 4;</code>
+     */
+    java.util.List<? extends serialization.GameState.CaptureOrBuilder> 
+        getPlayerCapturesOrBuilderList();
+    /**
+     * <code>repeated .serialization.Capture playerCaptures = 4;</code>
+     */
+    serialization.GameState.CaptureOrBuilder getPlayerCapturesOrBuilder(
+        int index);
+
+    /**
+     * <code>repeated .serialization.Placement moves = 5;</code>
+     */
+    java.util.List<serialization.GameState.Placement> 
+        getMovesList();
+    /**
+     * <code>repeated .serialization.Placement moves = 5;</code>
+     */
+    serialization.GameState.Placement getMoves(int index);
+    /**
+     * <code>repeated .serialization.Placement moves = 5;</code>
+     */
+    int getMovesCount();
+    /**
+     * <code>repeated .serialization.Placement moves = 5;</code>
+     */
+    java.util.List<? extends serialization.GameState.PlacementOrBuilder> 
+        getMovesOrBuilderList();
+    /**
+     * <code>repeated .serialization.Placement moves = 5;</code>
+     */
+    serialization.GameState.PlacementOrBuilder getMovesOrBuilder(
+        int index);
+  }
+  /**
+   * Protobuf type {@code serialization.Moment}
+   */
+  public  static final class Moment extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:serialization.Moment)
+      MomentOrBuilder {
+    // Use Moment.newBuilder() to construct.
+    private Moment(com.google.protobuf.GeneratedMessage.Builder builder) {
+      super(builder);
+    }
+    private Moment() {
+      gameOver_ = false;
+      toMove_ = 0;
+      playerAsset_ = java.util.Collections.emptyList();
+      playerCaptures_ = java.util.Collections.emptyList();
+      moves_ = java.util.Collections.emptyList();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private Moment(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry) {
+      this();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              gameOver_ = input.readBool();
+              break;
+            }
+            case 16: {
+              int rawValue = input.readEnum();
+              serialization.GameState.Color value = serialization.GameState.Color.valueOf(rawValue);
+              if (value == null) {
+                unknownFields.mergeVarintField(2, rawValue);
+              } else {
+                bitField0_ |= 0x00000002;
+                toMove_ = rawValue;
+              }
+              break;
+            }
+            case 26: {
+              if (!((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
+                playerAsset_ = new java.util.ArrayList<serialization.GameState.Group>();
+                mutable_bitField0_ |= 0x00000004;
+              }
+              playerAsset_.add(input.readMessage(serialization.GameState.Group.PARSER, extensionRegistry));
+              break;
+            }
+            case 34: {
+              if (!((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
+                playerCaptures_ = new java.util.ArrayList<serialization.GameState.Capture>();
+                mutable_bitField0_ |= 0x00000008;
+              }
+              playerCaptures_.add(input.readMessage(serialization.GameState.Capture.PARSER, extensionRegistry));
+              break;
+            }
+            case 42: {
+              if (!((mutable_bitField0_ & 0x00000010) == 0x00000010)) {
+                moves_ = new java.util.ArrayList<serialization.GameState.Placement>();
+                mutable_bitField0_ |= 0x00000010;
+              }
+              moves_.add(input.readMessage(serialization.GameState.Placement.PARSER, extensionRegistry));
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw new RuntimeException(e.setUnfinishedMessage(this));
+      } catch (java.io.IOException e) {
+        throw new RuntimeException(
+            new com.google.protobuf.InvalidProtocolBufferException(
+                e.getMessage()).setUnfinishedMessage(this));
+      } finally {
+        if (((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
+          playerAsset_ = java.util.Collections.unmodifiableList(playerAsset_);
+        }
+        if (((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
+          playerCaptures_ = java.util.Collections.unmodifiableList(playerCaptures_);
+        }
+        if (((mutable_bitField0_ & 0x00000010) == 0x00000010)) {
+          moves_ = java.util.Collections.unmodifiableList(moves_);
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return serialization.GameState.internal_static_serialization_Moment_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return serialization.GameState.internal_static_serialization_Moment_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              serialization.GameState.Moment.class, serialization.GameState.Moment.Builder.class);
+    }
+
+    public static final com.google.protobuf.Parser<Moment> PARSER =
+        new com.google.protobuf.AbstractParser<Moment>() {
+      public Moment parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        try {
+          return new Moment(input, extensionRegistry);
+        } catch (RuntimeException e) {
+          if (e.getCause() instanceof
+              com.google.protobuf.InvalidProtocolBufferException) {
+            throw (com.google.protobuf.InvalidProtocolBufferException)
+                e.getCause();
+          }
+          throw e;
+        }
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<Moment> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int GAMEOVER_FIELD_NUMBER = 1;
+    private boolean gameOver_;
+    /**
+     * <code>required bool gameOver = 1;</code>
+     */
+    public boolean hasGameOver() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required bool gameOver = 1;</code>
+     */
+    public boolean getGameOver() {
+      return gameOver_;
+    }
+
+    public static final int TOMOVE_FIELD_NUMBER = 2;
+    private int toMove_;
+    /**
+     * <code>required .serialization.Color toMove = 2;</code>
+     */
+    public boolean hasToMove() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required .serialization.Color toMove = 2;</code>
+     */
+    public serialization.GameState.Color getToMove() {
+      serialization.GameState.Color result = serialization.GameState.Color.valueOf(toMove_);
+      return result == null ? serialization.GameState.Color.EMPTY : result;
+    }
+
+    public static final int PLAYERASSET_FIELD_NUMBER = 3;
+    private java.util.List<serialization.GameState.Group> playerAsset_;
+    /**
+     * <code>repeated .serialization.Group playerAsset = 3;</code>
+     */
+    public java.util.List<serialization.GameState.Group> getPlayerAssetList() {
+      return playerAsset_;
+    }
+    /**
+     * <code>repeated .serialization.Group playerAsset = 3;</code>
+     */
+    public java.util.List<? extends serialization.GameState.GroupOrBuilder> 
+        getPlayerAssetOrBuilderList() {
+      return playerAsset_;
+    }
+    /**
+     * <code>repeated .serialization.Group playerAsset = 3;</code>
+     */
+    public int getPlayerAssetCount() {
+      return playerAsset_.size();
+    }
+    /**
+     * <code>repeated .serialization.Group playerAsset = 3;</code>
+     */
+    public serialization.GameState.Group getPlayerAsset(int index) {
+      return playerAsset_.get(index);
+    }
+    /**
+     * <code>repeated .serialization.Group playerAsset = 3;</code>
+     */
+    public serialization.GameState.GroupOrBuilder getPlayerAssetOrBuilder(
+        int index) {
+      return playerAsset_.get(index);
+    }
+
+    public static final int PLAYERCAPTURES_FIELD_NUMBER = 4;
+    private java.util.List<serialization.GameState.Capture> playerCaptures_;
+    /**
+     * <code>repeated .serialization.Capture playerCaptures = 4;</code>
+     */
+    public java.util.List<serialization.GameState.Capture> getPlayerCapturesList() {
+      return playerCaptures_;
+    }
+    /**
+     * <code>repeated .serialization.Capture playerCaptures = 4;</code>
+     */
+    public java.util.List<? extends serialization.GameState.CaptureOrBuilder> 
+        getPlayerCapturesOrBuilderList() {
+      return playerCaptures_;
+    }
+    /**
+     * <code>repeated .serialization.Capture playerCaptures = 4;</code>
+     */
+    public int getPlayerCapturesCount() {
+      return playerCaptures_.size();
+    }
+    /**
+     * <code>repeated .serialization.Capture playerCaptures = 4;</code>
+     */
+    public serialization.GameState.Capture getPlayerCaptures(int index) {
+      return playerCaptures_.get(index);
+    }
+    /**
+     * <code>repeated .serialization.Capture playerCaptures = 4;</code>
+     */
+    public serialization.GameState.CaptureOrBuilder getPlayerCapturesOrBuilder(
+        int index) {
+      return playerCaptures_.get(index);
+    }
+
+    public static final int MOVES_FIELD_NUMBER = 5;
+    private java.util.List<serialization.GameState.Placement> moves_;
+    /**
+     * <code>repeated .serialization.Placement moves = 5;</code>
+     */
+    public java.util.List<serialization.GameState.Placement> getMovesList() {
+      return moves_;
+    }
+    /**
+     * <code>repeated .serialization.Placement moves = 5;</code>
+     */
+    public java.util.List<? extends serialization.GameState.PlacementOrBuilder> 
+        getMovesOrBuilderList() {
+      return moves_;
+    }
+    /**
+     * <code>repeated .serialization.Placement moves = 5;</code>
+     */
+    public int getMovesCount() {
+      return moves_.size();
+    }
+    /**
+     * <code>repeated .serialization.Placement moves = 5;</code>
+     */
+    public serialization.GameState.Placement getMoves(int index) {
+      return moves_.get(index);
+    }
+    /**
+     * <code>repeated .serialization.Placement moves = 5;</code>
+     */
+    public serialization.GameState.PlacementOrBuilder getMovesOrBuilder(
+        int index) {
+      return moves_.get(index);
+    }
+
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasGameOver()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasToMove()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      for (int i = 0; i < getPlayerAssetCount(); i++) {
+        if (!getPlayerAsset(i).isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      for (int i = 0; i < getPlayerCapturesCount(); i++) {
+        if (!getPlayerCaptures(i).isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      for (int i = 0; i < getMovesCount(); i++) {
+        if (!getMoves(i).isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeBool(1, gameOver_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeEnum(2, toMove_);
+      }
+      for (int i = 0; i < playerAsset_.size(); i++) {
+        output.writeMessage(3, playerAsset_.get(i));
+      }
+      for (int i = 0; i < playerCaptures_.size(); i++) {
+        output.writeMessage(4, playerCaptures_.get(i));
+      }
+      for (int i = 0; i < moves_.size(); i++) {
+        output.writeMessage(5, moves_.get(i));
+      }
+      unknownFields.writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(1, gameOver_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(2, toMove_);
+      }
+      for (int i = 0; i < playerAsset_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(3, playerAsset_.get(i));
+      }
+      for (int i = 0; i < playerCaptures_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(4, playerCaptures_.get(i));
+      }
+      for (int i = 0; i < moves_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(5, moves_.get(i));
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    public static serialization.GameState.Moment parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static serialization.GameState.Moment parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static serialization.GameState.Moment parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static serialization.GameState.Moment parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static serialization.GameState.Moment parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static serialization.GameState.Moment parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static serialization.GameState.Moment parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static serialization.GameState.Moment parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static serialization.GameState.Moment parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static serialization.GameState.Moment parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return defaultInstance.toBuilder();
+    }
+    public static Builder newBuilder(serialization.GameState.Moment prototype) {
+      return defaultInstance.toBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() {
+      return this == defaultInstance
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code serialization.Moment}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:serialization.Moment)
+        serialization.GameState.MomentOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return serialization.GameState.internal_static_serialization_Moment_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return serialization.GameState.internal_static_serialization_Moment_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                serialization.GameState.Moment.class, serialization.GameState.Moment.Builder.class);
+      }
+
+      // Construct using serialization.GameState.Moment.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getPlayerAssetFieldBuilder();
+          getPlayerCapturesFieldBuilder();
+          getMovesFieldBuilder();
+        }
+      }
+      public Builder clear() {
+        super.clear();
+        gameOver_ = false;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        toMove_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        if (playerAssetBuilder_ == null) {
+          playerAsset_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000004);
+        } else {
+          playerAssetBuilder_.clear();
+        }
+        if (playerCapturesBuilder_ == null) {
+          playerCaptures_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000008);
+        } else {
+          playerCapturesBuilder_.clear();
+        }
+        if (movesBuilder_ == null) {
+          moves_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000010);
+        } else {
+          movesBuilder_.clear();
+        }
+        return this;
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return serialization.GameState.internal_static_serialization_Moment_descriptor;
+      }
+
+      public serialization.GameState.Moment getDefaultInstanceForType() {
+        return serialization.GameState.Moment.getDefaultInstance();
+      }
+
+      public serialization.GameState.Moment build() {
+        serialization.GameState.Moment result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public serialization.GameState.Moment buildPartial() {
+        serialization.GameState.Moment result = new serialization.GameState.Moment(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.gameOver_ = gameOver_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.toMove_ = toMove_;
+        if (playerAssetBuilder_ == null) {
+          if (((bitField0_ & 0x00000004) == 0x00000004)) {
+            playerAsset_ = java.util.Collections.unmodifiableList(playerAsset_);
+            bitField0_ = (bitField0_ & ~0x00000004);
+          }
+          result.playerAsset_ = playerAsset_;
+        } else {
+          result.playerAsset_ = playerAssetBuilder_.build();
+        }
+        if (playerCapturesBuilder_ == null) {
+          if (((bitField0_ & 0x00000008) == 0x00000008)) {
+            playerCaptures_ = java.util.Collections.unmodifiableList(playerCaptures_);
+            bitField0_ = (bitField0_ & ~0x00000008);
+          }
+          result.playerCaptures_ = playerCaptures_;
+        } else {
+          result.playerCaptures_ = playerCapturesBuilder_.build();
+        }
+        if (movesBuilder_ == null) {
+          if (((bitField0_ & 0x00000010) == 0x00000010)) {
+            moves_ = java.util.Collections.unmodifiableList(moves_);
+            bitField0_ = (bitField0_ & ~0x00000010);
+          }
+          result.moves_ = moves_;
+        } else {
+          result.moves_ = movesBuilder_.build();
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof serialization.GameState.Moment) {
+          return mergeFrom((serialization.GameState.Moment)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(serialization.GameState.Moment other) {
+        if (other == serialization.GameState.Moment.getDefaultInstance()) return this;
+        if (other.hasGameOver()) {
+          setGameOver(other.getGameOver());
+        }
+        if (other.hasToMove()) {
+          setToMove(other.getToMove());
+        }
+        if (playerAssetBuilder_ == null) {
+          if (!other.playerAsset_.isEmpty()) {
+            if (playerAsset_.isEmpty()) {
+              playerAsset_ = other.playerAsset_;
+              bitField0_ = (bitField0_ & ~0x00000004);
+            } else {
+              ensurePlayerAssetIsMutable();
+              playerAsset_.addAll(other.playerAsset_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.playerAsset_.isEmpty()) {
+            if (playerAssetBuilder_.isEmpty()) {
+              playerAssetBuilder_.dispose();
+              playerAssetBuilder_ = null;
+              playerAsset_ = other.playerAsset_;
+              bitField0_ = (bitField0_ & ~0x00000004);
+              playerAssetBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getPlayerAssetFieldBuilder() : null;
+            } else {
+              playerAssetBuilder_.addAllMessages(other.playerAsset_);
+            }
+          }
+        }
+        if (playerCapturesBuilder_ == null) {
+          if (!other.playerCaptures_.isEmpty()) {
+            if (playerCaptures_.isEmpty()) {
+              playerCaptures_ = other.playerCaptures_;
+              bitField0_ = (bitField0_ & ~0x00000008);
+            } else {
+              ensurePlayerCapturesIsMutable();
+              playerCaptures_.addAll(other.playerCaptures_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.playerCaptures_.isEmpty()) {
+            if (playerCapturesBuilder_.isEmpty()) {
+              playerCapturesBuilder_.dispose();
+              playerCapturesBuilder_ = null;
+              playerCaptures_ = other.playerCaptures_;
+              bitField0_ = (bitField0_ & ~0x00000008);
+              playerCapturesBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getPlayerCapturesFieldBuilder() : null;
+            } else {
+              playerCapturesBuilder_.addAllMessages(other.playerCaptures_);
+            }
+          }
+        }
+        if (movesBuilder_ == null) {
+          if (!other.moves_.isEmpty()) {
+            if (moves_.isEmpty()) {
+              moves_ = other.moves_;
+              bitField0_ = (bitField0_ & ~0x00000010);
+            } else {
+              ensureMovesIsMutable();
+              moves_.addAll(other.moves_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.moves_.isEmpty()) {
+            if (movesBuilder_.isEmpty()) {
+              movesBuilder_.dispose();
+              movesBuilder_ = null;
+              moves_ = other.moves_;
+              bitField0_ = (bitField0_ & ~0x00000010);
+              movesBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getMovesFieldBuilder() : null;
+            } else {
+              movesBuilder_.addAllMessages(other.moves_);
+            }
+          }
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasGameOver()) {
+          
+          return false;
+        }
+        if (!hasToMove()) {
+          
+          return false;
+        }
+        for (int i = 0; i < getPlayerAssetCount(); i++) {
+          if (!getPlayerAsset(i).isInitialized()) {
+            
+            return false;
+          }
+        }
+        for (int i = 0; i < getPlayerCapturesCount(); i++) {
+          if (!getPlayerCaptures(i).isInitialized()) {
+            
+            return false;
+          }
+        }
+        for (int i = 0; i < getMovesCount(); i++) {
+          if (!getMoves(i).isInitialized()) {
+            
+            return false;
+          }
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        serialization.GameState.Moment parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (serialization.GameState.Moment) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private boolean gameOver_ ;
+      /**
+       * <code>required bool gameOver = 1;</code>
+       */
+      public boolean hasGameOver() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required bool gameOver = 1;</code>
+       */
+      public boolean getGameOver() {
+        return gameOver_;
+      }
+      /**
+       * <code>required bool gameOver = 1;</code>
+       */
+      public Builder setGameOver(boolean value) {
+        bitField0_ |= 0x00000001;
+        gameOver_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required bool gameOver = 1;</code>
+       */
+      public Builder clearGameOver() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        gameOver_ = false;
+        onChanged();
+        return this;
+      }
+
+      private int toMove_ = 0;
+      /**
+       * <code>required .serialization.Color toMove = 2;</code>
+       */
+      public boolean hasToMove() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required .serialization.Color toMove = 2;</code>
+       */
+      public serialization.GameState.Color getToMove() {
+        serialization.GameState.Color result = serialization.GameState.Color.valueOf(toMove_);
+        return result == null ? serialization.GameState.Color.EMPTY : result;
+      }
+      /**
+       * <code>required .serialization.Color toMove = 2;</code>
+       */
+      public Builder setToMove(serialization.GameState.Color value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000002;
+        toMove_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required .serialization.Color toMove = 2;</code>
+       */
+      public Builder clearToMove() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        toMove_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.util.List<serialization.GameState.Group> playerAsset_ =
+        java.util.Collections.emptyList();
+      private void ensurePlayerAssetIsMutable() {
+        if (!((bitField0_ & 0x00000004) == 0x00000004)) {
+          playerAsset_ = new java.util.ArrayList<serialization.GameState.Group>(playerAsset_);
+          bitField0_ |= 0x00000004;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          serialization.GameState.Group, serialization.GameState.Group.Builder, serialization.GameState.GroupOrBuilder> playerAssetBuilder_;
+
+      /**
+       * <code>repeated .serialization.Group playerAsset = 3;</code>
+       */
+      public java.util.List<serialization.GameState.Group> getPlayerAssetList() {
+        if (playerAssetBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(playerAsset_);
+        } else {
+          return playerAssetBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .serialization.Group playerAsset = 3;</code>
+       */
+      public int getPlayerAssetCount() {
+        if (playerAssetBuilder_ == null) {
+          return playerAsset_.size();
+        } else {
+          return playerAssetBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .serialization.Group playerAsset = 3;</code>
+       */
+      public serialization.GameState.Group getPlayerAsset(int index) {
+        if (playerAssetBuilder_ == null) {
+          return playerAsset_.get(index);
+        } else {
+          return playerAssetBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .serialization.Group playerAsset = 3;</code>
+       */
+      public Builder setPlayerAsset(
+          int index, serialization.GameState.Group value) {
+        if (playerAssetBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensurePlayerAssetIsMutable();
+          playerAsset_.set(index, value);
+          onChanged();
+        } else {
+          playerAssetBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .serialization.Group playerAsset = 3;</code>
+       */
+      public Builder setPlayerAsset(
+          int index, serialization.GameState.Group.Builder builderForValue) {
+        if (playerAssetBuilder_ == null) {
+          ensurePlayerAssetIsMutable();
+          playerAsset_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          playerAssetBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .serialization.Group playerAsset = 3;</code>
+       */
+      public Builder addPlayerAsset(serialization.GameState.Group value) {
+        if (playerAssetBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensurePlayerAssetIsMutable();
+          playerAsset_.add(value);
+          onChanged();
+        } else {
+          playerAssetBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .serialization.Group playerAsset = 3;</code>
+       */
+      public Builder addPlayerAsset(
+          int index, serialization.GameState.Group value) {
+        if (playerAssetBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensurePlayerAssetIsMutable();
+          playerAsset_.add(index, value);
+          onChanged();
+        } else {
+          playerAssetBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .serialization.Group playerAsset = 3;</code>
+       */
+      public Builder addPlayerAsset(
+          serialization.GameState.Group.Builder builderForValue) {
+        if (playerAssetBuilder_ == null) {
+          ensurePlayerAssetIsMutable();
+          playerAsset_.add(builderForValue.build());
+          onChanged();
+        } else {
+          playerAssetBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .serialization.Group playerAsset = 3;</code>
+       */
+      public Builder addPlayerAsset(
+          int index, serialization.GameState.Group.Builder builderForValue) {
+        if (playerAssetBuilder_ == null) {
+          ensurePlayerAssetIsMutable();
+          playerAsset_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          playerAssetBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .serialization.Group playerAsset = 3;</code>
+       */
+      public Builder addAllPlayerAsset(
+          java.lang.Iterable<? extends serialization.GameState.Group> values) {
+        if (playerAssetBuilder_ == null) {
+          ensurePlayerAssetIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, playerAsset_);
+          onChanged();
+        } else {
+          playerAssetBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .serialization.Group playerAsset = 3;</code>
+       */
+      public Builder clearPlayerAsset() {
+        if (playerAssetBuilder_ == null) {
+          playerAsset_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000004);
+          onChanged();
+        } else {
+          playerAssetBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .serialization.Group playerAsset = 3;</code>
+       */
+      public Builder removePlayerAsset(int index) {
+        if (playerAssetBuilder_ == null) {
+          ensurePlayerAssetIsMutable();
+          playerAsset_.remove(index);
+          onChanged();
+        } else {
+          playerAssetBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .serialization.Group playerAsset = 3;</code>
+       */
+      public serialization.GameState.Group.Builder getPlayerAssetBuilder(
+          int index) {
+        return getPlayerAssetFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .serialization.Group playerAsset = 3;</code>
+       */
+      public serialization.GameState.GroupOrBuilder getPlayerAssetOrBuilder(
+          int index) {
+        if (playerAssetBuilder_ == null) {
+          return playerAsset_.get(index);  } else {
+          return playerAssetBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .serialization.Group playerAsset = 3;</code>
+       */
+      public java.util.List<? extends serialization.GameState.GroupOrBuilder> 
+           getPlayerAssetOrBuilderList() {
+        if (playerAssetBuilder_ != null) {
+          return playerAssetBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(playerAsset_);
+        }
+      }
+      /**
+       * <code>repeated .serialization.Group playerAsset = 3;</code>
+       */
+      public serialization.GameState.Group.Builder addPlayerAssetBuilder() {
+        return getPlayerAssetFieldBuilder().addBuilder(
+            serialization.GameState.Group.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .serialization.Group playerAsset = 3;</code>
+       */
+      public serialization.GameState.Group.Builder addPlayerAssetBuilder(
+          int index) {
+        return getPlayerAssetFieldBuilder().addBuilder(
+            index, serialization.GameState.Group.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .serialization.Group playerAsset = 3;</code>
+       */
+      public java.util.List<serialization.GameState.Group.Builder> 
+           getPlayerAssetBuilderList() {
+        return getPlayerAssetFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          serialization.GameState.Group, serialization.GameState.Group.Builder, serialization.GameState.GroupOrBuilder> 
+          getPlayerAssetFieldBuilder() {
+        if (playerAssetBuilder_ == null) {
+          playerAssetBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              serialization.GameState.Group, serialization.GameState.Group.Builder, serialization.GameState.GroupOrBuilder>(
+                  playerAsset_,
+                  ((bitField0_ & 0x00000004) == 0x00000004),
+                  getParentForChildren(),
+                  isClean());
+          playerAsset_ = null;
+        }
+        return playerAssetBuilder_;
+      }
+
+      private java.util.List<serialization.GameState.Capture> playerCaptures_ =
+        java.util.Collections.emptyList();
+      private void ensurePlayerCapturesIsMutable() {
+        if (!((bitField0_ & 0x00000008) == 0x00000008)) {
+          playerCaptures_ = new java.util.ArrayList<serialization.GameState.Capture>(playerCaptures_);
+          bitField0_ |= 0x00000008;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          serialization.GameState.Capture, serialization.GameState.Capture.Builder, serialization.GameState.CaptureOrBuilder> playerCapturesBuilder_;
+
+      /**
+       * <code>repeated .serialization.Capture playerCaptures = 4;</code>
+       */
+      public java.util.List<serialization.GameState.Capture> getPlayerCapturesList() {
+        if (playerCapturesBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(playerCaptures_);
+        } else {
+          return playerCapturesBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .serialization.Capture playerCaptures = 4;</code>
+       */
+      public int getPlayerCapturesCount() {
+        if (playerCapturesBuilder_ == null) {
+          return playerCaptures_.size();
+        } else {
+          return playerCapturesBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .serialization.Capture playerCaptures = 4;</code>
+       */
+      public serialization.GameState.Capture getPlayerCaptures(int index) {
+        if (playerCapturesBuilder_ == null) {
+          return playerCaptures_.get(index);
+        } else {
+          return playerCapturesBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .serialization.Capture playerCaptures = 4;</code>
+       */
+      public Builder setPlayerCaptures(
+          int index, serialization.GameState.Capture value) {
+        if (playerCapturesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensurePlayerCapturesIsMutable();
+          playerCaptures_.set(index, value);
+          onChanged();
+        } else {
+          playerCapturesBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .serialization.Capture playerCaptures = 4;</code>
+       */
+      public Builder setPlayerCaptures(
+          int index, serialization.GameState.Capture.Builder builderForValue) {
+        if (playerCapturesBuilder_ == null) {
+          ensurePlayerCapturesIsMutable();
+          playerCaptures_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          playerCapturesBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .serialization.Capture playerCaptures = 4;</code>
+       */
+      public Builder addPlayerCaptures(serialization.GameState.Capture value) {
+        if (playerCapturesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensurePlayerCapturesIsMutable();
+          playerCaptures_.add(value);
+          onChanged();
+        } else {
+          playerCapturesBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .serialization.Capture playerCaptures = 4;</code>
+       */
+      public Builder addPlayerCaptures(
+          int index, serialization.GameState.Capture value) {
+        if (playerCapturesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensurePlayerCapturesIsMutable();
+          playerCaptures_.add(index, value);
+          onChanged();
+        } else {
+          playerCapturesBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .serialization.Capture playerCaptures = 4;</code>
+       */
+      public Builder addPlayerCaptures(
+          serialization.GameState.Capture.Builder builderForValue) {
+        if (playerCapturesBuilder_ == null) {
+          ensurePlayerCapturesIsMutable();
+          playerCaptures_.add(builderForValue.build());
+          onChanged();
+        } else {
+          playerCapturesBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .serialization.Capture playerCaptures = 4;</code>
+       */
+      public Builder addPlayerCaptures(
+          int index, serialization.GameState.Capture.Builder builderForValue) {
+        if (playerCapturesBuilder_ == null) {
+          ensurePlayerCapturesIsMutable();
+          playerCaptures_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          playerCapturesBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .serialization.Capture playerCaptures = 4;</code>
+       */
+      public Builder addAllPlayerCaptures(
+          java.lang.Iterable<? extends serialization.GameState.Capture> values) {
+        if (playerCapturesBuilder_ == null) {
+          ensurePlayerCapturesIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, playerCaptures_);
+          onChanged();
+        } else {
+          playerCapturesBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .serialization.Capture playerCaptures = 4;</code>
+       */
+      public Builder clearPlayerCaptures() {
+        if (playerCapturesBuilder_ == null) {
+          playerCaptures_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000008);
+          onChanged();
+        } else {
+          playerCapturesBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .serialization.Capture playerCaptures = 4;</code>
+       */
+      public Builder removePlayerCaptures(int index) {
+        if (playerCapturesBuilder_ == null) {
+          ensurePlayerCapturesIsMutable();
+          playerCaptures_.remove(index);
+          onChanged();
+        } else {
+          playerCapturesBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .serialization.Capture playerCaptures = 4;</code>
+       */
+      public serialization.GameState.Capture.Builder getPlayerCapturesBuilder(
+          int index) {
+        return getPlayerCapturesFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .serialization.Capture playerCaptures = 4;</code>
+       */
+      public serialization.GameState.CaptureOrBuilder getPlayerCapturesOrBuilder(
+          int index) {
+        if (playerCapturesBuilder_ == null) {
+          return playerCaptures_.get(index);  } else {
+          return playerCapturesBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .serialization.Capture playerCaptures = 4;</code>
+       */
+      public java.util.List<? extends serialization.GameState.CaptureOrBuilder> 
+           getPlayerCapturesOrBuilderList() {
+        if (playerCapturesBuilder_ != null) {
+          return playerCapturesBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(playerCaptures_);
+        }
+      }
+      /**
+       * <code>repeated .serialization.Capture playerCaptures = 4;</code>
+       */
+      public serialization.GameState.Capture.Builder addPlayerCapturesBuilder() {
+        return getPlayerCapturesFieldBuilder().addBuilder(
+            serialization.GameState.Capture.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .serialization.Capture playerCaptures = 4;</code>
+       */
+      public serialization.GameState.Capture.Builder addPlayerCapturesBuilder(
+          int index) {
+        return getPlayerCapturesFieldBuilder().addBuilder(
+            index, serialization.GameState.Capture.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .serialization.Capture playerCaptures = 4;</code>
+       */
+      public java.util.List<serialization.GameState.Capture.Builder> 
+           getPlayerCapturesBuilderList() {
+        return getPlayerCapturesFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          serialization.GameState.Capture, serialization.GameState.Capture.Builder, serialization.GameState.CaptureOrBuilder> 
+          getPlayerCapturesFieldBuilder() {
+        if (playerCapturesBuilder_ == null) {
+          playerCapturesBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              serialization.GameState.Capture, serialization.GameState.Capture.Builder, serialization.GameState.CaptureOrBuilder>(
+                  playerCaptures_,
+                  ((bitField0_ & 0x00000008) == 0x00000008),
+                  getParentForChildren(),
+                  isClean());
+          playerCaptures_ = null;
+        }
+        return playerCapturesBuilder_;
+      }
+
+      private java.util.List<serialization.GameState.Placement> moves_ =
+        java.util.Collections.emptyList();
+      private void ensureMovesIsMutable() {
+        if (!((bitField0_ & 0x00000010) == 0x00000010)) {
+          moves_ = new java.util.ArrayList<serialization.GameState.Placement>(moves_);
+          bitField0_ |= 0x00000010;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          serialization.GameState.Placement, serialization.GameState.Placement.Builder, serialization.GameState.PlacementOrBuilder> movesBuilder_;
+
+      /**
+       * <code>repeated .serialization.Placement moves = 5;</code>
+       */
+      public java.util.List<serialization.GameState.Placement> getMovesList() {
+        if (movesBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(moves_);
+        } else {
+          return movesBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .serialization.Placement moves = 5;</code>
+       */
+      public int getMovesCount() {
+        if (movesBuilder_ == null) {
+          return moves_.size();
+        } else {
+          return movesBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .serialization.Placement moves = 5;</code>
+       */
+      public serialization.GameState.Placement getMoves(int index) {
+        if (movesBuilder_ == null) {
+          return moves_.get(index);
+        } else {
+          return movesBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .serialization.Placement moves = 5;</code>
+       */
+      public Builder setMoves(
+          int index, serialization.GameState.Placement value) {
+        if (movesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureMovesIsMutable();
+          moves_.set(index, value);
+          onChanged();
+        } else {
+          movesBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .serialization.Placement moves = 5;</code>
+       */
+      public Builder setMoves(
+          int index, serialization.GameState.Placement.Builder builderForValue) {
+        if (movesBuilder_ == null) {
+          ensureMovesIsMutable();
+          moves_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          movesBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .serialization.Placement moves = 5;</code>
+       */
+      public Builder addMoves(serialization.GameState.Placement value) {
+        if (movesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureMovesIsMutable();
+          moves_.add(value);
+          onChanged();
+        } else {
+          movesBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .serialization.Placement moves = 5;</code>
+       */
+      public Builder addMoves(
+          int index, serialization.GameState.Placement value) {
+        if (movesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureMovesIsMutable();
+          moves_.add(index, value);
+          onChanged();
+        } else {
+          movesBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .serialization.Placement moves = 5;</code>
+       */
+      public Builder addMoves(
+          serialization.GameState.Placement.Builder builderForValue) {
+        if (movesBuilder_ == null) {
+          ensureMovesIsMutable();
+          moves_.add(builderForValue.build());
+          onChanged();
+        } else {
+          movesBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .serialization.Placement moves = 5;</code>
+       */
+      public Builder addMoves(
+          int index, serialization.GameState.Placement.Builder builderForValue) {
+        if (movesBuilder_ == null) {
+          ensureMovesIsMutable();
+          moves_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          movesBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .serialization.Placement moves = 5;</code>
+       */
+      public Builder addAllMoves(
+          java.lang.Iterable<? extends serialization.GameState.Placement> values) {
+        if (movesBuilder_ == null) {
+          ensureMovesIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, moves_);
+          onChanged();
+        } else {
+          movesBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .serialization.Placement moves = 5;</code>
+       */
+      public Builder clearMoves() {
+        if (movesBuilder_ == null) {
+          moves_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000010);
+          onChanged();
+        } else {
+          movesBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .serialization.Placement moves = 5;</code>
+       */
+      public Builder removeMoves(int index) {
+        if (movesBuilder_ == null) {
+          ensureMovesIsMutable();
+          moves_.remove(index);
+          onChanged();
+        } else {
+          movesBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .serialization.Placement moves = 5;</code>
+       */
+      public serialization.GameState.Placement.Builder getMovesBuilder(
+          int index) {
+        return getMovesFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .serialization.Placement moves = 5;</code>
+       */
+      public serialization.GameState.PlacementOrBuilder getMovesOrBuilder(
+          int index) {
+        if (movesBuilder_ == null) {
+          return moves_.get(index);  } else {
+          return movesBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .serialization.Placement moves = 5;</code>
+       */
+      public java.util.List<? extends serialization.GameState.PlacementOrBuilder> 
+           getMovesOrBuilderList() {
+        if (movesBuilder_ != null) {
+          return movesBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(moves_);
+        }
+      }
+      /**
+       * <code>repeated .serialization.Placement moves = 5;</code>
+       */
+      public serialization.GameState.Placement.Builder addMovesBuilder() {
+        return getMovesFieldBuilder().addBuilder(
+            serialization.GameState.Placement.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .serialization.Placement moves = 5;</code>
+       */
+      public serialization.GameState.Placement.Builder addMovesBuilder(
+          int index) {
+        return getMovesFieldBuilder().addBuilder(
+            index, serialization.GameState.Placement.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .serialization.Placement moves = 5;</code>
+       */
+      public java.util.List<serialization.GameState.Placement.Builder> 
+           getMovesBuilderList() {
+        return getMovesFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          serialization.GameState.Placement, serialization.GameState.Placement.Builder, serialization.GameState.PlacementOrBuilder> 
+          getMovesFieldBuilder() {
+        if (movesBuilder_ == null) {
+          movesBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              serialization.GameState.Placement, serialization.GameState.Placement.Builder, serialization.GameState.PlacementOrBuilder>(
+                  moves_,
+                  ((bitField0_ & 0x00000010) == 0x00000010),
+                  getParentForChildren(),
+                  isClean());
+          moves_ = null;
+        }
+        return movesBuilder_;
+      }
+
       // @@protoc_insertion_point(builder_scope:serialization.Moment)
     }
-    
-    static {
-      defaultInstance = new Moment(true);
-      defaultInstance.initFields();
-    }
-    
+
     // @@protoc_insertion_point(class_scope:serialization.Moment)
+    private static final serialization.GameState.Moment defaultInstance;
+    static {
+      defaultInstance = new serialization.GameState.Moment();
+    }
+
+    public static serialization.GameState.Moment getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public serialization.GameState.Moment getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    static {
+    }
   }
-  
-  private static com.google.protobuf.Descriptors.Descriptor
+
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_serialization_Intersection_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_serialization_Intersection_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_serialization_Placement_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_serialization_Placement_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_serialization_Group_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_serialization_Group_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_serialization_Capture_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_serialization_Capture_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_serialization_Moment_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_serialization_Moment_fieldAccessorTable;
-  
+
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
     return descriptor;
@@ -1671,50 +4257,63 @@ public final class GameState {
     java.lang.String[] descriptorData = {
       "\n\017GameState.proto\022\rserialization\"$\n\014Inte" +
       "rsection\022\t\n\001X\030\001 \002(\005\022\t\n\001Y\030\002 \002(\005\"]\n\tPlacem" +
-      "ent\022*\n\005place\030\001 \002(\0132\033.serialization.Inter" +
-      "section\022$\n\006player\030\002 \002(\0162\024.serialization." +
-      "Color\"\\\n\006Moment\022$\n\006toMove\030\001 \002(\0162\024.serial" +
-      "ization.Color\022,\n\nboardState\030\002 \003(\0132\030.seri" +
-      "alization.Placement*(\n\005Color\022\t\n\005EMPTY\020\000\022" +
-      "\t\n\005BLACK\020\001\022\t\n\005WHITE\020\002"
+      "ent\022$\n\006player\030\001 \002(\0162\024.serialization.Colo" +
+      "r\022*\n\005place\030\002 \002(\0132\033.serialization.Interse" +
+      "ction\"Z\n\005Group\022$\n\006player\030\001 \002(\0162\024.seriali" +
+      "zation.Color\022+\n\006stones\030\002 \003(\0132\033.serializa" +
+      "tion.Intersection\"I\n\007Capture\022\021\n\tmoveInde" +
+      "x\030\001 \002(\005\022+\n\rcapturedGroup\030\002 \002(\0132\024.seriali" +
+      "zation.Group\"\304\001\n\006Moment\022\020\n\010gameOver\030\001 \002(" +
+      "\010\022$\n\006toMove\030\002 \002(\0162\024.serialization.Color\022",
+      ")\n\013playerAsset\030\003 \003(\0132\024.serialization.Gro" +
+      "up\022.\n\016playerCaptures\030\004 \003(\0132\026.serializati" +
+      "on.Capture\022\'\n\005moves\030\005 \003(\0132\030.serializatio" +
+      "n.Placement*(\n\005Color\022\t\n\005EMPTY\020\000\022\t\n\005BLACK" +
+      "\020\001\022\t\n\005WHITE\020\002"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-      new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
-        public com.google.protobuf.ExtensionRegistry assignDescriptors(
-            com.google.protobuf.Descriptors.FileDescriptor root) {
-          descriptor = root;
-          internal_static_serialization_Intersection_descriptor =
-            getDescriptor().getMessageTypes().get(0);
-          internal_static_serialization_Intersection_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_serialization_Intersection_descriptor,
-              new java.lang.String[] { "X", "Y", },
-              serialization.GameState.Intersection.class,
-              serialization.GameState.Intersection.Builder.class);
-          internal_static_serialization_Placement_descriptor =
-            getDescriptor().getMessageTypes().get(1);
-          internal_static_serialization_Placement_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_serialization_Placement_descriptor,
-              new java.lang.String[] { "Place", "Player", },
-              serialization.GameState.Placement.class,
-              serialization.GameState.Placement.Builder.class);
-          internal_static_serialization_Moment_descriptor =
-            getDescriptor().getMessageTypes().get(2);
-          internal_static_serialization_Moment_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_serialization_Moment_descriptor,
-              new java.lang.String[] { "ToMove", "BoardState", },
-              serialization.GameState.Moment.class,
-              serialization.GameState.Moment.Builder.class);
-          return null;
-        }
-      };
+        new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
+          public com.google.protobuf.ExtensionRegistry assignDescriptors(
+              com.google.protobuf.Descriptors.FileDescriptor root) {
+            descriptor = root;
+            return null;
+          }
+        };
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
         }, assigner);
+    internal_static_serialization_Intersection_descriptor =
+      getDescriptor().getMessageTypes().get(0);
+    internal_static_serialization_Intersection_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_serialization_Intersection_descriptor,
+        new java.lang.String[] { "X", "Y", });
+    internal_static_serialization_Placement_descriptor =
+      getDescriptor().getMessageTypes().get(1);
+    internal_static_serialization_Placement_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_serialization_Placement_descriptor,
+        new java.lang.String[] { "Player", "Place", });
+    internal_static_serialization_Group_descriptor =
+      getDescriptor().getMessageTypes().get(2);
+    internal_static_serialization_Group_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_serialization_Group_descriptor,
+        new java.lang.String[] { "Player", "Stones", });
+    internal_static_serialization_Capture_descriptor =
+      getDescriptor().getMessageTypes().get(3);
+    internal_static_serialization_Capture_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_serialization_Capture_descriptor,
+        new java.lang.String[] { "MoveIndex", "CapturedGroup", });
+    internal_static_serialization_Moment_descriptor =
+      getDescriptor().getMessageTypes().get(4);
+    internal_static_serialization_Moment_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_serialization_Moment_descriptor,
+        new java.lang.String[] { "GameOver", "ToMove", "PlayerAsset", "PlayerCaptures", "Moves", });
   }
-  
+
   // @@protoc_insertion_point(outer_class_scope)
 }
