@@ -65,7 +65,7 @@ public class Board {
 
 		@Override
 		public Point get() {
-			Optional<Point> possiblePoint = supply.stream().filter(pt -> supplied.contains(pt)).findAny();
+			Optional<Point> possiblePoint = supply.stream().filter(pt -> !supplied.contains(pt)).findAny();
 			if(possiblePoint.isPresent()) {
 				Point p = possiblePoint.get();
 				supplied.add(p);
@@ -82,6 +82,10 @@ public class Board {
 		this(DEFAULT_SIZE);
 	}
 	public Board(int size) {
+		init(size);
+	}
+
+	private void init(int size) {
 
 		PointExplorer pGen = new PointExplorer();
 		ALL_POINTS = Stream.generate(pGen).limit(pGen.getLimit()).collect(Collectors.toSet());
@@ -204,7 +208,7 @@ public class Board {
 
 		if(p.getX() == -1 && p.getY() == -1) {
 			return true;
-		} else if (p.getX() < 0 || p.getY() >= boardSize || p.getX() < 0 || p.getY() >= boardSize) {
+		} else if (p.getY() < 0 || p.getY() >= boardSize || p.getX() < 0 || p.getX() >= boardSize) {
 			return false;
 		} else if (hasStoneAt(p)) {
 			return false;
@@ -290,6 +294,7 @@ public class Board {
 	}
 
 	public void fromMoment(final GameState.Moment moment) {
+		init(boardSize);
 		for(GameState.Placement p : moment.getMovesList()) {
 			makeMove(p.getPlace().getX(), p.getPlace().getY());
 		}
@@ -304,15 +309,30 @@ public class Board {
 
 			// unexploredPoints is not empty, so no need to check isPresent
 			Point p = unexploredPoints.stream().findAny().get();
+			PointExplorer pGen = new PointExplorer(p, groups.stream()
+					.map(g -> g.getPoints())
+					.reduce(new HashSet<Point>(), (s, pts) -> {
+						s.addAll(pts);
+						return s;
+					}));
 
-			PointExplorer pGen = new PointExplorer(p, group.getPoints());
-			Set<Point> reachablePoints =
+			Set<Point> groupAdjPoints = groups.stream()
+					.filter(g -> g != group)
+					.map(g -> g.getAdjacent())
+					.reduce(new HashSet<Point>(), (s, pts) -> {
+				s.addAll(pts);
+				return s;
+			});
+
+			final Set<Point> reachablePoints =
 					Stream.generate(pGen)
 							.filter(pt -> unexploredPoints.contains(pt))
 							.limit(pGen.getLimit())
 							.collect(Collectors.toSet());
 
-
+			if(reachablePoints.containsAll(groupAdjPoints)) {
+				enclosedPoints.addAll(reachablePoints);
+			}
 
 			unexploredPoints.removeAll(reachablePoints);
 

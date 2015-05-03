@@ -1,15 +1,14 @@
 package gui;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 
 import javax.swing.*;
 
 import agent.IAgent;
 import config.AlmostRandomAgentConfiguration;
-import game.Board;
-import game.Group;
+import game.*;
+import game.Point;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
@@ -25,14 +24,44 @@ public class Go extends JFrame {
 
 	private IAgent agent;
 
-	public static class BoardViewPanel extends JPanel {
+	public static class BoardViewPanel extends JPanel implements MouseMotionListener, MouseListener {
 
 		private Board controller;
+		private game.Point mousePosition;
+
+		private int xPadding;
+		private int yPadding;
+		private int xIncrement;
+		private int yIncrement;
+		private int xStoneSize;
+		private int yStoneSize;
+
+		private static final Color TRANSPARENT_WHITE = new Color(255, 255, 255, 128);
+		private static final Color TRANSPARENT_BLACK = new Color(0, 0, 0, 128);
+
+		private void init() {
+
+			xPadding = getWidth() / 10;
+			yPadding = getHeight() / 10;
+			xIncrement = (getWidth() - 2*xPadding) / (controller.getBoardSize()-1);
+			yIncrement = (getHeight() - 2*yPadding) / (controller.getBoardSize()-1);
+			xStoneSize = xIncrement / 2;
+			yStoneSize = yIncrement / 2;
+
+		}
 
 		public BoardViewPanel(final Board c) {
 			super(new BorderLayout());
+
 			setBackground(Color.getHSBColor(0.1f, 0.68f, 0.92f));
+
 			controller = c;
+
+			init();
+
+			addMouseMotionListener(this);
+			addMouseListener(this);
+
 		}
 
 		public BoardViewPanel() {
@@ -43,19 +72,17 @@ public class Go extends JFrame {
 		public void paintComponent(final Graphics g) {
 
 			super.paintComponent(g);
+
+			init();
+
 			Graphics2D g2d = (Graphics2D) g;
 			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-			int xPadding = getWidth() / 10;
-			int yPadding = getHeight() / 10;
-			int xIncrement = (getWidth() - 2*xPadding) / (controller.getBoardSize()-1);
-			int yIncrement = (getHeight() - 2*yPadding) / (controller.getBoardSize()-1);
 			for (int i = 0; i < controller.getBoardSize(); i++) {
 				g2d.drawLine(xPadding, yPadding + i*yIncrement, xIncrement*(controller.getBoardSize()-1) + xPadding, yPadding + i*yIncrement);
 				g2d.drawLine(xPadding + i*xIncrement, yPadding, xPadding + i*xIncrement, yIncrement*(controller.getBoardSize()-1)+yPadding);
 			}
-			int xStoneSize = xIncrement / 2;
-			int yStoneSize = yIncrement / 2;
+
 			for (Group group: controller.getGroups()) {
 				g2d.setColor(group.getColor().equals(serialization.GameState.Color.BLACK) ? Color.BLACK : Color.WHITE);
 				for(game.Point p : group.getPoints()) {
@@ -67,12 +94,83 @@ public class Go extends JFrame {
 				}
 			}
 
+			if(mousePosition != null) {
+				g2d.setColor(controller.getCurrentPlayer().equals(GameState.Color.BLACK) ? TRANSPARENT_BLACK : TRANSPARENT_WHITE);
+				g2d.fillOval(
+						xPadding + mousePosition.getX() * xIncrement - xStoneSize / 2,
+						yPadding + mousePosition.getY() * yIncrement - yStoneSize / 2,
+						xStoneSize,
+						yStoneSize);
+			}
+
 		}
 
 		public void setController(final Board controller) {
 			this.controller = controller;
 		}
 
+		@Override
+		public void mouseDragged(MouseEvent e) {
+
+		}
+
+		@Override
+		public void mouseMoved(MouseEvent e) {
+
+			Point oldPosition = mousePosition;
+			Point newPosition = new Point((e.getX() - xPadding) / xIncrement, (e.getY() - yPadding) / yIncrement);
+
+			mousePosition = null;
+			if(oldPosition != null) {
+				paintImmediately(
+						xPadding + oldPosition.getX() * xIncrement - xStoneSize / 2,
+						yPadding + oldPosition.getY() * yIncrement - yStoneSize / 2,
+						xStoneSize,
+						yStoneSize);
+			}
+
+			if(!controller.isValidMove(newPosition)) {
+				mousePosition = null;
+			} else {
+				mousePosition = newPosition;
+			}
+
+			paintImmediately(
+					xPadding + newPosition.getX() * xIncrement - xStoneSize / 2,
+					yPadding + newPosition.getY() * yIncrement - yStoneSize / 2,
+					xStoneSize,
+					yStoneSize);
+
+		}
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			if(mousePosition != null && controller.isValidMove(mousePosition)) {
+				controller.makeMove(mousePosition);
+				getParent().
+				repaint(500);
+			}
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {
+
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+			mousePosition = null;
+		}
 	}
 
 	private Board controller;
@@ -93,16 +191,18 @@ public class Go extends JFrame {
 		cp.setLayout(new BoxLayout(cp, BoxLayout.Y_AXIS));
 
 		controller = new Board();
-		gridPanel = new BoardViewPanel(controller);
-		gridPanel.setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
-		cp.add(gridPanel);
 
 		blackInfo = new JLabel(getInfo(GameState.Color.BLACK));
 		whiteInfo = new JLabel(getInfo(GameState.Color.WHITE));
 		infoPanel = new JPanel(new BorderLayout());
+
 		infoPanel.add(blackInfo, BorderLayout.WEST);
 		infoPanel.add(whiteInfo, BorderLayout.EAST);
 		cp.add(infoPanel);
+
+		gridPanel = new BoardViewPanel(controller);
+		gridPanel.setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
+		cp.add(gridPanel);
 
 		buttonPanel = new JPanel(new BorderLayout());
 		buttonPanel.add(quitButton = new JButton("Quit"), BorderLayout.EAST);
