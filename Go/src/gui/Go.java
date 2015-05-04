@@ -26,6 +26,10 @@ public class Go extends JFrame {
 
 	public static class BoardViewPanel extends JPanel implements MouseMotionListener, MouseListener {
 
+		private JPanel infoPanel;
+		private JLabel blackInfo;
+		private JLabel whiteInfo;
+
 		private Board controller;
 		private game.Point mousePosition;
 
@@ -56,6 +60,14 @@ public class Go extends JFrame {
 			setBackground(Color.getHSBColor(0.1f, 0.68f, 0.92f));
 
 			controller = c;
+			blackInfo = new JLabel(getInfo(GameState.Color.BLACK));
+			whiteInfo = new JLabel(getInfo(GameState.Color.WHITE));
+			infoPanel = new JPanel(new BorderLayout());
+
+			infoPanel.add(blackInfo, BorderLayout.EAST);
+			infoPanel.add(whiteInfo, BorderLayout.WEST);
+
+			add(infoPanel, BorderLayout.NORTH);
 
 			init();
 
@@ -68,12 +80,22 @@ public class Go extends JFrame {
 			this(new Board());
 		}
 
+		public String getInfo(final GameState.Color c) {
+			return c.toString() + " captures: " + Integer.toString(controller.getCaptures().stream()
+					.filter(g -> !g.getColor().equals(c))
+					.map(g -> g.getPoints().size())
+					.reduce(0, (a,b) -> a+b));
+		}
+
 		@Override
 		public void paintComponent(final Graphics g) {
 
 			super.paintComponent(g);
 
 			init();
+
+			blackInfo.setText(getInfo(GameState.Color.BLACK));
+			whiteInfo.setText(getInfo(GameState.Color.WHITE));
 
 			Graphics2D g2d = (Graphics2D) g;
 			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -145,14 +167,16 @@ public class Go extends JFrame {
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			if(mousePosition != null && controller.isValidMove(mousePosition)) {
-				controller.makeMove(mousePosition);
-				repaint(500);
-			}
+
 		}
 
 		@Override
 		public void mousePressed(MouseEvent e) {
+
+			if(mousePosition != null && controller.isValidMove(mousePosition)) {
+				controller.makeMove(mousePosition);
+				repaint(500);
+			}
 
 		}
 
@@ -177,9 +201,6 @@ public class Go extends JFrame {
 	private JButton startButton;
 	private JButton nextMoveButton;
 	private JPanel buttonPanel;
-	private JPanel infoPanel;
-	private JLabel blackInfo;
-	private JLabel whiteInfo;
 	private BoardViewPanel gridPanel;
 
 	public Go() {
@@ -190,14 +211,6 @@ public class Go extends JFrame {
 		cp.setLayout(new BoxLayout(cp, BoxLayout.Y_AXIS));
 
 		controller = new Board();
-
-		blackInfo = new JLabel(getInfo(GameState.Color.BLACK));
-		whiteInfo = new JLabel(getInfo(GameState.Color.WHITE));
-		infoPanel = new JPanel(new BorderLayout());
-
-		infoPanel.add(blackInfo, BorderLayout.WEST);
-		infoPanel.add(whiteInfo, BorderLayout.EAST);
-		cp.add(infoPanel);
 
 		gridPanel = new BoardViewPanel(controller);
 		gridPanel.setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
@@ -224,13 +237,6 @@ public class Go extends JFrame {
 
 	}
 
-	public String getInfo(final GameState.Color c) {
-		return c.toString() + " captures: " + Integer.toString(controller.getCaptures().stream()
-				.filter(g -> !g.getColor().equals(c))
-				.map(g -> g.getPoints().size())
-				.reduce(0, (a,b) -> a+b));
-	}
-
 	public void startGame() {
 		if(controller.isGameOver()) {
 			controller = new Board();
@@ -244,10 +250,8 @@ public class Go extends JFrame {
 	}
 
 	public void nextMove() {
+
 		controller.makeMove(agent.getNextMove(controller));
-		blackInfo.setText(getInfo(GameState.Color.BLACK));
-		whiteInfo.setText(getInfo(GameState.Color.WHITE));
-		infoPanel.repaint();
 		gridPanel.repaint();
 
 	}
