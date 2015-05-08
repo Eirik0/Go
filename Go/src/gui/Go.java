@@ -17,6 +17,8 @@ import serialization.GameState;
 @Component
 public class Go extends JFrame {
 
+	private static final long serialVersionUID = 1L;
+
 	private static final String TITLE = "Go";
 
 	public static final int DEFAULT_WIDTH = 800;
@@ -26,6 +28,14 @@ public class Go extends JFrame {
 
 	public static class BoardViewPanel extends JPanel implements MouseMotionListener, MouseListener {
 
+		private static final long serialVersionUID = 1L;
+
+		public static enum GridMode {
+			MOVE, SELECT_GROUP;
+		}
+
+		private GridMode mode;
+		
 		private JPanel infoPanel;
 		private JLabel blackInfo;
 		private JLabel whiteInfo;
@@ -51,6 +61,8 @@ public class Go extends JFrame {
 			yIncrement = (getHeight() - 2*yPadding) / (controller.getBoardSize()-1);
 			xStoneSize = xIncrement / 2;
 			yStoneSize = yIncrement / 2;
+			
+			mode = GridMode.MOVE;
 
 		}
 
@@ -195,11 +207,12 @@ public class Go extends JFrame {
 			mousePosition = null;
 		}
 	}
-
+	
 	private Board controller;
 	private JButton quitButton;
 	private JButton startButton;
 	private JButton nextMoveButton;
+	private JButton selectGroupButton;
 	private JPanel buttonPanel;
 	private BoardViewPanel gridPanel;
 
@@ -216,10 +229,11 @@ public class Go extends JFrame {
 		gridPanel.setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
 		cp.add(gridPanel);
 
-		buttonPanel = new JPanel(new BorderLayout());
-		buttonPanel.add(quitButton = new JButton("Quit"), BorderLayout.EAST);
-		buttonPanel.add(startButton = new JButton("Start"), BorderLayout.WEST);
-		buttonPanel.add(nextMoveButton = new JButton("Next Move"), BorderLayout.CENTER);
+		buttonPanel = new JPanel(new FlowLayout());
+		buttonPanel.add(startButton = new JButton("Start"));
+		buttonPanel.add(nextMoveButton = new JButton("Next Move"));
+		buttonPanel.add(selectGroupButton = new JButton("Select Group"));
+		buttonPanel.add(quitButton = new JButton("Quit"));
 		cp.add(buttonPanel);
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -265,6 +279,8 @@ public class Go extends JFrame {
 
 		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(AlmostRandomAgentConfiguration.class);
 		final Go gui = ctx.getBean(Go.class);
+
+		ctx.close();
 
 		EventQueue.invokeLater(new Runnable() {
 			@Override
