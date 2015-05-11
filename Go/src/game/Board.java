@@ -300,6 +300,26 @@ public class Board {
 		}
 	}
 
+	public Optional<Group> getGroup(final Point p) {
+		return groups.stream().filter(g -> g.contains(p)).findAny();
+	}
+
+	public Set<Point> getReachablePoints(final Group group) {
+
+		final Set<Point> result = new HashSet<>();
+		for(final Point p: group.getAdjacent()) {
+			PointExplorer pGen = new PointExplorer(p, groups.stream()
+					.map(g -> g.getPoints())
+					.reduce(new HashSet<Point>(), (s, pts) -> {
+						s.addAll(pts);
+						return s;
+					}));
+			result.addAll(Stream.generate(pGen).limit(pGen.getLimit()).collect(Collectors.toList()));
+		}
+		return result;
+
+	}
+
 	public Set<Point> getEnclosedPoints(final Group group) {
 
 		final Set<Point> enclosedPoints = new HashSet<>();

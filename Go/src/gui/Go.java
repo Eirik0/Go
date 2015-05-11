@@ -2,12 +2,17 @@ package gui;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 import javax.swing.*;
 
 import agent.IAgent;
 import config.AlmostRandomAgentConfiguration;
-import game.*;
+import game.Board;
+import game.Group;
 import game.Point;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -30,18 +35,15 @@ public class Go extends JFrame {
 
 		private static final long serialVersionUID = 1L;
 
-		public static enum GridMode {
-			MOVE, SELECT_GROUP;
-		}
-
-		private GridMode mode;
-		
 		private JPanel infoPanel;
 		private JLabel blackInfo;
 		private JLabel whiteInfo;
+		private JToggleButton modeButton;
 
 		private Board controller;
 		private game.Point mousePosition;
+		private List<Point> selectedPoints;
+		private Color selectedColor;
 
 		private int xPadding;
 		private int yPadding;
@@ -62,8 +64,6 @@ public class Go extends JFrame {
 			xStoneSize = xIncrement / 2;
 			yStoneSize = yIncrement / 2;
 			
-			mode = GridMode.MOVE;
-
 		}
 
 		public BoardViewPanel(final Board c) {
@@ -81,6 +81,8 @@ public class Go extends JFrame {
 
 			add(infoPanel, BorderLayout.NORTH);
 
+			selectedPoints = new ArrayList<>();
+
 			init();
 
 			addMouseMotionListener(this);
@@ -97,6 +99,16 @@ public class Go extends JFrame {
 					.filter(g -> !g.getColor().equals(c))
 					.map(g -> g.getPoints().size())
 					.reduce(0, (a,b) -> a+b));
+		}
+
+		private void renderPoint(final Graphics2D g2d, final Point p) {
+
+			g2d.fillOval(
+					xPadding + p.getX() * xIncrement - xStoneSize / 2,
+					yPadding + p.getY() * yIncrement - yStoneSize / 2,
+					xStoneSize,
+					yStoneSize);
+
 		}
 
 		@Override
@@ -120,21 +132,20 @@ public class Go extends JFrame {
 			for (Group group: controller.getGroups()) {
 				g2d.setColor(group.getColor().equals(serialization.GameState.Color.BLACK) ? Color.BLACK : Color.WHITE);
 				for(game.Point p : group.getPoints()) {
-					g2d.fillOval(
-							xPadding + p.getX() * xIncrement - xStoneSize / 2,
-							yPadding + p.getY() * yIncrement - yStoneSize / 2,
-							xStoneSize,
-							yStoneSize);
+					renderPoint(g2d, p);
+				}
+			}
+
+			if(modeButton.isSelected()) {
+				for (final Point p : selectedPoints) {
+					g2d.setColor(selectedColor);
+					renderPoint(g2d, p);
 				}
 			}
 
 			if(mousePosition != null) {
 				g2d.setColor(controller.getCurrentPlayer().equals(GameState.Color.BLACK) ? TRANSPARENT_BLACK : TRANSPARENT_WHITE);
-				g2d.fillOval(
-						xPadding + mousePosition.getX() * xIncrement - xStoneSize / 2,
-						yPadding + mousePosition.getY() * yIncrement - yStoneSize / 2,
-						xStoneSize,
-						yStoneSize);
+				renderPoint(g2d, mousePosition);
 			}
 
 		}
@@ -163,7 +174,8 @@ public class Go extends JFrame {
 						yStoneSize);
 			}
 
-			if(!controller.isValidMove(newPosition)) {
+			if(!modeButton.isSelected() && !controller.isValidMove(newPosition) ||
+					modeButton.isSelected() && !controller.hasStoneAt(newPosition)) {
 				mousePosition = null;
 			} else {
 				mousePosition = newPosition;
@@ -185,9 +197,34 @@ public class Go extends JFrame {
 		@Override
 		public void mousePressed(MouseEvent e) {
 
-			if(mousePosition != null && controller.isValidMove(mousePosition)) {
-				controller.makeMove(mousePosition);
-				repaint(500);
+			if(mousePosition == null) {
+				return;
+			}
+
+			if(modeButton.isSelected()) {
+
+				if (controller.hasStoneAt(mousePosition)) {
+
+					selectedPoints.clear();
+
+					final Optional<Group> g = controller.getGroup(mousePosition);
+					if(g.isPresent()) {
+						selectedColor = g.get().getColor().equals(GameState.Color.BLACK) ? TRANSPARENT_BLACK : TRANSPARENT_WHITE;
+						selectedPoints.addAll(controller.getReachablePoints(g.get()));
+						repaint(500);
+					}
+
+				}
+
+			} else {
+
+				if (controller.isValidMove(mousePosition)) {
+
+					controller.makeMove(mousePosition);
+					repaint(500);
+
+				}
+
 			}
 
 		}
@@ -206,13 +243,18 @@ public class Go extends JFrame {
 		public void mouseExited(MouseEvent e) {
 			mousePosition = null;
 		}
+
+		public void setModeButton(final JToggleButton modeButton) {
+			this.modeButton = modeButton;
+		}
 	}
 	
 	private Board controller;
 	private JButton quitButton;
 	private JButton startButton;
 	private JButton nextMoveButton;
-	private JButton selectGroupButton;
+	private JToggleButton selectDeadGroupButton;
+	private JToggleButton selectReachablePoints;
 	private JPanel buttonPanel;
 	private BoardViewPanel gridPanel;
 
@@ -225,14 +267,18 @@ public class Go extends JFrame {
 
 		controller = new Board();
 
+		selectDeadGroupButton = new JToggleButton("Dead Groups");
+		selectReachablePoints = new JToggleButton("Reachable Points");
 		gridPanel = new BoardViewPanel(controller);
 		gridPanel.setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
+		gridPanel.setModeButton(selectReachablePoints);
 		cp.add(gridPanel);
 
 		buttonPanel = new JPanel(new FlowLayout());
 		buttonPanel.add(startButton = new JButton("Start"));
 		buttonPanel.add(nextMoveButton = new JButton("Next Move"));
-		buttonPanel.add(selectGroupButton = new JButton("Select Group"));
+		buttonPanel.add(selectReachablePoints);
+		buttonPanel.add(selectDeadGroupButton);
 		buttonPanel.add(quitButton = new JButton("Quit"));
 		cp.add(buttonPanel);
 
@@ -248,7 +294,18 @@ public class Go extends JFrame {
 		});
 		startButton.addActionListener(a -> startGame());
 		nextMoveButton.addActionListener(a -> nextMove());
+		selectDeadGroupButton.addActionListener(a -> clearOtherButtons(selectDeadGroupButton));
+		selectReachablePoints.addActionListener(a -> clearOtherButtons(selectReachablePoints));
 
+	}
+
+	private void clearOtherButtons(JToggleButton b) {
+		for (JToggleButton tb : Arrays.asList(selectDeadGroupButton, selectReachablePoints)) {
+			if(tb != b) {
+				tb.setSelected(false);
+			}
+		}
+		repaint(100);
 	}
 
 	public void startGame() {
