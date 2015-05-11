@@ -1,11 +1,9 @@
 package agent;
 
 import game.Board;
-import game.Group;
 import game.Point;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Created by greg on 4/25/15.

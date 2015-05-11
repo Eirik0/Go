@@ -25,12 +25,6 @@ public class Board {
 	public static final int DEFAULT_SIZE = 19;
 	public static final Point PASS_POINT = new Point(-1,-1);
 
-	private Set<Point> ALL_POINTS;
-	private Point NE_CORNER;
-	private Point NW_CORNER;
-	private Point SE_CORNER;
-	private Point SW_CORNER;
-
 	public static class PointExplorer implements Supplier<Point> {
 
 		final Set<Point> supply = new HashSet<>();
@@ -86,13 +80,6 @@ public class Board {
 	}
 
 	private void init(int size) {
-
-		PointExplorer pGen = new PointExplorer();
-		ALL_POINTS = Stream.generate(pGen).limit(pGen.getLimit()).collect(Collectors.toSet());
-		NE_CORNER = ALL_POINTS.stream().filter(p -> p.getY() == 0).max((a, b) -> -Integer.compare(a.getY(), b.getY())).get();
-		NW_CORNER = ALL_POINTS.stream().filter(p -> p.getY() == 0).max((a, b) -> Integer.compare(a.getY(), b.getY())).get();
-		SE_CORNER = ALL_POINTS.stream().filter(p -> p.getY() == size-1).max((a, b) -> -Integer.compare(a.getY(), b.getY())).get();
-		SW_CORNER = ALL_POINTS.stream().filter(p -> p.getY() == size-1).max((a, b) -> Integer.compare(a.getY(), b.getY())).get();
 
 		groups = new ArrayList<>();
 		captures = new ArrayList<>();
@@ -318,6 +305,12 @@ public class Board {
 		}
 		return result;
 
+	}
+	
+	public void markGroupDead(final Group g) {
+		if(gameOver && groups.remove(g)) {
+			captures.add(new CapturedGroup(g, moveIndex));
+		}
 	}
 
 	public Set<Point> getEnclosedPoints(final Group group) {

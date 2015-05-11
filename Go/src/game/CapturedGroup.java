@@ -3,9 +3,7 @@ package game;
 import serialization.GameState;
 import serialization.GameState.Color;
 
-import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Created by grubino on 4/24/15.

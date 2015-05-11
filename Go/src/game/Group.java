@@ -1,10 +1,7 @@
 package game;
 
 import java.util.*;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import serialization.GameState;
 import serialization.GameState.Color;
 

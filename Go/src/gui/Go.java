@@ -38,7 +38,8 @@ public class Go extends JFrame {
 		private JPanel infoPanel;
 		private JLabel blackInfo;
 		private JLabel whiteInfo;
-		private JToggleButton modeButton;
+		private JToggleButton selectReachablePointsButton;
+		private JToggleButton markDeadGroupButton;
 
 		private Board controller;
 		private game.Point mousePosition;
@@ -130,21 +131,25 @@ public class Go extends JFrame {
 			}
 
 			for (Group group: controller.getGroups()) {
-				g2d.setColor(group.getColor().equals(serialization.GameState.Color.BLACK) ? Color.BLACK : Color.WHITE);
+				if(selectReachablePointsButton.isSelected() && group.contains(mousePosition)) {
+					g2d.setColor(group.getColor() == GameState.Color.BLACK ? TRANSPARENT_BLACK : TRANSPARENT_WHITE);
+				} else {
+					g2d.setColor(group.getColor() == serialization.GameState.Color.BLACK ? Color.BLACK : Color.WHITE);
+				}
 				for(game.Point p : group.getPoints()) {
 					renderPoint(g2d, p);
 				}
 			}
 
-			if(modeButton.isSelected()) {
+			if(selectReachablePointsButton.isSelected()) {
 				for (final Point p : selectedPoints) {
 					g2d.setColor(selectedColor);
 					renderPoint(g2d, p);
 				}
 			}
 
-			if(mousePosition != null) {
-				g2d.setColor(controller.getCurrentPlayer().equals(GameState.Color.BLACK) ? TRANSPARENT_BLACK : TRANSPARENT_WHITE);
+			if(!selectReachablePointsButton.isSelected() && mousePosition != null) {
+				g2d.setColor(controller.getCurrentPlayer() == GameState.Color.BLACK ? TRANSPARENT_BLACK : TRANSPARENT_WHITE);
 				renderPoint(g2d, mousePosition);
 			}
 
@@ -174,8 +179,9 @@ public class Go extends JFrame {
 						yStoneSize);
 			}
 
-			if(!modeButton.isSelected() && !controller.isValidMove(newPosition) ||
-					modeButton.isSelected() && !controller.hasStoneAt(newPosition)) {
+			if(!controller.isValidMove(newPosition) && !(selectReachablePointsButton.isSelected() || markDeadGroupButton.isSelected()) ||
+					selectReachablePointsButton.isSelected() && !controller.hasStoneAt(newPosition) ||
+					markDeadGroupButton.isSelected() && !controller.hasStoneAt(newPosition)) {
 				mousePosition = null;
 			} else {
 				mousePosition = newPosition;
@@ -201,7 +207,7 @@ public class Go extends JFrame {
 				return;
 			}
 
-			if(modeButton.isSelected()) {
+			if(selectReachablePointsButton.isSelected()) {
 
 				if (controller.hasStoneAt(mousePosition)) {
 
@@ -216,6 +222,14 @@ public class Go extends JFrame {
 
 				}
 
+			} else if (markDeadGroupButton.isSelected()) {
+
+				final Optional<Group> optGroup = controller.getGroup(mousePosition); 
+				if(optGroup.isPresent()) {
+					controller.markGroupDead(optGroup.get());
+					repaint(500);
+				}
+				
 			} else {
 
 				if (controller.isValidMove(mousePosition)) {
@@ -244,8 +258,16 @@ public class Go extends JFrame {
 			mousePosition = null;
 		}
 
-		public void setModeButton(final JToggleButton modeButton) {
-			this.modeButton = modeButton;
+		public void setSelectReachablePointsButton(final JToggleButton modeButton) {
+			this.selectReachablePointsButton = modeButton;
+		}
+		
+		public void setMarkDeadGroupButton(final JToggleButton markDeadGroupButton) {
+			this.markDeadGroupButton = markDeadGroupButton;
+		}
+
+		public void clearSelectedPoints() {
+			this.selectedPoints.clear();
 		}
 	}
 	
@@ -271,7 +293,8 @@ public class Go extends JFrame {
 		selectReachablePoints = new JToggleButton("Reachable Points");
 		gridPanel = new BoardViewPanel(controller);
 		gridPanel.setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
-		gridPanel.setModeButton(selectReachablePoints);
+		gridPanel.setSelectReachablePointsButton(selectReachablePoints);
+		gridPanel.setMarkDeadGroupButton(selectDeadGroupButton);
 		cp.add(gridPanel);
 
 		buttonPanel = new JPanel(new FlowLayout());
@@ -305,6 +328,7 @@ public class Go extends JFrame {
 				tb.setSelected(false);
 			}
 		}
+		gridPanel.clearSelectedPoints();
 		repaint(100);
 	}
 

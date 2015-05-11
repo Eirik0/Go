@@ -12,8 +12,6 @@ import serialization.GameState;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Random;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -76,7 +74,6 @@ public class GameTest {
     @Test
     public void testGroupMerge() {
 
-        Random rand = new Random();
         Comparator<Point> pointComparator =
                 (Point a, Point b) -> {
                     int yCompare = Integer.compare(a.getY(), b.getY());
