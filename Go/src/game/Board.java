@@ -296,6 +296,7 @@ public class Board {
 		final Set<Point> result = new HashSet<>();
 		for(final Point p: group.getAdjacent()) {
 			PointExplorer pGen = new PointExplorer(p, groups.stream()
+					.filter(g -> g.getColor() != group.getColor())
 					.map(g -> g.getPoints())
 					.reduce(new HashSet<Point>(), (s, pts) -> {
 						s.addAll(pts);
@@ -308,7 +309,15 @@ public class Board {
 	}
 	
 	public void markGroupDead(final Group g) {
+		final Set<Point> reachable = getReachablePoints(g); 
 		if(gameOver && groups.remove(g)) {
+			for(Iterator<Group> it = groups.iterator(); it.hasNext();) {
+				final Group grp = it.next();
+				if(grp.getColor() == g.getColor() && reachable.stream().filter(pt -> grp.isAdjacent(pt)).findAny().isPresent()) {
+					it.remove();
+					captures.add(new CapturedGroup(grp, moveIndex));
+				}
+			}
 			captures.add(new CapturedGroup(g, moveIndex));
 		}
 	}
@@ -323,6 +332,7 @@ public class Board {
 			// unexploredPoints is not empty, so no need to check isPresent
 			Point p = unexploredPoints.stream().findAny().get();
 			PointExplorer pGen = new PointExplorer(p, groups.stream()
+					.filter(g -> g.getColor() != group.getColor())
 					.map(g -> g.getPoints())
 					.reduce(new HashSet<Point>(), (s, pts) -> {
 						s.addAll(pts);
