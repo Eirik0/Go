@@ -38,6 +38,10 @@ public class Point {
                 .collect(Collectors.toList());
         return adjacent;
     }
+    
+    public int distanceFrom(final Point other) {
+    	return Math.abs(x - other.x) + Math.abs(y - other.y);
+    }
 
     @Override
     public boolean equals(Object obj) {

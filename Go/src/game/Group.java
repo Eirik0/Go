@@ -64,6 +64,11 @@ public class Group {
         Set<Point> adjPoints = new HashSet<>(p.getAdjacent());
         return points.stream().filter(q -> adjPoints.contains(q)).collect(Collectors.toList());
     }
+    
+    public Point getClosestPoint(final Point p) {
+    	return points.stream()
+    			.min((a, b) -> Integer.compare(p.distanceFrom(a), p.distanceFrom(b))).get();
+    }
 
     public boolean equals(final Group other) {
         return points.containsAll(other.points) && other.points.containsAll(points);

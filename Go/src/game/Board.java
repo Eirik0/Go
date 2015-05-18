@@ -324,42 +324,13 @@ public class Board {
 
 	public Set<Point> getEnclosedPoints(final Group group) {
 
-		final Set<Point> enclosedPoints = new HashSet<>();
-		final Set<Point> unexploredPoints = new HashSet<>(group.getAdjacent());
-
-		while(!unexploredPoints.isEmpty()) {
-
-			// unexploredPoints is not empty, so no need to check isPresent
-			Point p = unexploredPoints.stream().findAny().get();
-			PointExplorer pGen = new PointExplorer(p, groups.stream()
-					.filter(g -> g.getColor() != group.getColor())
-					.map(g -> g.getPoints())
-					.reduce(new HashSet<Point>(), (s, pts) -> {
-						s.addAll(pts);
-						return s;
-					}));
-
-			Set<Point> groupAdjPoints = groups.stream()
-					.filter(g -> g != group)
-					.map(g -> g.getAdjacent())
-					.reduce(new HashSet<Point>(), (s, pts) -> {
-				s.addAll(pts);
-				return s;
-			});
-
-			final Set<Point> reachablePoints =
-					Stream.generate(pGen)
-							.filter(pt -> unexploredPoints.contains(pt))
-							.limit(pGen.getLimit())
-							.collect(Collectors.toSet());
-
-			if(reachablePoints.containsAll(groupAdjPoints)) {
-				enclosedPoints.addAll(reachablePoints);
-			}
-
-			unexploredPoints.removeAll(reachablePoints);
-
-		}
+		final Set<Point> opponentReachablePoints = groups.stream()
+				.filter(g -> g.getColor() != group.getColor())
+				.map(g -> getReachablePoints(g))
+				.reduce(new HashSet<>(), (a, b) -> {a.addAll(b); return a;});
+		
+		final Set<Point> enclosedPoints = getReachablePoints(group);
+		enclosedPoints.removeAll(opponentReachablePoints);
 
 		return enclosedPoints;
 

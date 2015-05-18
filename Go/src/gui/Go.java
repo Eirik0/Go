@@ -10,13 +10,15 @@ import java.util.Optional;
 import javax.swing.*;
 
 import agent.IAgent;
-import config.AlmostRandomAgentConfiguration;
+import config.ScoringAgentConfiguration;
 import game.Board;
 import game.Group;
 import game.Point;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
+
 import serialization.GameState;
 
 @Component
@@ -39,6 +41,7 @@ public class Go extends JFrame {
 		private JLabel blackInfo;
 		private JLabel whiteInfo;
 		private JToggleButton selectReachablePointsButton;
+		private JToggleButton selectEnclosedPointsButton;
 		private JToggleButton markDeadGroupButton;
 
 		private Board controller;
@@ -141,7 +144,7 @@ public class Go extends JFrame {
 				}
 			}
 
-			if(selectReachablePointsButton.isSelected()) {
+			if(selectReachablePointsButton.isSelected() || selectEnclosedPointsButton.isSelected()) {
 				for (final Point p : selectedPoints) {
 					g2d.setColor(selectedColor);
 					renderPoint(g2d, p);
@@ -179,8 +182,10 @@ public class Go extends JFrame {
 						yStoneSize);
 			}
 
-			if(!controller.isValidMove(newPosition) && !(selectReachablePointsButton.isSelected() || markDeadGroupButton.isSelected()) ||
+			if(!controller.isValidMove(newPosition) && 
+					!(selectReachablePointsButton.isSelected() || markDeadGroupButton.isSelected() || selectEnclosedPointsButton.isSelected()) ||
 					selectReachablePointsButton.isSelected() && !controller.hasStoneAt(newPosition) ||
+					selectEnclosedPointsButton.isSelected() && !controller.hasStoneAt(newPosition) ||
 					markDeadGroupButton.isSelected() && !controller.hasStoneAt(newPosition)) {
 				mousePosition = null;
 			} else {
@@ -215,13 +220,30 @@ public class Go extends JFrame {
 
 					final Optional<Group> g = controller.getGroup(mousePosition);
 					if(g.isPresent()) {
-						selectedColor = g.get().getColor().equals(GameState.Color.BLACK) ? TRANSPARENT_BLACK : TRANSPARENT_WHITE;
+						selectedColor = 
+								g.get().getColor() == GameState.Color.BLACK ?
+										TRANSPARENT_BLACK : TRANSPARENT_WHITE;
 						selectedPoints.addAll(controller.getReachablePoints(g.get()));
 						repaint(500);
 					}
 
 				}
 
+			} else if (selectEnclosedPointsButton.isSelected()) { 
+				
+				if (controller.hasStoneAt(mousePosition)) {
+					
+					selectedPoints.clear();
+					final Optional<Group> g = controller.getGroup(mousePosition);
+					if (g.isPresent()) {
+						selectedColor = 
+								g.get().getColor() == GameState.Color.BLACK ?
+										TRANSPARENT_BLACK : TRANSPARENT_WHITE;
+						selectedPoints.addAll(controller.getEnclosedPoints(g.get()));
+						repaint(500);
+					}
+				}
+				
 			} else if (markDeadGroupButton.isSelected()) {
 
 				final Optional<Group> optGroup = controller.getGroup(mousePosition); 
@@ -262,6 +284,11 @@ public class Go extends JFrame {
 			this.selectReachablePointsButton = modeButton;
 		}
 		
+		public void setSelectEnclosedPointsButton(
+				JToggleButton selectEnclosedPointsButton) {
+			this.selectEnclosedPointsButton = selectEnclosedPointsButton;
+		}
+
 		public void setMarkDeadGroupButton(final JToggleButton markDeadGroupButton) {
 			this.markDeadGroupButton = markDeadGroupButton;
 		}
@@ -277,6 +304,7 @@ public class Go extends JFrame {
 	private JButton nextMoveButton;
 	private JToggleButton selectDeadGroupButton;
 	private JToggleButton selectReachablePoints;
+	private JToggleButton selectEnclosedPoints;
 	private JPanel buttonPanel;
 	private BoardViewPanel gridPanel;
 
@@ -291,17 +319,20 @@ public class Go extends JFrame {
 
 		selectDeadGroupButton = new JToggleButton("Dead Groups");
 		selectReachablePoints = new JToggleButton("Reachable Points");
+		selectEnclosedPoints = new JToggleButton("Enclosed Points");
 		gridPanel = new BoardViewPanel(controller);
 		gridPanel.setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
 		gridPanel.setSelectReachablePointsButton(selectReachablePoints);
+		gridPanel.setSelectEnclosedPointsButton(selectEnclosedPoints);
 		gridPanel.setMarkDeadGroupButton(selectDeadGroupButton);
 		cp.add(gridPanel);
 
 		buttonPanel = new JPanel(new FlowLayout());
 		buttonPanel.add(startButton = new JButton("Start"));
 		buttonPanel.add(nextMoveButton = new JButton("Next Move"));
-		buttonPanel.add(selectReachablePoints);
 		buttonPanel.add(selectDeadGroupButton);
+		buttonPanel.add(selectEnclosedPoints);
+		buttonPanel.add(selectReachablePoints);
 		buttonPanel.add(quitButton = new JButton("Quit"));
 		cp.add(buttonPanel);
 
@@ -319,11 +350,12 @@ public class Go extends JFrame {
 		nextMoveButton.addActionListener(a -> nextMove());
 		selectDeadGroupButton.addActionListener(a -> clearOtherButtons(selectDeadGroupButton));
 		selectReachablePoints.addActionListener(a -> clearOtherButtons(selectReachablePoints));
+		selectEnclosedPoints.addActionListener(a -> clearOtherButtons(selectEnclosedPoints));
 
 	}
 
 	private void clearOtherButtons(JToggleButton b) {
-		for (JToggleButton tb : Arrays.asList(selectDeadGroupButton, selectReachablePoints)) {
+		for (JToggleButton tb : Arrays.asList(selectDeadGroupButton, selectReachablePoints, selectEnclosedPoints)) {
 			if(tb != b) {
 				tb.setSelected(false);
 			}
@@ -336,10 +368,17 @@ public class Go extends JFrame {
 		if(controller.isGameOver()) {
 			controller = new Board();
 			gridPanel.setController(controller);
+			gridPanel.clearSelectedPoints();
 			gridPanel.repaint();
 		} else {
 			while(!controller.isGameOver()) {
 				nextMove();
+				gridPanel.paintImmediately(new Rectangle(0, 0, gridPanel.getWidth(), gridPanel.getHeight()));
+				try {
+					Thread.sleep(50);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
@@ -358,7 +397,8 @@ public class Go extends JFrame {
 
 	public static void main(String[] args) {
 
-		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(AlmostRandomAgentConfiguration.class);
+		AnnotationConfigApplicationContext ctx = 
+				new AnnotationConfigApplicationContext(ScoringAgentConfiguration.class);
 		final Go gui = ctx.getBean(Go.class);
 
 		ctx.close();
